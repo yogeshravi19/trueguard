@@ -8,6 +8,16 @@
 ## 📌 Project Overview
 Large Language Models (LLMs) often suffer from **hallucinations**—fluent but factually incorrect outputs. Current detection systems are slow, isolated, and act only as passive alarms. 
 
+## 📑 Methodology
+The methodology of TRUEGUARD follows a systematic pipeline:
+1. **Signal Extraction**: Capture internal model signals (attention weights, activation distributions, token probabilities, and gradient-based confidence scores) during a single forward pass.
+2. **Statistical Modeling**: Fit Gaussian Mixture Models to these signals to learn normal behavior and detect outliers indicative of hallucination risk.
+3. **Entropy & Divergence Analysis**: Compute semantic entropy and KL‑divergence between predicted token distributions and a retrieval‑augmented reference distribution.
+4. **Risk Scoring & Mitigation**: Aggregate multi‑signal risk scores using a calibrated ensemble, then trigger real‑time mitigation actions such as Retrieval‑Augmented Generation or abstention.
+5. **Explainability Layer**: Generate token‑level confidence annotations to provide human‑readable explanations of detected risks.
+
+This structured approach enables TRUEGUARD to intervene before erroneous tokens are emitted, ensuring higher fidelity and safety in LLM deployments.
+
 **TRUEGUARD** is a cutting-edge closed-loop framework developed to intercept, explain, and mitigate LLM hallucinations in real-time. By mathematically extracting internal states, tracking distribution shifts, monitoring attention anomalies, and calculating semantic entropy within a **single forward pass**, TRUEGUARD physically blocks hallucinations before they reach the user.
 
 ## 🚀 Key Features (Solving Research Gaps)

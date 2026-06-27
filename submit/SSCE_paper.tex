@@ -30,9 +30,9 @@
 
 \author{
     Yogesh Ravi M\textsuperscript{a} \and Pradeep Kumar T S\textsuperscript{a} \\[6pt]
-    \textsuperscript{a}\textit{Department of Computer Science, Vellore Institute of Technology (VIT),} \\
-    \textit{Chennai, Tamil Nadu, India} \\[4pt]
-    \small{Corresponding author email: yogeshravi4343@gmail.com}
+    \textsuperscript{a}\textit{Department of Computer Science and Engineering,} \\
+    \textit{Vellore Institute of Technology (VIT), Vellore, Tamil Nadu, India} \\[4pt]
+    \small{Corresponding author email: yogeshravi.m2022@vitstudent.ac.in}
 }
 
 \date{}
@@ -106,7 +106,7 @@ The intuition of this pillar is easy to understand: before an LLM projects a hal
 
 \textbf{MHAD:} Zhang et al. [5] are zoomed in specifically onto individual neurons. Instead of analyzing a massive tensor blob, they pinpointed discrete "hallucination-aware neurons" within the deeper transformer layers. By concatenating outputs exclusively from these neurons, they managed to optimize feature selection as a means to win over brute force methods.
 
-\textbf{Semantic Entropy Probes:} Kossen et al. [14] focus on a bottleneck at hand—the cost of semantic entropy. Rather than generating a prompt 10 times to measure diversity, their SEPs learned to approximate the actual entropy math entirely from the hidden states of single generations, successfully proving you can map outward entropy directly back to the internal uncertainty representation within the model.
+\textbf{Semantic Entropy Probes:} Kossen et al. [14] focus on a bottleneck at hand—the cost of semantic entropy. Rather than generating a prompt 10 times to measure diversity, their SEPs learned to approximate the actual entropy math entirely from the hidden states of single generations, successfully proving you can map outward entropy directly back to the internal uncertainty representation within the model (Figure~\ref{fig:sep_vs_se}).
 
 \textbf{HALLUSHIFT:} Dasgupta et al. [13] assume a temporal perspective on vector geometries. Their premise relies on KL-Divergence shifts—as a model slowly transitions from reporting facts to fabricating lies, the angle of consequence in its mathematical state severely shifts, proving that the veracity of the ground becomes lost.
 
@@ -154,11 +154,11 @@ At their fundamental level, transformers are attention machineries. This pillar 
     \label{fig:llmcheck}
 \end{figure}
 
-\textbf{Map of Misbelief:} We believe that it is an area elegantly broken apart by Hajji et al. [9]. They effectively split illusions into Intrinsic (contradicting the prompt) and Extrinsic (inventing new facts). Their breakthrough finding proved that entropy calculations work solely on Extrinsic cases, whereas aggregating focus from specific Attention heads was absolutely necessary and not just nice to have can be utilized.
+\textbf{Map of Misbelief:} We believe that it is an area elegantly broken apart by Hajji et al. [9]. They effectively split illusions into Intrinsic (contradicting the prompt) and Extrinsic (inventing new facts). Their breakthrough finding proved that entropy calculations work solely on Extrinsic cases, whereas aggregating focus from specific Attention heads was absolutely necessary and not just nice to have can be utilized (Figure~\ref{fig:intrinsic_extrinsic}).
 
 \textbf{RAUQ:} The authors of RAUQ [11] never identified themselves, but their methodology is clear. They observed that incorrect outputs were preceded by specific "uncertainty-aware" attention heads physically detaching from context. They aggregated these attention signals utilizing recurrent networks to form a cohesive sequence score, proving that truthfulness is not a construct of a specific model or data set.
 
-\textbf{LLM-Check:} The approach of Sriramanan et al. [12] is closer to kitchen-sink architecture. Rather than relying on one type of attention extraction, they combined attention maps, token probabilities, and hidden states dynamically. Evaluating simultaneously across white-box and black-box environments, they generated speeds reaching up to $450\times$ faster than the default system of knowledge-intensive applications.
+\textbf{LLM-Check:} The approach of Sriramanan et al. [12] is closer to kitchen-sink architecture. Rather than relying on one type of attention extraction, they combined attention maps, token probabilities, and hidden states dynamically. Evaluating simultaneously across white-box and black-box environments, they generated speeds reaching up to $450\times$ faster than the default system of knowledge-intensive applications (Figure~\ref{fig:llmcheck}).
 
 \textit{What this pillar tells us.} Hallucination analysis is a poorly exploited field without studying attention dynamics. Because attention arrays specifically excel at identifying logical contradictions against the user's prompt (Intrinsic errors), their inclusion becomes the powerful driving factor of fusion-based strategies.
 
@@ -186,13 +186,13 @@ The thesaurus of any body of research is good benchmarks. The fourth pillar focu
     \label{fig:improvement}
 \end{figure}
 
-\textbf{TrustLLM:} Huang et al. [3] considered trustworthiness at macroscopic scale. Establishing a unified framework across 8 distinct axes (Truthfulness, Safety, Fairness, Transparency, etc.), they benchmarked over 16 mainstream LLMs natively. They discovered that while proprietary models excel at safety, their hyper-alignment can actually induce new types of restricted hallucinations which should undermine the trust that it aims to establish.
+\textbf{TrustLLM:} Huang et al. [3] considered trustworthiness at macroscopic scale. Establishing a unified framework across 8 distinct axes (Truthfulness, Safety, Fairness, Transparency, etc.), they benchmarked over 16 mainstream LLMs natively (Figure~\ref{fig:trustllm}). They discovered that while proprietary models excel at safety, their hyper-alignment can actually induce new types of restricted hallucinations which should undermine the trust that it aims to establish.
 
 \textbf{Faithfulness Evaluation:} Jing et al. [10] base the evaluation problem directly against user intent mapping. Creating an algorithmic scale from 1 to 5, they transitioned away from purely binary hallucination classification to a comprehensive quantifiable gradient of faithfulness. Testing NLI baselines, they proved the discipline requires additional practice.
 
 \textbf{Comprehensive Hallucination Survey:} Alansari and Luqman [18] formed a compilation examining the entire taxonomy of hallucination causes ranging from imperfect pre-training datasets directly through to inference decoding bugs. The structural categorization serves as an indispensable reference point mapping precisely what has previously been done.
 
-\textit{What this pillar tells us.} Assessment infrastructure is healing yet is blown-out across specialized datasets. The benchmarks clearly specify that an ideal generalized system must be subjected to validation protocols that encompass multiple axes of capability not isolated but as a combination.
+\textit{What this pillar tells us.} Assessment infrastructure is healing yet is blown-out across specialized datasets. The benchmarks clearly specify that an ideal generalized system must be subjected to validation protocols that encompass multiple axes of capability not isolated but as a combination (Figure~\ref{fig:improvement}).
 
 % -----------------------------------------------
 % E. Pillar 5: Mitigation
@@ -240,11 +240,11 @@ All the above is geared towards the end result: interacting securely with humans
 
 Having walked through each pillar separately, we must cross-reference the methodologies. The fragmentation observed throughout the literature implies that current strategies suffer fundamentally by attempting to treat all hallucination types utilizing monolithic singular approaches, a point that should be discussed.
 
-\textbf{The Complementarity Argument.} When it comes to making one or another finding against Extrinsic text versus Intrinsic logic gaps, the math clearly dictates distinct champions. Semantic Entropy [4, 14] profoundly identifies Extrinsic errors (fabricator models). Attention mapping [9, 11] profoundly isolates Intrinsic errors (prompt contradiction). Therefore, attempting to solve hallucination solely utilizing one pillar guarantees severe blind spots across half the spectrum. None of them can claim the entire spectrum.
+\textbf{The Complementarity Argument.} When it comes to making one or another finding against Extrinsic text versus Intrinsic logic gaps, the math clearly dictates distinct champions. Semantic Entropy [4, 14] profoundly identifies Extrinsic errors (fabricator models). Attention mapping [9, 11] profoundly isolates Intrinsic errors (prompt contradiction). Therefore, attempting to solve hallucination solely utilizing one pillar guarantees severe blind spots across half the spectrum. None of them can claim the entire spectrum (Figure~\ref{fig:auroc_f1}).
 
 Table I presents a summary of this comparison specifically aligning evaluation metrics against model access environments.
 
-\textbf{The Efficiency Question.} There is a constant conflict between detection precision and latency drag. Multi-sample evaluations incur $5\times$ latency costs making them un-deployable inside live chat sessions. Single-pass algorithms working on Hidden States [1, 2] circumvent this drag entirely. We argue that extracting the indicators during the primary forward pass is the absolute prerequisite to move these findings from a laboratory setup to production in a manner that will more effectively discover how to retrieve it.
+\textbf{The Efficiency Question.} There is a constant conflict between detection precision and latency drag. Multi-sample evaluations incur $5\times$ latency costs making them un-deployable inside live chat sessions. Single-pass algorithms working on Hidden States [1, 2] circumvent this drag entirely. We argue that extracting the indicators during the primary forward pass is the absolute prerequisite to move these findings from a laboratory setup to production in a manner that will more effectively discover how to retrieve it (Figure~\ref{fig:speedup}).
 
 \textbf{The Access Problem.} One would then want to be forthright about this constraint. While Internal State Probes and Attention mechanisms yield the highest performance characteristics, they inherently mandate full white-box access to tensor arrays. Consequently, enterprises relying upon OpenAI APIs are structurally locked out of deploying these optimal detection regimes, relying solely upon EPR strategies [17] which represents a major weakness in the literature.
 
@@ -460,6 +460,24 @@ What was made evident during this review is that no singular path is effective. 
 We introduced TRUEGUARD as a methodology of consideration integrating these elements directly together entirely within a single operational layer loop. Our implementation findings validate that mathematical signal fusion creates profoundly robust AUROC classifications maintaining immense speed optimizations over multi-pass algorithms which have not at this point worked much together.
 
 It is obvious to us that the issue of hallucination detection will eventually merge into native AI operation architecture. As the transition from research models to critical deployment engines continues, it is our deep hope that the categorizations, gaps, and implemented TRUEGUARD solutions presented here make such connections a bit clearer.
+
+% =============================================================================
+% DATA AVAILABILITY STATEMENT
+% =============================================================================
+\section*{Data Availability Statement}
+This study is a systematic literature review. All data analyzed in this paper are drawn from the twenty publicly available research papers cited in the References section. No novel datasets were generated or analyzed beyond those reported in the cited works. Readers are referred to the original papers for the underlying experimental data and results.
+
+% =============================================================================
+% FUNDING
+% =============================================================================
+\section*{Funding}
+This research received no external funding.
+
+% =============================================================================
+% CONFLICT OF INTEREST STATEMENT
+% =============================================================================
+\section*{Conflict of Interest Statement}
+The authors declare that the research was conducted in the absence of any commercial or financial relationships that could be construed as a potential conflict of interest.
 
 % =============================================================================
 % REFERENCES (already filled — DO NOT EDIT in Word)
