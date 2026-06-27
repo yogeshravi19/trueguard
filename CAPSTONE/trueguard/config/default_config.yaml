@@ -1,0 +1,65 @@
+# TRUEGUARD Configuration
+
+# Model settings
+model:
+  name: llama2  # or mistral
+  size: 7b
+  device: cuda
+  dtype: float16  # or bfloat16
+  
+# Hardware
+hardware:
+  gpu_type: nvidia_t4
+  memory_gb: 16
+  
+# Signal Extraction
+signals:
+  # ISP: Internal State Probes
+  isp:
+    enabled: true
+    layers: [15, 20, 25, 30]  # For LLaMA-2-7B (32 layers)
+    probe_type: linear_classifier
+    hidden_dim: 4096  # Model hidden size
+    
+  # AAS: Attention Anomaly Score
+  aas:
+    enabled: true
+    attention_layers: [25, 26, 27, 28, 29, 30, 31]  # Final 7 layers
+    entropy_type: normalized  # or raw
+    
+  # EEM: Entropy-Energy Monitor
+  eem:
+    enabled: true
+    entropy_weight: 0.6  # Balance entropy vs semantic energy
+    semantic_energy_weight: 0.4
+    
+  # DST: Distribution Shift Tracker
+  dst:
+    enabled: true
+    layers: [20, 25, 30]
+    distance_metric: cosine  # or euclidean
+    
+# Fusion
+fusion:
+  method: logistic_regression  # or mlp, attention
+  learning_rate: 0.001
+  optimizer: adam
+  epochs: 50
+  batch_size: 32
+  
+# Active Mitigation
+mitigation:
+  hallucination_threshold: 0.50  # Risk score threshold
+  strategy: rag  # or abstention
+  
+# Training
+training:
+  val_set_size: 50  # Samples used to train fusion W, b
+  cv_folds: 5
+  random_seed: 42
+  
+# Inference
+inference:
+  batch_size: 8
+  max_tokens: 100
+  temperature: 0.7
