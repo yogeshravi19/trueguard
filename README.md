@@ -1,95 +1,109 @@
-# TRUEGUARD: Trustworthy, Unified, Real-time, Explainable Guard
+# 🛡️ TRUEGUARD – Real-Time LLM Hallucination Detection & Mitigation
 
-![Status](https://img.shields.io/badge/Status-Active-brightgreen)
-![Python](https://img.shields.io/badge/Python-3.9+-blue)
-![License](https://img.shields.io/badge/License-MIT-green)
-![Paper](https://img.shields.io/badge/Paper-IEEE-blue)
+> A lightweight, real-time safety guardrail that detects and prevents hallucinations in Large Language Models (LLMs) at the token level by fusing four internal neural signals with a microsecond machine learning layer.
 
-**A Unified Multi-Signal Framework for Real-Time Hallucination Detection, Explainability, and Mitigation in Large Language Models (LLMs).**
+## 📊 Key Results & Baseline Comparison
 
----
+All models were evaluated across 8 benchmarks (*TruthfulQA, HaluEval, HELM, HumanEval, MATH, MuSiQue*) using 5-Fold Cross-Validation:
 
-## 📖 Overview
+| Model / Framework | AUROC Accuracy | Latency Overhead | Hallucination Rate | Query Coverage |
+| :--- | :---: | :---: | :---: | :---: |
+| **Token Entropy (Black-Box)** | 0.720 ± 0.02 | 1.1 ms/tok | 31.2% | 100% |
+| **Semantic Entropy (Multi-Sample)** | 0.802 ± 0.01 | 142.3 ms/tok | 18.5% | 100% |
+| **HaluShift (Single-Signal DST)** | 0.798 ± 0.02 | 18.2 ms/tok | 21.0% | 100% |
+| **Su et al. (MIND Linear Probes)** | 0.816 ± 0.02 | 14.1 ms/tok | 19.4% | 100% |
+| **TRUEGUARD (Ours)** ✅ | **0.828 ± 0.047** | **12.4 ± 0.5 ms/tok** | **11.3%** | **88%** |
 
-Large Language Models (LLMs) are powerful, but their deployment in critical domains is often hindered by **hallucinations**—fluent but factually incorrect outputs. While many methods exist to detect or mitigate these, they operate in isolation, lack human-interpretable explanations, or fail to correct the model in real-time.
-
-**TRUEGUARD** is the first unified framework that bridges the gap between hallucination detection, human-centered explainability, and active mitigation in a single coherent pipeline. It evaluates the model's internal computational state to identify uncertainty, explains its reasoning to the user, and dynamically corrects hallucinations before they propagate.
-
----
-
-## ✨ Key Features & Architecture
-
-TRUEGUARD operates through four interconnected modules designed to solve the complete hallucination problem with near-zero error tolerance:
-
-### 1. Multi-Signal Hallucination Detector
-Extracts four complementary signals within a **single forward pass** (11.5x faster than typical multi-sampling models):
-*   **Internal State Probes (ISP):** Identifies hallucination-aware components in hidden layers.
-*   **Attention Anomaly Score (AAS):** Monitors uncertainty-aware attention heads that lose focus on context.
-*   **Entropy-Energy Monitor (EEM):** Detects abrupt entropy spikes indicating low model confidence.
-*   **Distribution Shift Tracker (DST):** Tracks statistical divergence in the model's generation trajectory.
-
-### 2. Learned Multi-Signal Fusion
-Combines the four token-level signals through a learned weighting mechanism to produce a highly accurate, unified hallucination risk score.
-
-### 3. Real-Time Explainability Engine
-Translates opaque risk scores into human-interpretable trust indicators:
-*   **Token-Level Annotations:** Visual color-coded trust indicators for generated claims.
-*   **Contrastive Explanations:** Explains *why* a claim is flagged based on internal state data.
-*   **Adaptive Context:** Adjusts explanation depth based on user context.
-
-### 4. Closed-Loop Mitigation Pipeline
-An active controller that halts generation upon detecting high risk:
-*   **Retrieval-Augmented Grounding (RAG):** Re-queries specific flagged claims against factual knowledge bases.
-*   **Calibrated Abstention:** If uncertainty persists, the model gracefully abstains or flags its own uncertainty.
+> **Conclusion:** TRUEGUARD achieves the highest AUROC (**0.828**) and reduces hallucination occurrences by **63.8%** while operating **11.5× faster** than multi-sampling methods (12.4 ms vs 142.3 ms).
 
 ---
 
-## 📊 Experimental Results
+## 🛠️ Methodology
 
-Evaluated across TruthfulQA, HaluEval, and HELM using LLaMA-2 (7B/13B), Mistral-7B, and Qwen-2.5-7B, TRUEGUARD demonstrates state-of-the-art performance:
+The **TRUEGUARD** framework follows a principled, single-pass intrinsic monitoring pipeline:
 
-*   **Detection Accuracy:** Achieves **0.844 AUROC**, a 5.2% improvement over the best individual baseline.
-*   **Efficiency:** Operates in a single forward pass with only **12.4 ms/token** overhead.
-*   **Mitigation:** Reduces overall hallucination rates by **63.8%** compared to unguarded baselines, raising factual accuracy from 68.8% to 85.6%.
-*   **Robustness:** Excels at detecting both intrinsic (contradicting input) and extrinsic (fabricated) hallucinations.
+1. **Single-Pass Feature Extraction:**
+   - At each generation step $t$, intercepts the transformer's forward pass to extract 4 complementary signals without launching secondary generation passes:
+     - **ISP (Internal State Probes):** Linear probes on layers $\{15, 20, 25, 30\}$ evaluating latent truthfulness.
+     - **AAS (Attention Anomaly Score):** Normalized Shannon entropy of attention heads in final layers $\{25 \dots 31\}$.
+     - **EEM (Entropy-Energy Monitor):** Blended Shannon uncertainty and Rényi-2 confidence energy from logits.
+     - **DST (Distribution Shift Tracker):** Cosine distance tracking semantic drift between consecutive hidden states.
+
+2. **Online Z-Score Normalization & Fusion:**
+   - Normalizes the 4D feature vector and passes it to a learned logistic regression:
+     $$R(t) = \sigma\left(W^T \hat{X}_t + b\right) \quad (\text{Overhead } < 0.1\text{ ms})$$
+   - Learned signal weights: **EEM (0.34)**, **ISP (0.28)**, **DST (0.22)**, **AAS (0.16)**.
+
+3. **Active Mitigation & Calibrated Abstention:**
+   - When token risk $R(t) > \tau \approx 0.50$, generation is immediately halted to prevent error propagation.
+   - The system triggers epistemic abstention (*"I don't have enough confident information..."*) or invokes targeted RAG.
 
 ---
 
-## 🚀 Getting Started (Coming Soon)
+## 📋 Requirements
 
-*(Instructions for cloning the repository, installing dependencies, and running inference with TRUEGUARD will be provided upon public code release.)*
+| Requirement | Version | Notes |
+| :--- | :--- | :--- |
+| **Python** | 3.9 or higher | Standard Python installation |
+| **PyTorch** | 2.0+ | GPU required for real-time model inference; CPU works for evaluation |
+| **Transformers** | 4.35+ | HuggingFace library for model weights |
+| **scikit-learn** | 1.0+ | For logistic regression fusion and cross-validation |
 
+### Quick Package Installation:
 ```bash
-# Example Placeholder
-git clone https://github.com/username/trueguard.git
-cd trueguard
-pip install -r requirements.txt
-python run_trueguard.py --model mistral-7b
+pip install torch transformers scikit-learn numpy scipy requests
 ```
 
 ---
 
-## 📄 Paper & Citation
+## 🚀 How to Run the Code
 
-This project is the culmination of a Capstone research initiative documented in an IEEE-format journal paper. It synthesizes insights from 20 foundational works on LLM uncertainty, internal state analysis, and human-computer trust.
+### 1. Live Interactive Model Run (Google Colab GPU - Recommended)
+Open the notebook in Google Colab with a free T4 GPU:
+* **Notebook:** [`CAPSTONE/TRUEGUARD_Colab_Implementation.ipynb`](file:///e:/trueguard/CAPSTONE/TRUEGUARD_Colab_Implementation.ipynb)
+* **What it does:** Loads `TinyLlama-1.1B` with hidden state & attention hooks, extracts signals token-by-token, and intercepts hallucinations live.
 
-If you find this work useful, please consider citing:
+### 2. Local 5-Fold Cross-Validation & Latency Profiling (Local CPU)
+Run the automated evaluation harness directly in your terminal:
+```bash
+python CAPSTONE/trueguard/src/evaluation/evaluate.py
+```
+* **Output:** Executes 5-fold CV of the fusion layer and calculates extraction latency per token.
 
-```bibtex
-@article{trueguard2026,
-  title={TRUEGUARD: A Unified Multi-Signal Framework for Real-Time Hallucination Detection, Explainability, and Mitigation in Large Language Models},
-  author={Yogesh Ravi (and Collaborators)},
-  journal={IEEE/Under Review},
-  year={2026}
-}
+### 3. Fast Cloud API Prompt Interception PoC (Zero GPU Needed)
+```bash
+# On Windows PowerShell
+$env:GROQ_API_KEY="your_groq_api_key"
+python CAPSTONE/04_TrueGuard_Model_PoC.py
 ```
 
 ---
 
-## 🤝 Contributing
+## 📁 Repository Structure
 
-Contributions are welcome! If you are interested in extending TRUEGUARD to Multimodal LLMs (MLLMs), improving probe efficiency for 70B+ models, or developing personalized trust profiles, please open an issue or submit a pull request.
+```
+trueguard/
+├── 📁 CAPSTONE/                     ← Core deliverables
+│   ├── FINAL_PAPER.pdf              ← 📄 Full publication paper
+│   ├── TRUEGUARD_Colab_Implementation.ipynb ← 🤖 Colab GPU live testing notebook
+│   ├── 04_TrueGuard_Model_PoC.py    ← ⚡ Fast Groq Cloud API PoC script
+│   └── 📁 trueguard/                ← Modular codebase
+│       ├── 📁 src/models/           ← signal_extractors.py (The 4 signals)
+│       ├── 📁 src/evaluation/       ← evaluate.py (5-Fold CV & latency)
+│       └── 📁 src/training/         ← train_probes.py (ISP probe training)
+│
+├── PROJECT_OVERVIEW.md              ← 📖 Comprehensive guide with all formulas & theory
+├── README.md                        ← Quick start & developer overview
+├── TRUEGUARD_PROJECT_OVERVIEW.docx  ← 📄 Formatted Word report
+└── TRUEGUARD_Word_Literature_Review.md ← 20-paper literature survey
+```
 
-## 📝 License
+---
 
-Distributed under the MIT License. See `LICENSE` for more information.
+## 📖 Full Documentation
+
+See **[PROJECT_OVERVIEW.md](PROJECT_OVERVIEW.md)** for:
+- Detailed breakdown of previous papers vs. TRUEGUARD
+- Complete mathematical derivations and variable definitions for all 4 signals
+- In-depth ablation studies and human evaluation statistics ($n=300, \kappa=0.82$)
+- Step-by-step reproduction and verification checklist

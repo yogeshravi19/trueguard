@@ -1,0 +1,166 @@
+Review 2 by Panel Members – Important Instructions
+The offline Review 2 by Panel Members is scheduled on September 2, 2026, from 11:45 AM to 1:00 PM at the respective allotted venues.
+Students are required to coordinate with their assigned Panel Members and ensure their presence at the specified time and venue.
+Kindly refer to the attached document for details regarding Guides, Panel Members, Venue Allocation, and the Project Report Template.
+Important Instructions
+•	Attendance is mandatory for the Review.
+•	Students who fail to attend the Review will be awarded ZERO marks.
+•	The Review 2 PPT must be approved by the Guide in the VISTA Portal on or before September 1, 2026.
+•	If the Guide approval is not completed in VISTA, Panel Members will not be able to enter the marks. In such cases, the student will receive ZERO marks out of 20.
+•	Students must strictly follow the prescribed PPT format given below.
+•	Students must ensure that all information, research findings, statistics, results, and references presented in the PPT are accurate and properly cited.
+•	The PPT should reflect the actual progress of the project and should not merely present a proposed plan.
+Review 2 – PPT Preparation
+Slide 1 – Title Slide
+Include:
+•	Project Title
+•	Registration Number
+•	Student Name
+•	Guide Name with “Dr.” prefix
+Slide 2 – Outline
+From Slide 3 Onwards
+The PPT should contain the following sections:
+1.	Introduction
+2.	Literature Review
+o	Include 20–25 recent research papers that are directly relevant to the identified research problem.
+o	Present the literature review in a table with the following columns:
+S. No.	Author(s), Year	Method / Approach	Key Contribution	Gap Identified
+1				
+2				
+...				
+•	While conducting the literature review, students must prioritize recent research papers, preferably published in 2026, 2025, and 2024, from well-reputed Q1 journals. Older publications should be included only when they are foundational or highly relevant to the identified research problem.
+•	All important findings, statistics, and claims obtained from research papers must be properly cited.
+3.	Scope & Problem Statement
+4.	Research Challenges
+5.	Research Objectives
+6.	Proposed Architecture and Methodology
+o	At least 30% completion of the proposed work is expected.
+o	Students should demonstrate tangible progress through implementation, preliminary experiments, analysis, or other relevant project outcomes.
+7.	Results, Discussion & Comparison with Existing Works
+o	Students who have not yet obtained final results may present preliminary/intermediate results obtained from the work completed so far.
+o	Results must be supported with appropriate analysis and comparison wherever applicable.
+8.	Conclusion
+9.	Limitations & Future Work
+10.	References
+Most Important: Be Clear About Your Problem Statement
+The Problem Statement must be clearly defined and finalized before developing the proposed methodology.
+Every student should be able to clearly explain:
+•	What is the specific problem you have identified?
+•	Why is this problem important?
+•	Why have you selected this particular problem?
+•	What evidence supports the existence and importance of this problem?
+•	How do you propose to solve the problem?
+Your problem statement should not simply be a general statement taken from an existing paper or generated using AI. You must be able to justify the problem using statistical evidence, research findings, datasets, experimental evidence, or other relevant and credible data.
+You should clearly establish the following research flow:
+Problem → Evidence → Existing Solutions → Research Gap → Proposed Solution → Novel Contribution
+1. Establish the Problem
+Clearly explain the problem you have identified and support it with appropriate:
+•	Statistics
+•	Datasets
+•	Experimental evidence
+•	Research findings
+•	Findings from reputed journals/conferences
+The evidence should demonstrate why the identified problem is significant and worth investigating.
+2. Study Existing Solutions
+Identify the algorithms, methodologies, frameworks, architectures, or approaches that have already been proposed by researchers and published in reputed journals/conferences for solving the identified problem.
+Do not merely list the algorithms. Explain:
+•	What each researcher has done
+•	What methodology or approach was used
+•	What results were obtained
+•	What advantages were demonstrated
+•	What limitations remain
+The literature review should help you understand what has already been solved and what remains unsolved.
+3. Clearly Identify the Research Gap
+The research gap must be specific, clearly justified, and evidence-based.
+For example:
+“Researcher A addressed X using Method Y. However, the study does not address Z.”
+Similarly, explain:
+•	What existing researchers have achieved
+•	What limitations exist in current approaches
+•	What important aspect of the problem remains unresolved
+•	Why addressing this gap is necessary
+The identified research gap should be directly connected to your problem statement and proposed methodology.
+4. Explain Your Proposed Solution
+Once the research gap is established, clearly explain:
+How are you going to address this specific gap?
+Your proposed methodology should directly address the identified research gap.
+Clearly explain:
+•	The proposed approach
+•	Major components/modules
+•	Algorithms or techniques to be used
+•	Data flow or processing steps
+•	Proposed architecture/framework
+•	How the proposed approach addresses the identified limitation
+5. Clearly State Your Novel Contribution
+Your project must have a clear and defensible contribution.
+Do not simply implement an existing algorithm and present it as your contribution.
+You should be able to clearly answer:
+•	What have you done differently from existing works?
+•	What is the unique contribution of your work?
+•	Why is your proposed approach better or different?
+•	Which specific research gap does your contribution address?
+If you are proposing a new:
+•	Algorithm
+•	Modification
+•	Framework
+•	Optimization technique
+•	Feature-selection method
+•	Architecture
+•	Hybrid approach
+•	Model
+•	Methodology
+clearly explain what is new and how it differs from existing approaches.
+Do Not Depend on AI-Generated PPTs
+Students are strongly advised not to directly generate the entire PPT using AI tools and present it without understanding the content.
+With the current availability of AI technologies, students may certainly use AI as a supporting tool for:
+•	Literature search
+•	Language improvement
+•	Idea exploration
+•	Organizing information
+•	PPT preparation
+However, students are responsible for understanding, verifying, and validating all the content presented in their PPT.
+Students must independently verify:
+•	Research papers and references
+•	Research findings
+•	Statistics
+•	Algorithms and methodologies
+•	Experimental results
+•	Technical explanations
+•	Research gaps
+•	Proposed contributions
+Panel Members will be able to assess whether the student genuinely understands the work presented.
+If a student simply prepares an AI-generated PPT at the last minute without actually conducting and understanding the research, this may become evident during the Review and may result in poor marks and ultimately affect the student's grade.
+What the Review 2 Presentation Should Demonstrate
+Your presentation should demonstrate the complete progression of your research:
+You identified the problem
+↓
+You established the problem using evidence
+↓
+You studied the existing research
+↓
+You identified the research gap
+↓
+You proposed a solution to address the gap
+↓
+You implemented a significant portion of the proposed work
+↓
+You obtained preliminary/intermediate results
+↓
+You analyzed and compared the results
+↓
+You identified your contribution
+↓
+You can clearly explain and defend your work
+Final Reminder
+The objective of Review 2 is to assess the genuine progress, research understanding, implementation, and contribution of the project—not merely the quality or appearance of the PPT.
+Students are expected to:
+•	Prepare the PPT carefully.
+•	Understand every part of the research.
+•	Use credible and recent research literature.
+•	Clearly justify the problem statement.
+•	Establish the research gap with evidence.
+•	Demonstrate at least 30% progress in the proposed work.
+•	Present authentic preliminary/intermediate results wherever available.
+•	Clearly explain their proposed contribution.
+•	Be prepared to answer questions from the Panel Members.
+Prepare carefully, understand your work thoroughly, and present your research confidently.
