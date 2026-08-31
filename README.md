@@ -34,9 +34,10 @@ The **TRUEGUARD** framework follows a principled, single-pass intrinsic monitori
      $$R(t) = \sigma\left(W^T \hat{X}_t + b\right) \quad (\text{Overhead } < 0.1\text{ ms})$$
    - Learned signal weights: **EEM (0.34)**, **ISP (0.28)**, **DST (0.22)**, **AAS (0.16)**.
 
-3. **Active Mitigation & Calibrated Abstention:**
-   - When token risk $R(t) > \tau \approx 0.50$, generation is immediately halted to prevent error propagation.
-   - The system triggers epistemic abstention (*"I don't have enough confident information..."*) or invokes targeted RAG.
+3. **Two-Tier Active Mitigation (Fact Recovery & Safe Abstention):**
+   - When token risk $R(t) > \tau \approx 0.50$, generation is immediately halted mid-sentence.
+   - **Tier 1 (Targeted RAG - Fact Recovery):** Retrieves verified knowledge at the exact point of uncertainty, injects ground-truth context, and forces the model to complete the original, factually correct answer.
+   - **Tier 2 (Calibrated Abstention - Epistemic Honesty):** For ungrounded trick questions with no factual basis, gracefully withholds the answer (*"I do not have sufficient confidence in this information..."*) to prevent fabricated names.
 
 ---
 

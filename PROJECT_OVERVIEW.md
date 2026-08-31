@@ -140,10 +140,26 @@ $$R(t) = \sigma\left(W^T \hat{X}_t + b\right)$$
 
 > **Why Logistic Regression?** The 4 normalized signals are linearly separable. Logistic regression achieves near-MLP accuracy while running in microseconds with complete mathematical interpretability.
 
-### The Mitigation Trigger (Calibrated Abstention)
-* **Rule:** If $R(t) > \tau \approx 0.50$, generation is immediately halted.
-* **Response:** The system returns a safe, transparent abstention:  
-  * *"I do not have sufficient confidence in this information to answer reliably."* or triggers a targeted RAG retrieval pass.
+### 🛡️ The Two-Tier Active Mitigation Pipeline (How Factual Output is Produced)
+Unlike previous tools that only act as passive alarms, TRUEGUARD is an **active closed-loop controller**. When token risk $R(t) > \tau \approx 0.50$, it halts the generation mid-sentence to prevent false claim propagation and triggers a **two-tier recovery pipeline**:
+
+```mermaid
+flowchart TD
+    A["LLM Generating Token yt"] --> B{"Token Risk R(t) > 0.50?"}
+    B -- "NO (Safe)" --> C["✅ Emit Token yt & Continue\n(Zero Overhead)"]
+    B -- "YES (Risk Detected)" --> D["⚡ HALT Generation Mid-Sentence\n(Prevent error propagation)"]
+    D --> E{"Tier 1: Targeted RAG\nCan external verified facts be retrieved?"}
+    E -- "YES" --> F["🔄 Grounded Fact Regeneration\nInject retrieved truth & generate original factual answer"]
+    E -- "NO" --> G["🛑 Tier 2: Calibrated Abstention\nGracefully withhold: 'I do not have sufficient confidence...'"]
+```
+
+1. **Tier 1: Targeted RAG (Fact Recovery & Original Output Generation):**
+   - *How it works:* If the model falters on a factual entity, TRUEGUARD takes the prompt and pre-hallucination context, retrieves verified documents (Wikipedia/PubMed/Knowledge Bases), injects them into the prompt, and forces the model to complete the answer correctly.
+   - *Outcome:* The user receives the **original, fully factual answer** instead of an invented one.
+2. **Tier 2: Calibrated Abstention (Epistemic Honesty):**
+   - *How it works:* For ungrounded trick questions (e.g., *"Who walked on Mars in 1965?"*), where no true fact exists, TRUEGUARD halts generation and outputs a transparent disclaimer:
+     > *"I do not have sufficient confident information to answer this reliably. Please consult a verified source."*
+   - *Outcome:* Prevents the model from fabricating fictional names, keeping factual reliability at the highest standard.
 
 ---
 
