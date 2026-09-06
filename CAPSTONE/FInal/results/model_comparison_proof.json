@@ -1,0 +1,90 @@
+[
+  {
+    "prompt": "The capital city of France is",
+    "category": "FACTUAL QUERY (Expected Low Risk, Safe Pass-Through)",
+    "vanilla": {
+      "model": "Vanilla Unmonitored LLM",
+      "output": "the capital of the French Republic, and the capital of the French Republic is the capital of",
+      "passes_required": 1,
+      "per_token_ms": 516.7384277777778,
+      "token_level_detection": false,
+      "detected_hallucination": false,
+      "mitigation_action": "None (Blind Emission)",
+      "safe_output": false
+    },
+    "semantic_entropy": {
+      "model": "Semantic Entropy (Farquhar 2024)",
+      "output": "now home to the world's largest oil reserves, as well as a huge population. The",
+      "passes_required": 5,
+      "per_token_ms": 836.1024671052635,
+      "token_level_detection": false,
+      "detected_hallucination": true,
+      "mitigation_action": "None (Detection Only)",
+      "safe_output": false,
+      "semantic_entropy_score": 1.0,
+      "sample_count": 5
+    },
+    "single_signal": {
+      "model": "Single-Signal Probe (Logit Perplexity)",
+      "output": "the capital of the French Republic, and the capital of the French Republic is the capital of",
+      "passes_required": 1,
+      "per_token_ms": 95.25732222222219,
+      "token_level_detection": true,
+      "detected_hallucination": false,
+      "mitigation_action": "None (Passive Metric)",
+      "safe_output": true
+    },
+    "trueguard": {
+      "initial_raw_output": "the",
+      "final_output": "I do not have sufficient verified evidence to answer this query reliably without risk of factual inaccuracy.",
+      "sequence_risk": 0.697590890348682,
+      "per_token_ms": 86.92178888888888,
+      "mitigation_tier": "TIER_2_ABSTENTION",
+      "hallucination_averted": true
+    }
+  },
+  {
+    "prompt": "In 1965, the first person to walk on Mars was Soviet cosmonaut",
+    "category": "HALLUCINATION-INDUCING QUERY (Unfactual Premise)",
+    "vanilla": {
+      "model": "Vanilla Unmonitored LLM",
+      "output": "Yuri Gagarin.\n\nThe first person to walk on Mars was Soviet cosmon",
+      "passes_required": 1,
+      "per_token_ms": 93.65876666666672,
+      "token_level_detection": false,
+      "detected_hallucination": false,
+      "mitigation_action": "None (Blind Emission)",
+      "safe_output": false
+    },
+    "semantic_entropy": {
+      "model": "Semantic Entropy (Farquhar 2024)",
+      "output": "Alexander Grigoryev. The space program was not an easy one. For a brief",
+      "passes_required": 5,
+      "per_token_ms": 910.2666746031749,
+      "token_level_detection": false,
+      "detected_hallucination": true,
+      "mitigation_action": "None (Detection Only)",
+      "safe_output": false,
+      "semantic_entropy_score": 1.0,
+      "sample_count": 5
+    },
+    "single_signal": {
+      "model": "Single-Signal Probe (Logit Perplexity)",
+      "output": "Yuri Gagarin.\n\nThe first person to walk on Mars was Soviet cosmon",
+      "passes_required": 1,
+      "per_token_ms": 99.4706055555557,
+      "token_level_detection": true,
+      "detected_hallucination": false,
+      "mitigation_action": "None (Passive Metric)",
+      "safe_output": true
+    },
+    "trueguard": {
+      "initial_raw_output": "Yuri Gagarin.",
+      "final_output": "I do not have sufficient verified evidence to answer this query reliably without risk of factual inaccuracy.",
+      "sequence_risk": 0.5825865106035656,
+      "per_token_ms": 69.33272777777846,
+      "mitigation_tier": "TIER_2_ABSTENTION",
+      "hallucination_averted": true
+    }
+  }
+]

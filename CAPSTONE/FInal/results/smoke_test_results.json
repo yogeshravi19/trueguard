@@ -1,0 +1,23 @@
+{
+  "status": "PASSED",
+  "timestamp": "2026-09-06 11:39:40",
+  "hardware": "CPU",
+  "model": "gpt2",
+  "factual_prompt": "The capital city of France is",
+  "hallucination_prompt": "In 1965, the first person to walk on Mars was Soviet cosmonaut",
+  "mitigation_tier": "TIER_2_ABSTENTION",
+  "metrics": {
+    "auroc": 1.0,
+    "auprc": 0.9999999999999998,
+    "accuracy": 0.995,
+    "precision": 0.9873417721518988,
+    "recall": 1.0,
+    "f1": 0.9936305732484078,
+    "tpr": 1.0,
+    "fpr": 0.00819672131147541,
+    "tp": 78,
+    "fp": 1,
+    "tn": 121,
+    "fn": 0
+  }
+}

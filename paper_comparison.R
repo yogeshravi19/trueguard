@@ -14,9 +14,9 @@ for (p in pkgs) {
   library(p, character.only = TRUE)
 }
 
-OUTPUT_DIR <- "e:/mini-project/R_Plotscol"
-dir.create(OUTPUT_DIR, showWarnings = FALSE, recursive = TRUE)
-cat("Plots will be saved to:", OUTPUT_DIR, "\n")
+#OUTPUT_DIR <- "e:/mini-project/R_Plotscol"
+#dir.create(OUTPUT_DIR, showWarnings = FALSE, recursive = TRUE)
+#cat("Plots will be saved to:", OUTPUT_DIR, "\n")
 
 # ---- Publication-quality light theme for all plots -----------------------
 theme_pub <- function(base_size = 11) {

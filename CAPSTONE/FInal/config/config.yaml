@@ -1,0 +1,95 @@
+# TRUEGUARD Configuration File
+# Complete Parameter Setup for Models, Signal Extractors, Fusion, and Mitigation
+
+project:
+  name: "TRUEGUARD"
+  version: "1.0.0"
+  seed: 42
+  device: "auto"  # "cuda", "cpu", or "auto"
+
+models:
+  primary:
+    name: "TinyLlama/TinyLlama-1.1B-Chat-v1.0"
+    torch_dtype: "float16"
+    device_map: "auto"
+    num_layers: 22
+    hidden_dim: 2048
+    num_heads: 32
+  gpu_7b:
+    name: "meta-llama/Llama-2-7b-chat-hf"
+    torch_dtype: "float16"
+    device_map: "auto"
+    num_layers: 32
+    hidden_dim: 4096
+    num_heads: 32
+  cpu_smoke:
+    name: "gpt2"
+    torch_dtype: "float32"
+    device_map: "cpu"
+    num_layers: 12
+    hidden_dim: 768
+    num_heads: 12
+
+generation:
+  max_new_tokens: 60
+  temperature: 0.7
+  top_p: 0.95
+  do_sample: false
+  output_scores: true
+  output_hidden_states: true
+  output_attentions: true
+
+signals:
+  isp:
+    enabled: true
+    # Layers chosen uniformly across middle to late representations
+    layers_llama: [15, 20, 25, 30]
+    layers_tinyllama: [10, 14, 18, 21]
+    layers_gpt2: [6, 8, 10, 11]
+    probe_type: "logistic_regression"
+    reg_lambda: 0.0001
+    optimizer: "adam"
+    learning_rate: 0.001
+    train_val_split: 0.80
+
+  aas:
+    enabled: true
+    # Monitored across deep attention layers (final quartile)
+    layers_llama: [25, 26, 27, 28, 29, 30, 31]
+    layers_tinyllama: [17, 18, 19, 20, 21]
+    layers_gpt2: [8, 9, 10, 11]
+    epsilon: 1e-10
+
+  eem:
+    enabled: true
+    entropy_weight_we: 0.6  # w_e: Shannon uncertainty weight vs Renyi-2 energy
+    epsilon: 1e-10
+
+  dst:
+    enabled: true
+    layers_llama: [20, 25, 30]
+    layers_tinyllama: [14, 18, 21]
+    layers_gpt2: [8, 10, 11]
+    similarity_metric: "cosine"
+
+fusion:
+  model_type: "logistic_regression"
+  solver: "lbfgs"
+  max_iter: 1000
+  C: 1.0
+  initial_weights: [0.28, 0.16, 0.34, 0.22] # [ISP, AAS, EEM, DST]
+  initial_intercept: -0.10
+  scaler: "standard"
+
+mitigation:
+  risk_threshold: 0.50
+  sequence_gamma: 0.20
+  rag_enabled: true
+  rag_top_k: 2
+  abstention_enabled: true
+  abstention_template: "I do not have sufficient verified evidence to answer this query reliably without risk of factual inaccuracy."
+
+evaluation:
+  cv_folds: 5
+  confidence_level: 0.95
+  metrics: ["auroc", "auprc", "accuracy", "precision", "recall", "f1", "ece"]
