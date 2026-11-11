@@ -122,87 +122,90 @@ pip install -r requirements.txt
 
 ---
 
-## 🚀 Reproducibility & Execution Commands
+## 🚀 Reproducibility & Execution Commands (TRUEGUARD v2 — Real Model Pipeline)
 
-### A. Fast CPU Smoke Test (<60s)
-Validates the entire pipeline end-to-end on CPU (model loading, token generation, 4-signal extraction, normalization, risk scoring, mitigation, and metric calculation):
+### A. Unit & Data-Leakage Verification (<30s on CPU/GPU)
+Verifies mathematical equivalence between teacher-forced `score_answer` and cached step-by-step `OnlineSignalMonitor`, checks for zero probe-to-fusion leakage on noise, and tests `ThreeTierController` state transitions:
 ```bash
-python experiments/cpu_smoke_test.py
+python -u tests/test_equivalence.py
 ```
-*Expected Output: `[SUCCESS] All CPU smoke tests PASSED! Output logged to results/smoke_test_results.json`*
 
-### B. Multi-Benchmark Evaluation (5-Fold CV)
-Executes 5-fold cross-validation across TruthfulQA, HaluEval (QA, Summ, Dial), and HELM:
+### B. Download Real Benchmark Datasets
+Downloads and verifies `TruthfulQA`, `HaluEval-QA`, `HaluEval-Summarization`, `HaluEval-Dialogue`, and `TriviaQA` into `datasets/` (with provenance recorded in `datasets/manifest.json` and `datasets/DATASET_SOURCES.md`):
 ```bash
-python experiments/run_benchmark.py
+python -u tools/download_datasets.py
 ```
-*Outputs generated: `results/benchmark_results.json` and `results/metrics.csv`*
 
-### C. Signal Ablation Study
-Measures the individual contribution of each intrinsic signal:
+### C. Step 1 — Extract Real Sensor Features & Hidden States
+Runs real forward passes on `TinyLlama/TinyLlama-1.1B-Chat-v1.0` (or `gpt2` / 4-bit 7B models) and caches the 4 sensor features and 4-layer hidden representations:
 ```bash
-python experiments/ablation.py
+python -u experiments/extract_features.py --model TinyLlama/TinyLlama-1.1B-Chat-v1.0 --n 400
 ```
-*Outputs generated: `results/ablation_results.json`*
 
-### D. Latency & Speedup Profiling
-Profiles per-token overhead across warm-up and timed iterations:
+### D. Step 2 — 5-Fold Grouped CV Detection, Ablations, Baselines & Cross-Dataset Transfer
+Computes leakage-free 5-fold `GroupKFold` CV with inner out-of-fold probe stacking, single-sensor baselines, leave-one-sensor-out ablations, paired bootstrap CIs, and cross-dataset transfer matrices:
 ```bash
-python experiments/latency_profiler.py
+python -u experiments/evaluate_detection.py --cache results/cache/TinyLlama__TinyLlama-1.1B-Chat-v1.0 --out results/v2/TinyLlama__TinyLlama-1.1B-Chat-v1.0
 ```
-*Outputs generated: `results/latency_results.json` and `results/latency.log`*
 
-### E. Publication Figure Generation
-Renders all 6 figures at 300 DPI into `figures/`:
+### E. Step 3 — End-to-End Three-Tier Mitigation on Live TriviaQA Generations
+Calibrates $(\tau_{\text{warning}}, \tau_{\text{fault}})$ on 150 calibration questions and evaluates `SAFE` / `TIER1_RESAMPLE` / `TIER2_RETRIEVAL` / `TIER3_ABSTAIN` on 150 unseen test questions:
 ```bash
-python tools/generate_figures.py
+python -u experiments/evaluate_mitigation.py --model TinyLlama/TinyLlama-1.1B-Chat-v1.0 --n_cal 150 --n_test 150 --out results/v2/TinyLlama__TinyLlama-1.1B-Chat-v1.0/mitigation
+```
+
+### F. Step 4 — Real Per-Token Latency Profiling
+Measures real per-token decoding latency across `vanilla_decode`, `trueguard_online`, `trueguard_postpass`, and `multi_sample_5x_baseline`:
+```bash
+python -u experiments/profile_real_latency.py --model TinyLlama/TinyLlama-1.1B-Chat-v1.0 --n_prompts 25 --n_tokens 24 --out results/v2/TinyLlama__TinyLlama-1.1B-Chat-v1.0/real_latency.json
 ```
 
 ---
 
 ## ☁️ Google Colab Workflow
 
-For GPU-accelerated reproduction (T4, L4, or A100):
+For GPU-accelerated reproduction (NVIDIA Tesla T4, L4, or A100):
 1. Open Google Colab: [colab.research.google.com](https://colab.research.google.com)
-2. Upload `notebooks/TRUEGUARD_Colab.ipynb`
+2. Upload `notebooks/TRUEGUARD_Colab_REAL.ipynb` (or `notebooks/TRUEGUARD_Colab.ipynb`)
 3. Select GPU Runtime: `Runtime -> Change runtime type -> T4 GPU`
-4. Run all cells sequentially (`Runtime -> Run all`)
+4. Run all cells sequentially (`Runtime -> Run all`) and upload `trueguard_final.zip` in Cell 2
 
 ---
 
-## 📊 Empirical Results Summary
+## 📊 Verified Empirical Results (`TinyLlama-1.1B-Chat-v1.0` on NVIDIA Tesla T4 GPU)
 
-### 1. Benchmark Detection Performance (5-Fold CV)
-| Benchmark | AUROC | 95% Confidence Interval | AUPRC | F1 Score |
-| :--- | :---: | :---: | :---: | :---: |
-| **TruthfulQA** | **0.8533** | [0.8066, 0.9001] | 0.8140 | 0.7186 |
-| **HaluEval-QA** | **0.8840** | [0.8678, 0.9003] | 0.8739 | 0.7874 |
-| **HaluEval-Summ** | **0.8797** | [0.8411, 0.9184] | 0.8459 | 0.7252 |
-| **HaluEval-Dial** | **0.8872** | [0.8533, 0.9212] | 0.8484 | 0.7373 |
-| **HELM** | **0.9063** | [0.8665, 0.9461] | 0.8552 | 0.7545 |
-| **Overall Average** | **0.8821 ± 0.0170** | --- | **0.8475** | **0.7446** |
+### 1. In-Distribution Detection Performance (5-Fold Grouped CV, $3{,}196$ Real Answers)
+| Benchmark | Pairs ($2N$ rows) | TRUEGUARD Fusion AUROC [95% CI] | ISP (Trained) | AAS | EEM | DST | Best Raw Baseline | F1 | ECE |
+| :--- | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: |
+| **HaluEval-Dialogue** | 400 (800) | **0.903** [0.883, 0.922] | 0.904 | 0.618 | 0.668 | 0.634 | `LEN` = 0.687 | 0.820 | 0.034 |
+| **HaluEval-QA** | 400 (800) | **0.975** [0.964, 0.987] | 0.977 | 0.512 | 0.850 | 0.859 | `LEN` = 0.953 | 0.955 | 0.024 |
+| **HaluEval-Summarization** | 400 (800) | **0.986** [0.980, 0.991] | 0.987 | 0.627 | 0.580 | 0.672 | `EEM_mean` = 0.581 | 0.935 | 0.025 |
+| **TruthfulQA** | 398 (796) | **0.876** [0.853, 0.900] | 0.877 | 0.607 | 0.522 | 0.533 | `EEM_max` = 0.523 | 0.817 | 0.042 |
+| **4-Benchmark Macro Mean** | **1,598 (3,196)** | **0.935** | **0.936** | **0.591** | **0.655** | **0.675** | --- | **0.882** | **0.031** |
 
-### 2. Signal Ablation Study
-| Configuration | AUROC | $\Delta$ from Full | Key Takeaway |
-| :--- | :---: | :---: | :--- |
-| **Full TRUEGUARD (4 Signals)** | **0.8475 ± 0.0324** | **Reference** | **Optimal multi-signal synergy** |
-| $- \text{EEM}$ (Without Entropy/Energy) | 0.7957 ± 0.0316 | $-0.0518$ | Largest single-signal performance drop |
-| $- \text{ISP}$ (Without Hidden Probes) | 0.8093 ± 0.0465 | $-0.0382$ | Hidden states contain critical factual cues |
-| $- \text{DST}$ (Without Dist. Shift) | 0.8320 ± 0.0237 | $-0.0155$ | Prevents temporal cognitive drift |
-| $- \text{AAS}$ (Without Attention Anomaly) | 0.8370 ± 0.0395 | $-0.0105$ | Attention focus catches context detachment |
+### 2. Leave-One-Sensor-Out Ablation Study
+| Benchmark | Full (4 Sensors) | $-\text{ISP}$ (No Hidden Probe) | $-\text{AAS}$ | $-\text{EEM}$ | $-\text{DST}$ | Union Recall @ 10% FPR |
+| :--- | :---: | :---: | :---: | :---: | :---: | :---: |
+| **HaluEval-Dialogue** | **0.903** | **0.714** ($-0.188$) | 0.903 ($+0.000$) | 0.903 ($+0.000$) | 0.903 ($-0.000$) | 0.762 |
+| **HaluEval-QA** | **0.975** | **0.918** ($-0.057$) | 0.976 ($+0.001$) | 0.976 ($+0.001$) | 0.975 ($+0.000$) | 0.978 |
+| **HaluEval-Summarization** | **0.986** | **0.745** ($-0.241$) | 0.986 ($-0.000$) | 0.986 ($+0.000$) | 0.987 ($+0.000$) | 0.960 |
+| **TruthfulQA** | **0.876** | **0.626** ($-0.251$) | 0.876 ($-0.001$) | 0.877 ($+0.000$) | 0.877 ($+0.001$) | 0.603 |
 
-### 3. Inference Latency & Speedup
-| Method | Passes per Token | Overhead Latency | Speedup vs Semantic Entropy |
+### 3. Real Tesla T4 GPU Latency & Speedup (`results/v2/TinyLlama__TinyLlama-1.1B-Chat-v1.0/real_latency.json`)
+| Decoding Mode | Measured Latency (ms / token) | Overhead vs. Vanilla | Speedup vs. 5-Sample Consistency |
 | :--- | :---: | :---: | :---: |
-| **Semantic Entropy** | 5 to 10 | $142.3 \pm 3.8\text{ ms}$ | $1.0\times$ (Baseline) |
-| **HaluShift (DST Only)** | 1 | $18.2 \pm 0.6\text{ ms}$ | $7.8\times$ faster |
-| **TRUEGUARD (4 Signals)** | **1** | **$12.4 \pm 0.5\text{ ms}$** | **$11.5\times$ faster** ✅ |
+| **Vanilla KV-Cached Greedy Decode** | $33.49\text{ ms/tok}$ | --- | --- |
+| **TRUEGUARD Post-Pass Decode** | **$36.41\text{ ms/tok}$** | **$+2.92\text{ ms/tok}$ ($+8.7\%$)** | **$4.65\times$ faster** ✅ |
+| **TRUEGUARD Online Step-by-Step Decode** | **$39.30\text{ ms/tok}$** | **$+5.81\text{ ms/tok}$ ($+17.3\%$)** | **$4.31\times$ faster** ✅ |
+| **5-Sample Consistency Baseline** | $169.31\text{ ms/tok}$ | $+135.82\text{ ms/tok}$ ($+405.6\%$) | $1.00\times$ (Baseline) |
 
-### 4. Closed-Loop Mitigation Impact ($n=300, \kappa=0.82$)
-- **Base LLM Hallucination Rate:** $31.2\%$
-- **TRUEGUARD Protected Hallucination Rate:** $11.3\%$
-- **Relative Hallucination Reduction:** **$63.8\%$**
-- **Query Answer Coverage:** **$88.0\%$** (only $12.0\%$ abstentions)
+### 4. End-to-End Three-Tier Mitigation on Live `TriviaQA` Generations (`n_cal=150`, `n_test=150`)
+- **Calibrated Thresholds (from calibration split only):** $\tau_{\text{warning}} = 0.611$, $\tau_{\text{fault}} = 0.898$
+- **Detection AUROC on TinyLlama's Own Open-Ended Generations:** **$0.795$**
+- **Unmitigated Hallucination Rate:** $62.0\%$ (accuracy $38.0\%$)
+- **Post-Mitigation Hallucination Rate Among Answered Queries:** **$40.0\%$** (**$35.5\%$ relative reduction**; accuracy among answered queries rises from $38.0\% \to \mathbf{60.0\%}$ at $43.3\%$ coverage)
+- **System-Wide Emitted Hallucination Rate:** **$17.3\%$** (**$72.0\%$ relative reduction**)
+- **Selective-Prediction Area Under Risk–Coverage Curve (AURC, lower is better):** **TRUEGUARD $= 0.412$** vs. Entropy $= 0.526$ and NLL $= 0.603$
 
 ---
 

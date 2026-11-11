@@ -61,10 +61,10 @@ The survey by Alansari & Luqman (2025) highlights a fundamental bifurcation in e
 ### 3. Summary of Research Gaps and Proposed TRUEGUARD Framework
 
 1. **Signal Isolation Gap:** Existing detectors evaluate only a single feature modality.  
-   * **TRUEGUARD Solution:** A 4-Signal Fusion Engine combining Internal State Probes (ISP), Attention Anomaly Scores (AAS), Entropy-Energy Monitors (EEM), and Distribution Shift Trackers (DST).
-2. **Computational Latency Gap:** Multi-sampling uncertainty quantification introduces severe latency overheads (140+ ms/token).  
-   * **TRUEGUARD Solution:** Single-pass extraction operating strictly within standard inference hooks at **12.4 ms/token overhead** (zero additional forward passes).
+   * **TRUEGUARD Solution:** A 4-Sensor Fusion Engine combining supervised Internal State Probes (ISP), Attention Anomaly Scores (AAS), Entropy-Energy Monitors (EEM), and Distribution Shift Trackers (DST), achieving **0.935 macro-average AUROC** across four benchmarks (`HaluEval-QA`, `HaluEval-Dialogue`, `HaluEval-Summarization`, and `TruthfulQA`).
+2. **Computational Latency Gap:** Multi-sampling uncertainty quantification introduces severe latency overheads (169.3 ms/token for 5-sample consistency on T4 GPU).  
+   * **TRUEGUARD Solution:** Single-pass extraction operating within standard forward passes at **+2.92 ms/token overhead in post-pass mode (4.65x faster)** and **+5.81 ms/token in online mode (4.31x faster)** on an NVIDIA Tesla T4 GPU.
 3. **Explainability Deficit:** Current detectors produce uninterpretable scalar scores.  
-   * **TRUEGUARD Solution:** Real-time token-level confidence heatmaps paired with contrastive alternative-token justifications.
+   * **TRUEGUARD Solution:** Exact per-sensor log-odds attribution from the fitted logistic combiner paired with token-level risk visualization.
 4. **Passive Pipeline Disconnect:** Detectors do not actively correct erroneous generations.  
-   * **TRUEGUARD Solution:** Closed-loop graduated mitigation: Moderate risk triggers inline RAG factual query expansion; persistent high risk triggers calibrated abstention.
+   * **TRUEGUARD Solution:** Two-threshold ($\tau_{\text{warning}}, \tau_{\text{fault}}$), three-tier closed-loop control (`SAFE` $\to$ `TIER1_RESAMPLE` $\to$ `TIER2_RETRIEVAL` $\to$ `TIER3_ABSTAIN`), reducing hallucination rate on answered `TriviaQA` queries from **62.0% to 40.0%** (35.5% relative drop; **72.0% system-wide reduction**).

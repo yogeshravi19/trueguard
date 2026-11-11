@@ -1,0 +1,128 @@
+\documentclass[journal]{IEEEtran}
+\usepackage{amsmath,amssymb,amsfonts}
+\usepackage{booktabs}
+\usepackage{graphicx}
+\usepackage{hyperref}
+
+\begin{document}
+
+\title{TRUEGUARD: Empirical Implementation and Evaluation of a Closed-Loop Multi-Sensor Hallucination Detection and Three-Tier Mitigation Architecture for Open-Weights LLMs}
+
+\author{Yogesh~Ravi~M and T.~S.~Pradeep~Kumar%
+\thanks{Y.~Ravi~M and T.~S.~Pradeep~Kumar are with the School of Computer Science and Engineering, Vellore Institute of Technology (VIT), Chennai, India (e-mail: yogeshravi.m2022@vitstudent.ac.in; pradeepkumar.ts@vit.ac.in).}}
+
+\maketitle
+
+\begin{abstract}
+Open-weights large language models (LLMs) frequently generate fluent but factually incorrect statements (``hallucinations'') with high surface confidence. While existing defences either require expensive multi-sample generation (e.g., SelfCheckGPT, Semantic Entropy) or evaluate isolated internal signals without closed-loop actuation, our companion review paper proposed \textbf{TRUEGUARD}---a control-theoretic framework that extracts four single-pass internal sensors and routes responses through a two-threshold, three-tier corrective controller. In this paper, we present the complete implementation and rigorous empirical evaluation of TRUEGUARD on real open-weights language models (\texttt{TinyLlama-1.1B-Chat-v1.0} and \texttt{GPT-2}) across four paired hallucination benchmarks (\texttt{HaluEval-QA}, \texttt{HaluEval-Dialogue}, \texttt{HaluEval-Summarization}, and \texttt{TruthfulQA}; $3{,}196$ evaluated responses) and live open-ended question answering on \texttt{TriviaQA} ($300$ queries). Under leakage-free 5-fold grouped cross-validation with inner out-of-fold stacking, TRUEGUARD achieves a macro-average AUROC of $0.935$ ($0.986$ on \texttt{HaluEval-Summarization}, $0.975$ on \texttt{HaluEval-QA}, $0.903$ on \texttt{HaluEval-Dialogue}, and $0.876$ on \texttt{TruthfulQA}) with strong probability calibration ($\text{ECE} = 0.024\text{--}0.042$). Leave-one-sensor-out ablations reveal a key empirical insight: supervised Internal State Probes (ISP) over middle-to-late hidden layers outperform unsupervised logit entropy, attention anomaly, and representation drift baselines by $+0.188$ to $+0.251$ AUROC on length-matched benchmarks, while the three unsupervised sensors (\texttt{AAS}, \texttt{EEM}, \texttt{DST}) provide a training-free fallback ($0.626\text{--}0.918$ AUROC when \texttt{ISP} is removed). On live \texttt{TriviaQA} generations, TRUEGUARD attains $0.795$ detection AUROC, lowers the hallucination rate among answered queries from $62.0\%$ to $40.0\%$ ($35.5\%$ relative reduction; $72.0\%$ system-wide reduction), and achieves an Area Under the Risk--Coverage curve of $\text{AURC} = 0.412$ vs.\ $0.526$ (Entropy) and $0.603$ (NLL). On an NVIDIA Tesla T4 GPU, TRUEGUARD adds $2.92\text{ ms/token}$ ($+8.7\%$) in post-pass mode and $5.81\text{ ms/token}$ in step-by-step online mode---achieving a $4.31\times\text{--}4.65\times$ speedup over a 5-sample consistency baseline.
+\end{abstract}
+
+\begin{IEEEkeywords}
+Large language models, hallucination detection, internal state probing, uncertainty quantification, closed-loop mitigation, selective prediction.
+\end{IEEEkeywords}
+
+\section{Introduction}
+Autoregressive large language models (LLMs) frequently produce plausible but fabricated statements while assigning high token probabilities to their outputs. Existing defences fall into three largely disconnected categories: (i) multi-sample black-box consistency checks such as SelfCheckGPT and Semantic Entropy, which multiply inference latency by $5\times\text{--}20\times$; (ii) single-signal white-box detectors that inspect hidden activations, attention maps, or output logits in isolation; and (iii) post-hoc mitigation schemes such as static retrieval-augmented generation (RAG) or unconditional abstention.
+
+In our companion systematic review, we proposed the conceptual \textbf{TRUEGUARD} framework, modelling autoregressive decoding as a closed-loop feedback control system. This paper implements TRUEGUARD end-to-end on real open-weights LLMs and investigates four empirical research questions:
+\begin{itemize}
+    \item \textbf{RQ1 (Detection Effectiveness):} What AUROC, F1, and Expected Calibration Error (ECE) does TRUEGUARD achieve when all four sensors are extracted from real model activations across diverse hallucination benchmarks?
+    \item \textbf{RQ2 (Sensor Complementarity vs.\ Dominance):} How much does each sensor (\texttt{ISP}, \texttt{AAS}, \texttt{EEM}, \texttt{DST}) contribute under leave-one-sensor-out ablation, and why do surface entropy signals fail on fluent misconceptions?
+    \item \textbf{RQ3 (Cross-Dataset Generalisation):} How well does a detector trained on one benchmark transfer zero-shot to others, and how do answer-length/style differences affect transfer?
+    \item \textbf{RQ4 (Closed-Loop Mitigation \& GPU Latency):} How effectively do the two calibrated thresholds $(\tau_{\text{warning}}, \tau_{\text{fault}})$ and three corrective tiers reduce hallucinations on live open-ended generations, and what is the measured GPU overhead per token?
+\end{itemize}
+
+\begin{table*}[t]
+\centering
+\caption{Comparison of Related Hallucination Detection and Mitigation Frameworks with TRUEGUARD v2}
+\begin{tabular}{llllll}
+\toprule
+Study / Framework & Signal Modality & Single-Pass & Closed-Loop & Primary Limitation & TRUEGUARD v2 Advancement \\
+\midrule
+SelfCheckGPT (2023) & Multi-sample consistency & No ($5\text{--}20\times$) & No & $169.31\text{ ms/tok}$ on T4 GPU & $36.41\text{--}39.30\text{ ms/tok}$ ($4.3\text{--}4.6\times$ faster) \\
+SEPs (Kossen et al., 2024) & Single hidden probe & Yes & No & No fallback signals or repair & 4-layer OOF ISP + 3-tier control \\
+MIND (Su et al., 2024) & Hidden representations & Yes & No & Passive scoring only & Calibrated $(\tau_{\text{warn}},\tau_{\text{fault}})$ + 3 tiers \\
+Semantic Energy (2024) & Penultimate logit energy & Yes & No & Fails on fluent lies (0.522 AUROC) & ISP boosts TruthfulQA to 0.876 AUROC \\
+LLM-Check (2024) & Attention + logit/hidden & Yes & No & No OOF probe stacking or repair & Grouped OOF stacking (0.935 mean AUROC) \\
+HALLUSHIFT (2024) & Layer cosine drift & Yes & No & Moderate on short QA (0.533) & Fused with ISP, AAS, and EEM \\
+\textbf{TRUEGUARD v2 (Ours)} & \textbf{ISP + AAS + EEM + DST} & \textbf{Yes} & \textbf{Yes (3 Tiers)} & White-box access required & \textbf{0.935 AUROC; $-35.5\%$ / $-72.0\%$ errors} \\
+\bottomrule
+\end{tabular}
+\end{table*}
+
+\section{Methodology}
+\subsection{Four Single-Pass Internal Sensors}
+Given a prompt $P$ and answer $A = (y_1,\dots,y_T)$, a single forward pass with \texttt{output\_hidden\_states=True} and \texttt{output\_attentions=True} yields hidden states $h_{l,t} \in \mathbb{R}^d$, causal attention distributions $A^{(l,h)}_{t,1:s_t}$, and logits $z_t \in \mathbb{R}^{|V|}$:
+\begin{enumerate}
+    \item \textbf{Internal State Probe (ISP):} At fractional layer depths $L = \{\lfloor 0.45N_L\rfloor, \lfloor 0.60N_L\rfloor, \lfloor 0.75N_L\rfloor, \lfloor 0.90N_L\rfloor\}$, we compute the answer-mean hidden vector $\bar{h}_l = \frac{1}{T}\sum_{t=1}^T h_{l,t}$ and fit an $L_2$-regularised logistic probe $p_l(y=1\mid\bar{h}_l) = \sigma(w_l^\top \operatorname{Std}(\bar{h}_l)+b_l)$, averaging across $l \in L$.
+    \item \textbf{Attention Anomaly Score (AAS):} Across the final quartile of layers $L_Q = [\lfloor 0.75N_L\rfloor, N_L)$, we compute the normalised Shannon entropy of each head's attention row of length $s_t$:
+    \begin{equation}
+        \text{AAS}_t = \frac{1}{|L_Q|\cdot H}\sum_{l \in L_Q}\sum_{h=1}^H \frac{-\sum_{i=1}^{s_t} A^{(l,h)}_{t,i}\log(A^{(l,h)}_{t,i}+\epsilon)}{\log s_t}.
+    \end{equation}
+    \item \textbf{Entropy--Energy Monitor (EEM):} Combining normalised Shannon entropy $H_{\text{norm}}(z_t)$ and normalised R\'enyi-2 entropy $E_{\text{norm}}(z_t) = \frac{-\log\sum_v p_{t,v}^2}{\log|V|}$ with $w_e = 0.6$:
+    \begin{equation}
+        \text{EEM}_t = w_e H_{\text{norm}}(z_t) + (1-w_e)E_{\text{norm}}(z_t).
+    \end{equation}
+    \item \textbf{Distribution Shift Tracker (DST):} Averaging hidden states across $\{0.60, 0.75, 0.90\}N_L$ into $\tilde{h}_t$, we compute consecutive-token cosine distance $\text{DST}_t = (1-\cos(\tilde{h}_t,\tilde{h}_{t-1}))/2$ for $t \ge 2$.
+\end{enumerate}
+
+\subsection{Leakage-Free Out-of-Fold Stacking and Three-Tier Control}
+To prevent question-context leakage in paired benchmarks, both answers of every question share a group ID under 5-fold \texttt{GroupKFold}. Inside each training fold, the probe regularisation parameter $C \in \{0.001, 0.01, 0.1\}$ is selected by inner grouped CV, and the logistic fusion layer is fit on inner out-of-fold probe log-odds $\operatorname{logit}(\text{ISP}_{\text{oof}})$ concatenated with $(\text{AAS}_{\text{mean}}, \text{AAS}_{\text{max}}, \text{EEM}_{\text{mean}}, \text{EEM}_{\text{max}}, \text{DST}_{\text{mean}}, \text{DST}_{\text{max}})$.
+
+On held-out validation data, $\tau_{\text{warning}}$ is set to the Youden-optimal threshold ($\max(\text{TPR}-\text{FPR})$) and $\tau_{\text{fault}} \ge \tau_{\text{warning}}$ is set to the smallest threshold achieving $\text{FPR} \le 10\%$. During live inference: (i) $R < \tau_{\text{warning}}$ emits the initial answer (\texttt{SAFE}); (ii) $\tau_{\text{warning}} \le R < \tau_{\text{fault}}$ draws $K=4$ stochastic candidates ($T=0.7, p=0.9$) and emits the lowest-risk candidate if $< \tau_{\text{warning}}$ (\texttt{TIER1\_RESAMPLE}); and (iii) $R \ge \tau_{\text{fault}}$ (or Tier 1 escalation) queries Wikipedia, regenerates with retrieved evidence (\texttt{TIER2\_RETRIEVAL}), and abstains (\texttt{TIER3\_ABSTAIN}) if post-retrieval risk remains $\ge \tau_{\text{fault}}$.
+
+\section{Experimental Results}
+\begin{table*}[t]
+\centering
+\caption{In-Distribution 5-Fold Grouped Cross-Validation on NVIDIA Tesla T4 GPU (\texttt{TinyLlama-1.1B-Chat-v1.0})}
+\begin{tabular}{lrrrrrrrrr}
+\toprule
+Benchmark & Pairs ($2N$) & Fusion AUROC (95\% CI) & ISP & AAS & EEM & DST & Best Raw Baseline & F1 & ECE \\
+\midrule
+\texttt{halueval\_dialogue} & 400 (800) & \textbf{0.903} (0.883--0.922) & 0.904 & 0.618 & 0.668 & 0.634 & \texttt{LEN} = 0.687 & 0.820 & 0.034 \\
+\texttt{halueval\_qa} & 400 (800) & \textbf{0.975} (0.964--0.987) & 0.977 & 0.512 & 0.850 & 0.859 & \texttt{LEN} = 0.953 & 0.955 & 0.024 \\
+\texttt{halueval\_summarization} & 400 (800) & \textbf{0.986} (0.980--0.991) & 0.987 & 0.627 & 0.580 & 0.672 & \texttt{EEM\_mean} = 0.581 & 0.935 & 0.025 \\
+\texttt{truthful\_qa} & 398 (796) & \textbf{0.876} (0.853--0.900) & 0.877 & 0.607 & 0.522 & 0.533 & \texttt{EEM\_max} = 0.523 & 0.817 & 0.042 \\
+\midrule
+\textbf{Macro Average} & \textbf{1,598 (3,196)} & \textbf{0.935} & \textbf{0.936} & \textbf{0.591} & \textbf{0.655} & \textbf{0.675} & --- & \textbf{0.882} & \textbf{0.031} \\
+\bottomrule
+\end{tabular}
+\end{table*}
+
+\begin{table}[t]
+\centering
+\caption{Leave-One-Sensor-Out Ablation AUROC (\texttt{TinyLlama-1.1B})}
+\begin{tabular}{lrrrrr}
+\toprule
+Benchmark & Full & $-\text{ISP}$ & $-\text{AAS}$ & $-\text{EEM}$ & $-\text{DST}$ \\
+\midrule
+\texttt{halueval\_dialogue} & \textbf{0.903} & 0.714 & 0.903 & 0.903 & 0.903 \\
+\texttt{halueval\_qa} & \textbf{0.975} & 0.918 & 0.976 & 0.976 & 0.975 \\
+\texttt{halueval\_summarization} & \textbf{0.986} & 0.745 & 0.986 & 0.986 & 0.987 \\
+\texttt{truthful\_qa} & \textbf{0.876} & 0.626 & 0.876 & 0.877 & 0.877 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\begin{table}[t]
+\centering
+\caption{Tesla T4 GPU Per-Token Latency (\texttt{TinyLlama-1.1B})}
+\begin{tabular}{lrrr}
+\toprule
+Decoding Mode & ms/tok & Overhead & Speedup vs.\ $5\times$ \\
+\midrule
+Vanilla KV-cached decode & 33.49 & --- & --- \\
+TRUEGUARD post-pass & \textbf{36.41} & $+2.92$ ($+8.7\%$) & $\mathbf{4.65\times}$ \\
+TRUEGUARD online & \textbf{39.30} & $+5.81$ ($+17.3\%$) & $\mathbf{4.31\times}$ \\
+5-sample consistency & 169.31 & $+135.82$ ($+405.6\%$) & $1.00\times$ \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+Tables II--IV summarise our Tesla T4 GPU evaluation. Across $3{,}196$ paired responses, TRUEGUARD achieves a macro-average AUROC of $0.935$. Removing \texttt{ISP} ($-\text{ISP}$, Table III) lowers AUROC by $0.188\text{--}0.251$ on length-matched benchmarks, proving that supervised hidden-state probes capture truthfulness information that surface logit entropy misses. On 150 unseen live \texttt{TriviaQA} test questions ($\tau_{\text{warning}}=0.611, \tau_{\text{fault}}=0.898$), TRUEGUARD achieves $0.795$ detection AUROC, reduces the hallucination rate among answered queries from $62.0\%$ to $40.0\%$ ($35.5\%$ relative drop; $72.0\%$ system-wide drop to $17.3\%$), and improves selective-prediction AURC from $0.603$ (NLL) and $0.526$ (Entropy) to $\mathbf{0.412}$.
+
+\section{Conclusion}
+We have implemented and experimentally validated the TRUEGUARD closed-loop hallucination detection and three-tier mitigation architecture on real open-weights LLMs. Our findings establish that single-pass internal state probing combined with calibrated multi-tier control achieves $0.935$ benchmark AUROC, cuts live open-ended hallucinations among answered queries by $35.5\%$ ($72.0\%$ system-wide), and operates $4.31\times\text{--}4.65\times$ faster than multi-sample consistency baselines on a Tesla T4 GPU.
+
+\end{document}
+

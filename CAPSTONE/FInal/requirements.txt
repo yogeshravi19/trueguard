@@ -1,9 +1,10 @@
-# TRUEGUARD: Lightweight Real-Time Hallucination Detection & Mitigation Framework
-# Python 3.9+ / 3.10+ / 3.11+ Dependencies
+# TRUEGUARD v2: Real-Time Hallucination Detection & Three-Tier Mitigation Framework
+# Python 3.8+ / 3.9+ / 3.10+ / 3.11+ Dependencies
 
 torch>=2.0.0
 transformers>=4.35.0
 accelerate>=0.25.0
+datasets>=2.14.0
 scikit-learn>=1.2.0
 scipy>=1.10.0
 numpy>=1.24.0
@@ -11,6 +12,7 @@ pandas>=2.0.0
 matplotlib>=3.7.0
 seaborn>=0.12.0
 pyyaml>=6.0
+requests>=2.31.0
 wikipedia-api>=0.6.0
 tqdm>=4.65.0
 joblib>=1.3.0

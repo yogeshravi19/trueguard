@@ -1,0 +1,77 @@
+[
+  {
+    "item": "Figure 1 Caption",
+    "before": "Figure 1:\u00a0Semantic Entropy excels at detecting extrinsic hallucinations, while attention based methods better capture intrinsic contradictions.",
+    "after": "Figure 1: Semantic Entropy excels at detecting extrinsic hallucinations, while attention-based methods better capture intrinsic contradictions."
+  },
+  {
+    "item": "Figure 2 & Table 1 In-Text Callout (Section II: Methodology)",
+    "before": "Included: A final corpus of 40 representative studies met all eligibility and quality criteria and was selected for synthesis.",
+    "after": "Included: A final corpus of 40 representative studies met all eligibility and quality criteria and was selected for synthesis. The sequential screening yield and quantitative filtering stages are illustrated in the PRISMA flow diagram (Figure 2), while the comprehensive database search strings, inclusion and exclusion criteria, and screening results are systematically summarized in Table 1."
+  },
+  {
+    "item": "Figure 2 Caption",
+    "before": "Figure 2: PRISMA flow diagram showing the literature selection process from 688 initial records",
+    "after": "Figure 2: PRISMA flow diagram showing the literature selection process from 688 initial records across five databases to the final synthesized corpus of 40 studies."
+  },
+  {
+    "item": "Figure 4 In-Text Callout (Section III: Pillar 3)",
+    "before": "At their fundamental level, transformers are attention machineries. Each token produced is a weighted combination of information of all the previous tokens. And as a model begins to fabriculate these weight changes in characteristic manners  and a number of researchers have ascertained how to read through those changes. Figure 3 shows the performance of the different LLM Check variants.",
+    "after": "At their fundamental level, transformers are attention machineries. Each token produced is a weighted combination of information of all the previous tokens. And as a model begins to fabriculate these weight changes in characteristic manners  and a number of researchers have ascertained how to read through those changes. As illustrated in Figure 4, LLM-Check's black-box variant achieves an operational speedup factor of up to 450x with only a modest drop in AUROC compared to the full white-box configuration."
+  },
+  {
+    "item": "Figure 5 & 6 In-Text Callout (Section III: Pillar 4)",
+    "before": "The thesaurus of any body of research is good benchmarks. It is difficult to determine whether a new method is really better or if it is just tested in a good environment without their presence. The TrustLLM evaluation results are presented in Figure 4.  The improvements reported by different methods are summarized in Figure 5.",
+    "after": "Rigorous benchmarking is essential to distinguish genuine algorithmic advances from artifacts of constrained test environments. The comparative performance of proprietary and open-source models across the eight TrustLLM dimensions is presented in Figure 5. Furthermore, the relative percentage performance improvements achieved by calibration and explainability methods over their respective baselines are summarized in Figure 6."
+  },
+  {
+    "item": "Figure 6 Caption",
+    "before": "Figure 6: [Orphan line] + 'Calibration and explainability methods... yield the largest percentage gains...'",
+    "after": "Figure 6: Percentage performance gains achieved by calibration and explainability methods (BehCal RL, Human Trust) over their respective baseline configurations."
+  },
+  {
+    "item": "Table 2 Caption & Placement (Section III: Pillar 4)",
+    "before": "[MISSING - Table was placed immediately after text without an explicit 'Table 2:' caption header]",
+    "after": "Table 2: Key benchmarks, evaluation frameworks, and diagnostic dimensions for LLM hallucination assessment."
+  },
+  {
+    "item": "Figure 7 & 8 In-Text Callout (Section III: Pillar 5)",
+    "before": "Behaviorally Calibrated Reinforcement Learning: Wu. et al. have an eye catching premise in that hallucination is not a bug in the conventional meaning. Predictability of outcome of training is what rewards being right ish as compared to being honest. A model trained to yield the highest possible probability of sampling up in the correct looking text learns to make swamping guesses, even a tiny likelihood of happening to be appropriate makes the guessing of the form of an act more pleasurable than lack of understanding. This is aggravated by the usual form of RL when the rewards are binary (right/wrong) leading to what the authors aptly term as good test  takers instead of honest communicators. Their solution: condition the model to logically reason and produce calibrated probabilities based on strictly proper scoring legislation, and condition the model to act in ways that it really does not know. The most notable finding is that, as they demonstrate, calibration is a transferable meta skill, a smaller model with calibration adequately can do significantly better on updating about uncertainty than a significantly larger frontier model. It is one of the findings that are practical in nature. ExpandR: Yao et al. [20] approach the problem in the perspective of retrieval side. Retrieval augmented generation is that concept: prior to the generation of an answer, one should seek out some relevant documents and serve as grounding. However, on most RAG systems the retriever and generator are attached by way of a bolt, but they are not very well synchronized. ExpandR approaches this problem differently, optimizing the two together. The LLM is conditioned to generate query expansions with which the retriever can realistically work on and the retriever is conditioned to retrieve documents which the LLM can actually use. They do this joint optimization using Direct Preference Optimization, whose reward function is to compromise quality of retrievals with consistency of generation. The strategy achieves the 5% boost of retrieval, and in a competitive discipline, it is considerable",
+    "after": "Behaviorally Calibrated Reinforcement Learning: Wu. et al. have an eye catching premise in that hallucination is not a bug in the conventional meaning. Predictability of outcome of training is what rewards being right ish as compared to being honest. A model trained to yield the highest possible probability of sampling up in the correct looking text learns to make swamping guesses, even a tiny likelihood of happening to be appropriate makes the guessing of the form of an act more pleasurable than lack of understanding. This is aggravated by the usual form of RL when the rewards are binary (right/wrong) leading to what the authors aptly term as good test  takers instead of honest communicators. Their solution: condition the model to logically reason and produce calibrated probabilities based on strictly proper scoring legislation, and condition the model to act in ways that it really does not know. The most notable finding is that, as they demonstrate, calibration is a transferable meta skill, a smaller model with calibration adequately can do significantly better on updating about uncertainty than a significantly larger frontier model. It is one of the findings that are practical in nature. Figure 8 illustrates that BehCal RL achieves the lowest expected calibration error across three benchmarks without sacrificing task accuracy. ExpandR: Yao et al. [20] approach the problem in the perspective of retrieval side. Retrieval augmented generation is that concept: prior to the generation of an answer, one should seek out some relevant documents and serve as grounding. However, on most RAG systems the retriever and generator are attached by way of a bolt, but they are not very well synchronized. ExpandR approaches this problem differently, optimizing the two together. The LLM is conditioned to generate query expansions with which the retriever can realistically work on and the retriever is conditioned to retrieve documents which the LLM can actually use. They do this joint optimization using Direct Preference Optimization, whose reward function is to compromise quality of retrievals with consistency of generation. The strategy achieves the 5% boost of retrieval, and in a competitive discipline, it is considerable As illustrated in Figure 7, ExpandR's joint LLM-retriever optimization consistently outperforms standalone retrieval baselines across four benchmark datasets."
+  },
+  {
+    "item": "Figure 8 Caption",
+    "before": "Figure 8: [Orphan line split across 3 paragraphs: 'Figure 8:' + 'BehCal RL achieves...' + 'accuracy.']",
+    "after": "Figure 8: Expected calibration error across three benchmarks, demonstrating that BehCal RL achieves the lowest calibration error without sacrificing task accuracy."
+  },
+  {
+    "item": "Table 3 In-Text Callout & Caption (Section III: Pillar 5)",
+    "before": "In-Text: What this pillar tells us. Mitigating hallucinations is not just about catching mistakes after text is written. It also means improving how models search, reason, and handle uncertainty. Frameworks like Self-RAG [26] and ExpandR [20] show that search tools and language models work better when built together. At the same time, calibration methods [15] help models learn when to answer and when to admit they do not know. | Caption: [MISSING caption header before Table]",
+    "after": "In-Text: What this pillar tells us. Mitigating hallucinations is not just about catching mistakes after text is written. It also means improving how models search, reason, and handle uncertainty. Frameworks like Self-RAG [26] and ExpandR [20] show that search tools and language models work better when built together. At the same time, calibration methods [15] help models learn when to answer and when to admit they do not know. The core mitigation frameworks, correction mechanisms, trigger conditions, and model-access requirements are comparatively summarized in Table 3. | Caption: 'Table 3: Comparative summary of hallucination mitigation frameworks, correction mechanisms, and operational access paradigms.'"
+  },
+  {
+    "item": "Figure 9 In-Text Callout (Section III: Pillar 6)",
+    "before": "All the above is geared towards the end result that people should be able to trust the results of LLM. That will demand more than technical reliability and will also be based on transparency. Users must know when and why they can and cannot trust what the model is telling them. The relationship between explanations and user trust is shown in Figure 6.",
+    "after": "All the above is geared towards the end result that people should be able to trust the results of LLM. That will demand more than technical reliability and will also be based on transparency. Users must know when and why they can and cannot trust what the model is telling them. The empirical relationship between explanation framing, presentation modality, and human user trust is shown in Figure 9."
+  },
+  {
+    "item": "Figure 9 Caption",
+    "before": "Figure 9: [Orphan line split across 2 paragraphs: 'Figure 9:' + 'Explanation framing boosts user trust...']",
+    "after": "Figure 9: Impact of explanation framing on human user trust across isolated and comparative presentation modalities."
+  },
+  {
+    "item": "Figure 10, 11, 12 & Table 4 In-Text Callouts (Section IV: Comparative Analysis)",
+    "before": "Where Are the Explanations? The most notable weakness, perhaps: each detection system produces a number or a binary flag. They all fail to tell the user the reasons behind a flag. It is curious, as the signals, which are dealt with in the detection, attention shifts, entropy spikes, distributional drift, are readable phenomena, in their own right. In the meantime, Barr (Herrera) [8] presented a clear outline of the appearance of good explanations and Sharma et al. [19] have demonstrated that explanations actually influence user trust. Material to be used and the design principles are in existence; they are just not tied. A comparison of AUROC and F1 scores is presented in Figure 7. Figure 8 shows the trade off between detection performance and efficiency. Table I presents a summary of this comparison of the detection methods on some of the practical dimensions.",
+    "after": "Where Are the Explanations? The most notable weakness, perhaps: each detection system produces a number or a binary flag. They all fail to tell the user the reasons behind a flag. It is curious, as the signals, which are dealt with in the detection, attention shifts, entropy spikes, distributional drift, are readable phenomena, in their own right. In the meantime, Barr (Herrera) [8] presented a clear outline of the appearance of good explanations and Sharma et al. [19] have demonstrated that explanations actually influence user trust. Material to be used and the design principles are in existence; they are just not tied. The empirical balance between sensitivity and precision is visualized in the AUROC versus F1 scatter distribution (Figure 10). Furthermore, a comprehensive multi-dimensional comparison across all reviewed detection methods, annotated by signal type and speedup factor, is presented in Figure 11. Figure 12 illustrates the operational trade-off between detection accuracy (AUROC) and computational speedup factor on a logarithmic scale. Table 4 presents a systematic comparative analysis of hallucination detection methods across operational access paradigms, computational overhead, and empirical efficacy."
+  },
+  {
+    "item": "Figure 10 Caption",
+    "before": "Figure 10: [Orphan line split across 2 paragraphs: 'Figure 10:' + 'AUROC versus F1 scatter showing SEP...']",
+    "after": "Figure 10: AUROC versus F1 score scatter distribution for representative hallucination detection methods, showing SEP and LLM-Check achieving balanced multi-metric performance."
+  },
+  {
+    "item": "Table 4 Caption",
+    "before": "Table 4: Comparative analysis of hallucination detection methods.",
+    "after": "Table 4: Comparative analysis of hallucination detection methods across model access, computational overhead, and detection efficacy."
+  }
+]

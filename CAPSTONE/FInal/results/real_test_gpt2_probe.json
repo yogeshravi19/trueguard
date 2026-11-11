@@ -1,0 +1,233 @@
+{
+  "model": "gpt2",
+  "dataset": "halueval_qa",
+  "n": 60,
+  "hallucination_rate": 0.7666666666666667,
+  "note": "REAL signals from real LLM generation; no simulated features.",
+  "single_signal_auroc_untrained": {
+    "ISPproxy_mean": {
+      "mean": 0.3114814814814815,
+      "std": 0.13533679980964547
+    },
+    "AAS_mean": {
+      "mean": 0.6455555555555555,
+      "std": 0.12350394161306891
+    },
+    "EEM_mean": {
+      "mean": 0.3755555555555556,
+      "std": 0.19400620809435332
+    },
+    "DST_mean": {
+      "mean": 0.6366666666666667,
+      "std": 0.18755666724847528
+    },
+    "ISPproxy_max": {
+      "mean": 0.5862962962962963,
+      "std": 0.11436950680925177
+    },
+    "AAS_max": {
+      "mean": 0.5992592592592593,
+      "std": 0.09972252312620097
+    },
+    "EEM_max": {
+      "mean": 0.6370370370370371,
+      "std": 0.2074074074074074
+    },
+    "DST_max": {
+      "mean": 0.5900000000000001,
+      "std": 0.23371397523944137
+    }
+  },
+  "single_signal_auroc_trained_probe": {
+    "ISP": {
+      "mean": 0.4659259259259259,
+      "std": 0.23184593531677042
+    },
+    "AAS": {
+      "mean": 0.5592592592592592,
+      "std": 0.0879580895336142
+    },
+    "EEM": {
+      "mean": 0.5551851851851852,
+      "std": 0.2023198787399136
+    },
+    "DST": {
+      "mean": 0.5551851851851852,
+      "std": 0.20367137790648562
+    }
+  },
+  "fusion_auroc_5fold": {
+    "mean": 0.5888888888888889,
+    "std": 0.21224516713917635
+  },
+  "fusion_metrics_at_0.5_oof": {
+    "auroc": 0.5652173913043479,
+    "auprc": 0.8016708207427576,
+    "accuracy": 0.7,
+    "precision": 0.7592592592592593,
+    "recall": 0.8913043478260869,
+    "f1": 0.8200000000000001,
+    "tpr": 0.8913043478260869,
+    "fpr": 0.9285714285714286,
+    "tp": 41,
+    "fp": 13,
+    "tn": 1,
+    "fn": 5
+  },
+  "ablation": {
+    "without_ISP": {
+      "mean": 0.5496296296296297,
+      "std": 0.12318587559103646,
+      "delta": -0.039259259259259216
+    },
+    "without_AAS": {
+      "mean": 0.5448148148148148,
+      "std": 0.1769130202536087,
+      "delta": -0.044074074074074154
+    },
+    "without_EEM": {
+      "mean": 0.6633333333333333,
+      "std": 0.19185185185185186,
+      "delta": 0.07444444444444442
+    },
+    "without_DST": {
+      "mean": 0.5666666666666667,
+      "std": 0.22271550190182085,
+      "delta": -0.022222222222222254
+    }
+  },
+  "fusion_gain_over_best_single": 0.029629629629629672,
+  "latency": {
+    "guard_ms_per_token": 10.858448000000056,
+    "total_ms_per_token": 533.6901898333334,
+    "guard_share_of_step": 0.02034597638639573,
+    "device": "cpu"
+  },
+  "samples": [
+    {
+      "q": "The manager in which Mark Lazarus clashed with served as manager for the Wolverhampton Wanderers during which years?",
+      "answer": "The manager in which Mark Lazarus clashed with served as",
+      "label_hallucinated": 1
+    },
+    {
+      "q": "No. 11 Squadron RAAF was based at what base, 25 km north of Adelaide?",
+      "answer": "No. 11 Squadron RAAF was based at what",
+      "label_hallucinated": 0
+    },
+    {
+      "q": "Which movie starring Kim Roi-ha is based on Korea's first serial murders in history?",
+      "answer": "The first serial murder in history, which is the",
+      "label_hallucinated": 1
+    },
+    {
+      "q": "Which Magnolia actor was also a United States Navy Combat veteran in World War II?",
+      "answer": "The following is a list of the actors who were",
+      "label_hallucinated": 1
+    },
+    {
+      "q": "What music group had a greatest hits album that references their fourth studio album in the title?",
+      "answer": "The band's fourth studio album, \"The Last",
+      "label_hallucinated": 1
+    },
+    {
+      "q": "The 2000 Belmont Stakes was the 132nd running of the Belmont Stakes and the 96th time the event took place at Belmont Park is a major Thoroughbred horse-racing facility located in Elmont, New York, just outside which city limits?",
+      "answer": "The 2000 Belmont Stakes was the 132nd",
+      "label_hallucinated": 1
+    },
+    {
+      "q": "What state are both Wizzo and YG based in?",
+      "answer": "YG is based in the US.",
+      "label_hallucinated": 1
+    },
+    {
+      "q": "Which dinosaur was named after the province where Bartolome Saravi was General Minister in 1847?",
+      "answer": "The name Bartolome Saravi was given to",
+      "label_hallucinated": 1
+    },
+    {
+      "q": "Who was born first, Sharon den Adel or Ezra Koenig?",
+      "answer": "Sharon den Adel was born in the United States",
+      "label_hallucinated": 0
+    },
+    {
+      "q": "Lookwell was a television pilot written and produced by Conan O'rien and Robert Smigel, and was a personal favorite of what American television executive who was president of NBC from 1980-1991?",
+      "answer": "I was a fan of Conan O'Brien and",
+      "label_hallucinated": 1
+    },
+    {
+      "q": "Which player singed to Bayern Munich was born in 18 October 1983?",
+      "answer": "The answer is: \"The answer is: The",
+      "label_hallucinated": 1
+    },
+    {
+      "q": "Azfar Hussain (Bengali: \u0986\u099c\u09ab\u09be\u09b0 \u09b9\u09cb\u09b8\u09c7\u09a8 ) is a Bangladeshi theorist, critic, academic, bilingual writer, poet, translator, and activist, Bengali, is also known by its endonym Bangla, it's the national, and official language of which country?",
+      "answer": "Bengali is the national language of Bangladesh.",
+      "label_hallucinated": 1
+    },
+    {
+      "q": "What is the estimated wealth intensifying of the novel on which the film Blue Blood is based ?",
+      "answer": "The film is based on the novel by the same",
+      "label_hallucinated": 1
+    },
+    {
+      "q": "Who directed a 1980 American biographical black-and-white sports drama film, that had a French-born American film editor who has worked with the director for over forty years, edit all the films? ",
+      "answer": "The French-born American director, Jean-Pierre",
+      "label_hallucinated": 1
+    },
+    {
+      "q": "what does Fatal Termination and Robin Shou have in common?",
+      "answer": "they both have a common goal. Robin is a",
+      "label_hallucinated": 1
+    },
+    {
+      "q": "What is the name of the American football coach born in 1967, who is in his fifth season, as of 2017, with the Idaho Vandals football team?",
+      "answer": "The name of the American football coach born in 1967",
+      "label_hallucinated": 1
+    },
+    {
+      "q": "Splendor in the Grass was a film directed by a Greek-American director described as  \"one of the most honored and influential directors in Broadway and Hollywood history\" by who?",
+      "answer": "The Greek-American director, George Lucas, was",
+      "label_hallucinated": 0
+    },
+    {
+      "q": "What album included a song about Mia Zapata?",
+      "answer": "\"Mia Zapata\" by The Beatles.",
+      "label_hallucinated": 1
+    },
+    {
+      "q": "What genus has more species, Centradenia or Lindera?",
+      "answer": "Centradenia is a genus of plants that",
+      "label_hallucinated": 1
+    },
+    {
+      "q": "When was the movie released in 2007 in which \"Let's Go\" song was used?",
+      "answer": "The movie was released in 2007 in which \"Let",
+      "label_hallucinated": 0
+    },
+    {
+      "q": "what does Street Fight and Cory Booker have in common?",
+      "answer": "Cory Booker is a very good person. He's",
+      "label_hallucinated": 1
+    },
+    {
+      "q": "Who is the fictional character in the Transfer of Power book from 1999 and in the film adaptation of \"American Assassin\"?",
+      "answer": "The character in the film adaptation of \"American Assassin",
+      "label_hallucinated": 1
+    },
+    {
+      "q": "For which invention are both Christian Friedrich Sch\u00f6nbein, a the German-Swiss chemist and William Robert Grove, the Welsh judge and physical scientist given credit?",
+      "answer": "The invention of the first electric motor, the first",
+      "label_hallucinated": 1
+    },
+    {
+      "q": "Which group owns the sister company of Market Place by Jasons?",
+      "answer": "The Jasons are the owners of Market Place.",
+      "label_hallucinated": 1
+    },
+    {
+      "q": "July 31, 1912 this Nobel Prize winner in Economic Sciences founded EdChoice?",
+      "answer": "EdChoice was founded in 1912 by a group of",
+      "label_hallucinated": 1
+    }
+  ]
+}

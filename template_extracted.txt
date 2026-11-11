@@ -1,0 +1,924 @@
+Kindly follow the following sequence while preparing the project report:
+
+
+
+	CoverPage
+
+	TitlePage
+
+	Declaration by theCandidate
+
+	Certificate
+
+	Abstract
+
+	Acknowledgement
+
+	Table ofContents
+
+	List of Figures
+
+	List of Tables
+
+11.List of Symbols, Abbreviations and Nomenclature 12.Chapters of the Report
+
+13.Conclusion & Future Work 14.Appendices
+
+15.References-APA FORMAT
+
+
+
+
+
+The dimension of the project report should be in A4 size.
+
+
+
+
+
+	LeftMargin	: 3.81 cm
+
+	RightMargin	: 2.54cm
+
+	TopMargin	: 2.54cm
+
+	BottomMargin	: 2.54cm
+
+
+
+The project report should be bound using flexible cover with below mentioned colored art paper. The cover should be printed in black letters and the text for printing should be identical.
+
+
+
+Color of Art Paper
+
+Total Number of Pages in the Report
+
+White
+
+Mini. of 60 - Max of 100
+
+
+
+
+
+Page numbers:
+
+
+
+All text pages as well as program source code listings should be numbered using Arabic numerals at the bottom center of the pages.
+
+
+
+Font:
+
+
+
+Times New Roman 12pt font should be used consistently throughout the text. Captions for tables and figures can be in smaller fonts, but not smaller than 10pt.
+
+
+
+Paragraph:
+
+
+
+No paragraph should have its opening line at the bottom of a page. A clear, consistent, but not too large a separation must be provided between the paragraphs throughout the thesis.
+
+
+
+Headings:
+
+
+
+Chapter Heading – Font Size: 16, Bold, Times New Roman 
+
+Section Heading – Font Size: 14, Times New Roman, CAPS
+
+Subsection Heading – Font Size: 12, Times New Roman, CAPS
+
+
+
+Line Spacing:
+
+
+
+The line spacing used should be the same throughout the text, and can be chosen to be between one and a half. The lines in captions for figures and tables, Table of Contents, List of Figures, and List of Tables can be single spaced, if desired.
+
+
+
+A project report on
+
+<Times New Roman, Font 12, Italic>
+
+TITLE OF THE PROJECT REPORT
+
+<Times New Roman, Font 20, Bold, CAPS>
+
+
+
+Submitted in partial fulfillment for the award of the degree of
+
+<Times New Roman, Font 14, Italic>
+
+M.Tech. (Integrated) Computer Science and Engineering with Specialization in Business Analytics
+
+<Times New Roman, Font 22, Bold>
+
+
+
+
+
+by
+
+<Times New Roman, Font 14, Italic>
+
+NAME OF THE CANDIDATE (Reg. No.)
+
+<Times New Roman, Font 16, Bold, CAPS>
+
+
+
+
+
+
+
+
+
+
+
+
+
+SCHOOL OF COMPUTER SCIENCE AND ENGINEERING
+
+
+
+<Times New Roman, Font 16, Bold, CAPS> December, 2025
+
+<Times New Roman ,Font size 12>
+
+
+
+
+
+TITLE OF THE PROJECT REPORT
+
+<Times New Roman, Font 20, Bold, CAPS>
+
+
+
+Submitted in partial fulfillment for the award of the degree of
+
+<Times New Roman, Font 14, Italic>
+
+M.Tech. (Integrated) Computer Science and Engineering with Specialization in Business Analytics
+
+<Times New Roman, Font 22, Bold>
+
+
+
+
+
+by
+
+<Times New Roman, Font 14, Italic>
+
+NAME OF THE CANDIDATE (Reg. No.)
+
+<Times New Roman, Font 16, Bold, CAPS>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+SCHOOL OF COMPUTER SCIENCE AND ENGINEERING
+
+
+
+<Times New Roman, Font 16, Bold, CAPS> December, 2025
+
+<Times New Roman ,Font size 12>
+
+
+
+
+
+
+
+
+
+DECLARATION
+
+<Times New Roman, Font 14, Underlined, Bold, CAPS>
+
+
+
+
+
+I here by declare that the thesis entitled “TITLE OF THE PROJECT” submitted by me,for the award of the degree of M.Tech. (Integrated) Computer Science and Engineering with Specialization in Business Analytics, Vellore Institute of Technology, Chennai, is are cord of bonafide work carried out by me under the supervision of “GUIDENAME”
+
+I further declare that the work reported in this thesis has not been submitted and will not be submitted, either in part or in full, for the award of any other degree or diploma in this institute or any other institute or university.
+
+
+
+
+
+
+
+
+
+Place: Chennai
+
+	Date:	Signature of theCandidate
+
+<Times New Roman, Font 14, Bold>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+School of Computer Science and Engineering
+
+
+
+
+
+CERTIFICATE
+
+
+
+
+
+This is to certify that the report entitled “…….” is prepared and submitted by Name (Reg No) to Vellore Instituteof Technology, Chennai, in partial fulfillment of the requirement for the award of the degree of M.Tech. (Integrated) Computer Science and Engineering with Specialization in Business Analytics programme is a bonafide record carried out under my guidance. The project fulfills the requirements as per the regulations of this University and in my opinion meets the necessary standards for submission. The contents of this report have not been submitted and will not be submitted either in part or in full, for the award of any other degree or diploma and the same is certified.
+
+
+
+
+
+	Signature of the Guide:	
+
+
+
+	Name: Dr./Prof.  	
+
+
+
+	Date:	
+
+
+
+
+
+	      Signature of the Examiner 1	Signature of theExaminer 2
+
+	            Name:	Name:                  
+
+	            Date:			       Date:	
+
+	
+
+	
+
+		Approved by the Head of Department 
+
+
+
+
+
+
+
+
+ABSTRACT
+
+<Times New Roman, Font 14, Underlined, Bold, CAPS>
+
+
+
+
+
+	Electronic  Business  offers  innovative   ways   of   doing   business   through   Internet.   Internet  revolution  has  introduced  number  of  advanced  technologies  to  access  organizations all over the world in an efficient but simple  manner.  Internet  traffic  is  increasing exponentially as a result of wireless access, mobile computing and other innovative communication technologies.
+
+	
+
+
+
+<Times New Roman, Font 12>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+i
+
+
+
+ACKNOWLEDGEMENT
+
+
+
+
+
+It is my pleasure to express with deep sense of gratitude to <Guide name>, <Designation>, School of Computer Science and Engineering, Vellore Institute of Technology, Chennai, for his/her constant guidance, continual encouragement, understanding; more than all, he/she taught me patience in my endeavour. My association with him/her is not confined to academics only, but it is a great opportunity for my part of work with an intellectual and expert in the field of <area>.
+
+It is with gratitude that I would like to extend my thanks to the visionary leader Dr. G. Viswanathan our Honourable Chancellor, Mr. Sankar Viswanathan, Dr. Sekar Viswanathan, Dr. G V Selvam Vice Presidents, Dr. Sandhya Pentareddy, Executive Director, Ms. Kadhambari S. Viswanathan, Assistant Vice-President, Dr. V. S. Kanchana Bhaaskaran  Vice-Chancellor, and Dr. T. Thyagarajan Pro-Vice Chancellor, VIT Chennai for providing an exceptional working environment and inspiring all of us during the tenure of the course.
+
+Special mention to Dr. Viswanathan V, Dean, Dr. Nithyanandam P, Dr. Suganya G, and Dr. Sweetlin Hemalatha C, Associate Deans, School of Computer Science and Engineering, Vellore Institute of Technology, Chennai, for spending their valuable time and efforts in sharing their knowledge and for helping us in every aspect.
+
+In jubilant state, I express ingeniously my whole-hearted thanks to ________________________, Head of the Department, SCOPE, Vellore Institute of Technology, Chennai, for their valuable support and encouragement to take up and complete the thesis.
+
+My sincere thanks to all the faculty and staff members at Vellore Institute of Technology, Chennai, who helped me acquire the requisite knowledge. I would like to thank my parents for their support. It is indeed a pleasure to thank my friends who encouraged me to take up and complete this task. 
+
+
+
+
+
+
+
+
+
+Place: Chennai
+
+	Date:	Name of thestudent
+
+<Times New Roman, Font 12, Bold >
+
+
+
+ii
+
+
+
+CONTENTS
+
+	CONTENTS	iii
+
+	LIST OFFIGURES	iv
+
+	LIST OFTABLES	xi
+
+	LISTOFACRONYMS	xii
+
+CHAPTER 1 INTRODUCTION
+
+		INTRODUCTION	1
+
+		OVERVIEW OFMANET NETWORK	2
+
+		CHALLENGES PRESENT IN MANET	6
+
+		PROJECTSTATEMENT	7
+
+		OBJECTIVES	7
+
+		SCOPE OFTHEPROJECT	8
+
+CHAPTER 2 BACK GROUND
+
+		INTRODUCTION	10
+
+		SURVEYONMANETS	13
+
+::
+
+
+
+::
+
+
+
+::
+
+
+
+::
+
+
+
+iii
+
+
+
+LIST OF FIGURES
+
+		INFRA STRUCTUREBASED NETWORK	1
+
+		INFRA STRUCTURELESS NETWORK	2
+
+		MOBILE AD-HOC NETWORK	4
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+iv
+
+
+
+LIST OF TABLES
+
+	2.1 MULTIPATH ROUTING PROTOCOLSIN AMNETS	22
+
+		SIMULATIONPARAMETERS	48
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+LIST OF ACRONYMS
+
+
+
+
+
+	MANET	Mobile Ad hoc Network WAP	Wireless AccessPoint
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+[1].
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+1
+
+
+
+
+
+Chapter n
+
+<Times New Roman, Font 12,Bold>
+
+
+
+Conclusion and FutureWork
+
+
+
+<Times New Roman, Font 16,Bold>
+
+
+
+This chapter should summarize the key aspects of your project (failures as well as successes) and should state the conclusions you have been able to draw. Outline what you would do if given more time (future work). Try to pinpoint any insights your project uncovered that might not have been obvious at the outset. Discuss the success of the approach you adopted and the academic objectives you achieved. Avoid meaningless conclusions, [e.g. NOT “I learnt a lot about C++ programming”]. Be realistic about potential future work. Avoid the dreaded: “All the objectives have been met and the project has been a complete success”. You have to crisply state the main take-away points from your work. Describe how your project is performed against planned outputs and performance targets. Identify the benefits from the project. Be careful to distinguish what you have done from what was there already. It is also a good idea to point out how much more is waiting to be done in relation to a specific problem, or give suggestions for improvement or extensions to what you have done.
+
+Future scope of the work for improvement may also be included
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+2
+
+
+
+Appendices
+
+<Times New Roman, Font 12, Bold>
+
+
+
+
+
+
+
+Appendices are provided to give supplementary information, which is not included in the main text may serve as a separate part contributing to main theme.
+
+		Appendices should be numbered using Arabic numerals, e.g. Appendix 1, Appendix 2etc.
+
+		Appendices, tables and references appearing in appendices should be numbered and referred to at appropriate places just as in the case of chapters.
+
+		Appendices shall carry the title of the work reported in it and the same title shall be used in the contents pagealso.
+
+
+
+
+
+3
+
+
+
+
+
+REFERENCES
+
+<Times New Roman, Font 16, Bold, CAPS>
+
+// (ALL REFERNCE SHOULD BE IN APA FORMAT)
+
+[1]. Eckart,C.(1951).Surfacewavesonwaterofvariabledepth,WaveRep.100,Scripps Inst. of Oceanogr., Univ. of California, pp.99. <For referringreports><Times New Roman, Font 12>
+
+
+
+[2]. Hasselmann, K., W.H. Munk and G.J.F. MacDonald (1963). Bispectra of Ocean Waves, In: M. Rosenblatt (ed.), Time Series Analysis, John Wiley Sons, p. 125, NewYork. <For referring from books edited from a collection of different papers>. <Times New Roman, Font 12>
+
+
+
+[3]. Stoker, J.J. (1957). Water Waves. Interscience, New York. p. 520.
+
+<For referring book><Times New Roman, Font 12>
+
+
+
+[4]. Tatavarti, Rao V.S.N. and D.A. Huntley (1987). Wave reflection at Beaches. Proc. Canadian Coastal Conference, Quebec City, pp. 241-255, Canada. <Times New Roman, Font 12>
+
+<For referring conference proceedings>
+
+[5]. Wallace, J.M. and R.E. Dickinson (1972). Empirical orthogonal representation of time series in the frequency domain, Part I: Theoretical considerations, J. App. Meteorology, Vol. 11, No. 6, pp. 887-892. <For referring journals><Times New Roman, Font 12>
