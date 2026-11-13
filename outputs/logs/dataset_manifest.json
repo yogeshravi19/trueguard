@@ -1,0 +1,99 @@
+{
+  "downloaded_at": "2026-11-10T22:39:52",
+  "datasets": [
+    {
+      "name": "truthful_qa",
+      "hf_repo": "truthfulqa/truthful_qa",
+      "config": "generation",
+      "split": "validation",
+      "url": "https://huggingface.co/datasets/truthfulqa/truthful_qa",
+      "role": "TruthfulQA benchmark (817 questions)",
+      "status": "OK",
+      "rows": 817,
+      "file": "datasets\\truthful_qa\\validation.jsonl",
+      "bytes": 539272,
+      "columns": [
+        "type",
+        "category",
+        "question",
+        "best_answer",
+        "correct_answers",
+        "incorrect_answers",
+        "source"
+      ]
+    },
+    {
+      "name": "halueval_qa",
+      "hf_repo": "pminervini/HaluEval",
+      "config": "qa",
+      "split": "data",
+      "url": "https://huggingface.co/datasets/pminervini/HaluEval",
+      "role": "HaluEval-QA (10k)",
+      "status": "OK",
+      "rows": 10000,
+      "file": "datasets\\halueval_qa\\data.jsonl",
+      "bytes": 6152931,
+      "columns": [
+        "knowledge",
+        "question",
+        "right_answer",
+        "hallucinated_answer"
+      ]
+    },
+    {
+      "name": "halueval_summarization",
+      "hf_repo": "pminervini/HaluEval",
+      "config": "summarization",
+      "split": "data",
+      "url": "https://huggingface.co/datasets/pminervini/HaluEval",
+      "role": "HaluEval-Summ (10k)",
+      "status": "OK",
+      "rows": 10000,
+      "file": "datasets\\halueval_summarization\\data.jsonl",
+      "bytes": 47227230,
+      "columns": [
+        "document",
+        "right_summary",
+        "hallucinated_summary"
+      ]
+    },
+    {
+      "name": "halueval_dialogue",
+      "hf_repo": "pminervini/HaluEval",
+      "config": "dialogue",
+      "split": "data",
+      "url": "https://huggingface.co/datasets/pminervini/HaluEval",
+      "role": "HaluEval-Dial (10k)",
+      "status": "OK",
+      "rows": 10000,
+      "file": "datasets\\halueval_dialogue\\data.jsonl",
+      "bytes": 6927348,
+      "columns": [
+        "knowledge",
+        "dialogue_history",
+        "right_response",
+        "hallucinated_response"
+      ]
+    },
+    {
+      "name": "trivia_qa",
+      "hf_repo": "mandarjoshi/trivia_qa",
+      "config": "rc.nocontext",
+      "split": "validation",
+      "url": "https://huggingface.co/datasets/mandarjoshi/trivia_qa",
+      "role": "TriviaQA (used by real_benchmark.py)",
+      "status": "OK",
+      "rows": 17944,
+      "file": "datasets\\trivia_qa\\validation.jsonl",
+      "bytes": 19561492,
+      "columns": [
+        "question",
+        "question_id",
+        "question_source",
+        "entity_pages",
+        "search_results",
+        "answer"
+      ]
+    }
+  ]
+}

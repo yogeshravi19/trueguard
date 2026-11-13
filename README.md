@@ -1,110 +1,112 @@
-# 🛡️ TRUEGUARD – Real-Time LLM Hallucination Detection & Mitigation
+# Toward Trustworthy Large Language Models: A Comprehensive Review of Hallucination Detection, Explainability, and Mitigation Strategies
 
-> A lightweight, real-time safety guardrail that detects and prevents hallucinations in Large Language Models (LLMs) at the token level by fusing four internal neural signals with a microsecond machine learning layer.
-
-## 📊 Key Results & Baseline Comparison
-
-All models were evaluated across 8 benchmarks (*TruthfulQA, HaluEval, HELM, HumanEval, MATH, MuSiQue*) using 5-Fold Cross-Validation:
-
-| Model / Framework | AUROC Accuracy | Latency Overhead | Hallucination Rate | Query Coverage |
-| :--- | :---: | :---: | :---: | :---: |
-| **Token Entropy (Black-Box)** | 0.720 ± 0.02 | 1.1 ms/tok | 31.2% | 100% |
-| **Semantic Entropy (Multi-Sample)** | 0.802 ± 0.01 | 142.3 ms/tok | 18.5% | 100% |
-| **HaluShift (Single-Signal DST)** | 0.798 ± 0.02 | 18.2 ms/tok | 21.0% | 100% |
-| **Su et al. (MIND Linear Probes)** | 0.816 ± 0.02 | 14.1 ms/tok | 19.4% | 100% |
-| **TRUEGUARD (Ours)** ✅ | **0.828 ± 0.047** | **12.4 ± 0.5 ms/tok** | **11.3%** | **88%** |
-
-> **Conclusion:** TRUEGUARD achieves the highest AUROC (**0.828**) and reduces hallucination occurrences by **63.8%** while operating **11.5× faster** than multi-sampling methods (12.4 ms vs 142.3 ms).
+**Project / Framework:** TRUEGUARD (Closed-Loop Multi-Signal Hallucination Detection and Three-Tier Mitigation)  
+**Candidate:** Yogesh Ravi M (`22MIA1052`)  
+**Supervisor:** Dr. Pradeep Kumar T.S.  
+**Programme:** M.Tech. (Integrated) Computer Science and Engineering with Specialization in Business Analytics  
+**Institution:** School of Computer Science and Engineering (SCOPE), Vellore Institute of Technology (VIT), Chennai  
 
 ---
 
-## 🛠️ Methodology
+## 1. Overview
 
-The **TRUEGUARD** framework follows a principled, single-pass intrinsic monitoring pipeline:
+**TRUEGUARD** is a closed-loop feedback control framework for real-time hallucination detection and graded runtime mitigation in autoregressive Large Language Models (LLMs). Grounded in a PRISMA 2020 systematic literature review of **40 peer-reviewed primary studies (2020–2025)** across **Six Research Pillars**, TRUEGUARD extracts **four complementary single-pass internal signals** during generation and routes risky outputs through a **two-threshold, three-tier corrective controller**.
 
-1. **Single-Pass Feature Extraction:**
-   - At each generation step $t$, intercepts the transformer's forward pass to extract 4 complementary signals without launching secondary generation passes:
-     - **ISP (Internal State Probes):** Linear probes on layers $\{15, 20, 25, 30\}$ evaluating latent truthfulness.
-     - **AAS (Attention Anomaly Score):** Normalized Shannon entropy of attention heads in final layers $\{25 \dots 31\}$.
-     - **EEM (Entropy-Energy Monitor):** Blended Shannon uncertainty and Rényi-2 confidence energy from logits.
-     - **DST (Distribution Shift Tracker):** Cosine distance tracking semantic drift between consecutive hidden states.
+### Core Architecture
 
-2. **Online Z-Score Normalization & Fusion:**
-   - Normalizes the 4D feature vector and passes it to a learned logistic regression:
-     $$R(t) = \sigma\left(W^T \hat{X}_t + b\right) \quad (\text{Overhead } < 0.1\text{ ms})$$
-   - Learned signal weights: **EEM (0.34)**, **ISP (0.28)**, **DST (0.22)**, **AAS (0.16)**.
-
-3. **Two-Tier Active Mitigation (Fact Recovery & Safe Abstention):**
-   - When token risk $R(t) > \tau \approx 0.50$, generation is immediately halted mid-sentence.
-   - **Tier 1 (Targeted RAG - Fact Recovery):** Retrieves verified knowledge at the exact point of uncertainty, injects ground-truth context, and forces the model to complete the original, factually correct answer.
-   - **Tier 2 (Calibrated Abstention - Epistemic Honesty):** For ungrounded trick questions with no factual basis, gracefully withholds the answer (*"I do not have sufficient confidence in this information..."*) to prevent fabricated names.
+1. **Four Single-Pass Internal Sensors (`src/tg_pipeline.py`):**
+   - **Sensor 1 — Internal State Probe (`ISP`, $F_t$):** Supervised L2-regularized logistic probes trained across 4 fractional transformer depths $\{0.45, 0.60, 0.75, 0.90\}L$ using leakage-free inner grouped out-of-fold (`GroupKFold`) stacking.
+   - **Sensor 2 — Attention Anomaly Score (`AAS`, $A_t$):** Normalized Shannon entropy of causal attention distributions across heads in the final quartile of transformer layers ($\mathcal{L}_{\text{top}} = [\lfloor 3L/4 \rfloor, L)$).
+   - **Sensor 3 — Energy & Entropy Monitor (`EEM`, $H_{\text{ent},t}$):** Scale-invariant hybrid vocabulary uncertainty combining normalized Shannon entropy ($0.6$) and quadratic Rényi-2 entropy ($0.4$).
+   - **Sensor 4 — Directional Semantic Trajectory (`DST`, $D_t$):** Consecutive-token cosine distance $1 - \cos(h_{L,t}, h_{L,t-1})$ in the final hidden manifold.
+2. **State Estimator & Explainable Fusion (`TrueGuardDetector`):**
+   - Pools token-level trajectories into a 4-dimensional sequence vector $\phi(x,y) = [\bar{F}, \bar{A}, \bar{H}_{\text{ent}}, \bar{D}]^\top$, applies `StandardScaler` + L2-regularized logistic regression, and outputs calibrated risk $r(x,y) \in [0,1]$ together with exact per-sensor log-odds attributions (`explain()`).
+3. **Closed-Loop Three-Tier Graded Actuator (`src/tg_controller.py`):**
+   - **SAFE ($r < \tau_{\text{warning}}$):** Emits initial greedy answer $y^{(0)}$ with zero extra decoding passes.
+   - **TIER 1 — Local Re-Sampling ($\tau_{\text{warning}} \le r < \tau_{\text{fault}}$):** Re-samples with annealed temperatures $T \in \{0.35, 0.20\}$ and accepts $y^{(k)}$ if re-scored risk drops below $r^{(0)}$ and $\tau_{\text{fault}}$.
+   - **TIER 2 — Targeted Retrieval Grounding ($r \ge \tau_{\text{fault}}$ or Tier 1 Failure):** Queries Wikipedia via keyword-cleaned `WikipediaRetriever`, prepends top-3 evidence passages, regenerates $y^{\text{RAG}}$, and re-verifies internal risk.
+   - **TIER 3 — Calibrated Abstention ($r_{\text{RAG}} \ge \tau_{\text{fault}}$):** Emits a transparent refusal accompanied by per-sensor log-odds attributions.
 
 ---
 
-## 📋 Requirements
+## 2. Repository Structure
 
-| Requirement | Version | Notes |
-| :--- | :--- | :--- |
-| **Python** | 3.9 or higher | Standard Python installation |
-| **PyTorch** | 2.0+ | GPU required for real-time model inference; CPU works for evaluation |
-| **Transformers** | 4.35+ | HuggingFace library for model weights |
-| **scikit-learn** | 1.0+ | For logistic regression fusion and cross-validation |
-
-### Quick Package Installation:
-```bash
-pip install torch transformers scikit-learn numpy scipy requests
+```text
+E:\trueguard\
+├── FINAL_REPORT.docx                     # Official College-Formatted Final Project Report (60-70 pages)
+├── FINAL_REPORT.pdf                      # Rendered PDF Export of Final Project Report
+├── PROJECT_STATE.md                      # Step 1 Git Audit, Inventory & Mismatch Cross-Check Table
+├── ANALYSIS.md                           # Step 2 College Template Rules, Friend Report Audit & Page Plan
+├── QA_REPORT.md                          # Step 5 Full Verification & Quality Assurance Audit
+├── TRUEGUARD_40_Papers_Literature_Review_By_Pillars.docx  # Standalone 40-Paper 6-Pillar Review
+├── requirements.txt                      # Pinned Reproducible Python Dependencies
+├── outputs/                              # Step 3 Verified Metrics, CSV Tables, Logs & 34 Figures
+│   ├── figures/                          # High-resolution PNG figures used in FINAL_REPORT.docx
+│   ├── tables/                           # CSV summary tables (TinyLlama, GPT-2, TriviaQA, Latency)
+│   └── logs/                             # JSON evaluation reports & equivalence test logs
+└── CAPSTONE/
+    ├── FINAL_REPORT.docx                 # Mirror copy of Final Project Report
+    ├── FINAL_REPORT.pdf                  # Mirror copy of Final Project Report PDF
+    ├── PROJECT_STATE.md                  # Mirror copy of Project State Audit
+    ├── ANALYSIS.md                       # Mirror copy of Template Analysis
+    ├── QA_REPORT.md                      # Mirror copy of QA Report
+    ├── outputs/                          # Mirror copy of verified outputs
+    └── FInal/                            # Core TRUEGUARD v2 Python Package & Experiments
+        ├── src/
+        │   ├── tg_pipeline.py            # 4 single-pass sensors, OnlineSignalMonitor, TrueGuardDetector
+        │   ├── tg_controller.py          # 3-Tier closed-loop actuator & WikipediaRetriever
+        │   ├── tg_eval.py                # Grouped K-Fold CV, bootstrap CIs, AURC & plotters
+        │   └── tg_data.py                # HuggingFace dataset downloader & answer grader
+        ├── experiments/
+        │   ├── extract_activations.py    # Extracts real hidden-state & sensor caches (.npz)
+        │   ├── evaluate_detection.py     # Multi-benchmark grouped CV & cross-dataset evaluation
+        │   ├── evaluate_mitigation.py    # Live TriviaQA 3-tier closed-loop mitigation evaluation
+        │   └── benchmark_latency.py      # Per-token latency & memory profiler
+        ├── tests/
+        │   └── test_equivalence.py       # Teacher-forced vs. online KV-cached equivalence tests
+        ├── datasets/                     # Downloaded JSONL benchmark datasets (48,761 total records)
+        └── results/v2/                   # Verified Tesla T4 GPU (TinyLlama-1.1B) & CPU (GPT-2) results
 ```
 
 ---
 
-## 🚀 How to Run the Code
+## 3. Reproducible Execution Instructions
 
-### 1. Live Interactive Model Run (Google Colab GPU - Recommended)
-Open the notebook in Google Colab with a free T4 GPU:
-* **Notebook:** [`CAPSTONE/TRUEGUARD_Colab_Implementation.ipynb`](file:///e:/trueguard/CAPSTONE/TRUEGUARD_Colab_Implementation.ipynb)
-* **What it does:** Loads `TinyLlama-1.1B` with hidden state & attention hooks, extracts signals token-by-token, and intercepts hallucinations live.
+### 3.1 Environment Setup
 
-### 2. Local 5-Fold Cross-Validation & Latency Profiling (Local CPU)
-Run the automated evaluation harness directly in your terminal:
-```bash
-python CAPSTONE/trueguard/src/evaluation/evaluate.py
-```
-* **Output:** Executes 5-fold CV of the fusion layer and calculates extraction latency per token.
-
-### 3. Fast Cloud API Prompt Interception PoC (Zero GPU Needed)
-```bash
-# On Windows PowerShell
-$env:GROQ_API_KEY="your_groq_api_key"
-python CAPSTONE/04_TrueGuard_Model_PoC.py
+```powershell
+python -m venv CAPSTONE/FInal/.venv
+CAPSTONE\FInal\.venv\Scripts\activate
+pip install -r requirements.txt
 ```
 
----
+### 3.2 Run End-to-End Verification & Populate `/outputs`
 
-## 📁 Repository Structure
-
+```powershell
+CAPSTONE\FInal\.venv\Scripts\python.exe CAPSTONE\FInal\tests\test_equivalence.py
+CAPSTONE\FInal\.venv\Scripts\python.exe CAPSTONE\FInal\tools\populate_outputs.py
 ```
-trueguard/
-├── 📁 CAPSTONE/                     ← Core deliverables
-│   ├── FINAL_PAPER.pdf              ← 📄 Full publication paper
-│   ├── TRUEGUARD_Colab_Implementation.ipynb ← 🤖 Colab GPU live testing notebook
-│   ├── 04_TrueGuard_Model_PoC.py    ← ⚡ Fast Groq Cloud API PoC script
-│   └── 📁 trueguard/                ← Modular codebase
-│       ├── 📁 src/models/           ← signal_extractors.py (The 4 signals)
-│       ├── 📁 src/evaluation/       ← evaluate.py (5-Fold CV & latency)
-│       └── 📁 src/training/         ← train_probes.py (ISP probe training)
-│
-├── PROJECT_OVERVIEW.md              ← 📖 Comprehensive guide with all formulas & theory
-├── README.md                        ← Quick start & developer overview
-├── TRUEGUARD_PROJECT_OVERVIEW.docx  ← 📄 Formatted Word report
-└── TRUEGUARD_Word_Literature_Review.md ← 20-paper literature survey
+
+### 3.3 Run Detection, Mitigation & Latency Benchmarks
+
+```powershell
+# 1. Extract activations on GPU/CPU (Fixed seed = 42)
+python CAPSTONE/FInal/experiments/extract_activations.py --model TinyLlama/TinyLlama-1.1B-Chat-v1.0 --max-questions 400 --seed 42
+
+# 2. Run 5-Fold Grouped CV Detection & Cross-Dataset Transfer
+python CAPSTONE/FInal/experiments/evaluate_detection.py --model TinyLlama/TinyLlama-1.1B-Chat-v1.0 --folds 5 --seed 42
+
+# 3. Run Live TriviaQA 3-Tier Mitigation
+python CAPSTONE/FInal/experiments/evaluate_mitigation.py --model TinyLlama/TinyLlama-1.1B-Chat-v1.0 --n-cal 150 --n-test 150 --seed 42
+
+# 4. Profile Real Per-Token Latency
+python CAPSTONE/FInal/experiments/benchmark_latency.py --model TinyLlama/TinyLlama-1.1B-Chat-v1.0 --n-prompts 25 --max-new-tokens 24
 ```
 
 ---
 
-## 📖 Full Documentation
+## 4. Summary of Verified Headlines (`TinyLlama-1.1B` on NVIDIA Tesla T4 GPU)
 
-See **[PROJECT_OVERVIEW.md](PROJECT_OVERVIEW.md)** for:
-- Detailed breakdown of previous papers vs. TRUEGUARD
-- Complete mathematical derivations and variable definitions for all 4 signals
-- In-depth ablation studies and human evaluation statistics ($n=300, \kappa=0.82$)
-- Step-by-step reproduction and verification checklist
+- **Multi-Benchmark Detection ($N = 3{,}196$ answers, 5-Fold Grouped CV):** **`0.935` macro AUROC** (`0.986` `HaluEval-Summarization`, `0.975` `HaluEval-QA`, `0.903` `HaluEval-Dialogue`, `0.876` `TruthfulQA`), macro F1 = **`0.882`**, macro ECE = **`0.031`**.
+- **Live Open-Domain QA Mitigation (`TriviaQA`, $n_{\text{cal}}=150, n_{\text{test}}=150$):** Answered-query hallucination rate drops **`62.0% -> 40.0%`** (**`35.5%` relative reduction**; factual accuracy rises **`38.0% -> 60.0%`** at `43.3%` coverage); system-wide emitted hallucination rate drops **`62.0% -> 17.3%`** (**`72.0%` relative reduction**); Risk–Coverage **`AURC = 0.412`** vs. `0.526` (Entropy) and `0.603` (NLL).
+- **Per-Token Inference Latency (Tesla T4 GPU):** Vanilla decode = `33.49 ms/tok`; TRUEGUARD Post-pass = **`36.41 ms/tok`** (`+2.91 ms/tok`, `+8.7%`, **`4.65x` faster** than 5-sample consistency at `169.31 ms/tok`); TRUEGUARD Online = **`39.30 ms/tok`** (**`4.31x` faster**).

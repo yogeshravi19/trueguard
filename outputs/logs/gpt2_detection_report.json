@@ -1,0 +1,468 @@
+{
+  "datasets": {
+    "halueval_qa": {
+      "n_rows": 160,
+      "n_questions": 80,
+      "fusion": {
+        "threshold": 0.6639738722323394,
+        "auroc": 0.96015625,
+        "auprc": 0.9754009757817307,
+        "accuracy": 0.95,
+        "precision": 0.9864864864864865,
+        "recall": 0.9125,
+        "f1": 0.948051948051948,
+        "tp": 73,
+        "fp": 1,
+        "tn": 79,
+        "fn": 7,
+        "auroc_fold_mean": 0.96796875,
+        "auroc_fold_std": 0.02509138570742457,
+        "auroc_ci95": [
+          0.916068359375,
+          0.9920664062499999
+        ],
+        "ece": 0.10160815422648764
+      },
+      "single_sensor_trained": {
+        "ISP": {
+          "auroc": 0.9573437499999998,
+          "auroc_ci95": [
+            0.9128515625,
+            0.9932226562500001
+          ],
+          "fold_mean": 0.96015625,
+          "fold_std": 0.0366979661923689
+        },
+        "AAS": {
+          "auroc": 0.4859375,
+          "auroc_ci95": [
+            0.435541015625,
+            0.542515625
+          ],
+          "fold_mean": 0.4875,
+          "fold_std": 0.0621891684763613
+        },
+        "EEM": {
+          "auroc": 0.85734375,
+          "auroc_ci95": [
+            0.793123046875,
+            0.909986328125
+          ],
+          "fold_mean": 0.8609375,
+          "fold_std": 0.05861197633190038
+        },
+        "DST": {
+          "auroc": 0.8940625,
+          "auroc_ci95": [
+            0.84460546875,
+            0.9439609374999999
+          ],
+          "fold_mean": 0.9015625,
+          "fold_std": 0.027693081054322034
+        }
+      },
+      "ablation_leave_one_out": {
+        "without_ISP": {
+          "auroc": 0.92640625,
+          "delta_vs_full": -0.033826875,
+          "full_minus_ablated_ci95": [
+            0.007492187500000006,
+            0.06434765624999998
+          ],
+          "p_sensor_not_helping": 0.006
+        },
+        "without_AAS": {
+          "auroc": 0.9590624999999999,
+          "delta_vs_full": -0.0012009375000000084,
+          "full_minus_ablated_ci95": [
+            -0.0008632812500000446,
+            0.004062500000000027
+          ],
+          "p_sensor_not_helping": 0.164
+        },
+        "without_EEM": {
+          "auroc": 0.9615624999999999,
+          "delta_vs_full": 0.0014396875000000004,
+          "full_minus_ablated_ci95": [
+            -0.008281250000000018,
+            0.004687500000000014
+          ],
+          "p_sensor_not_helping": 0.658
+        },
+        "without_DST": {
+          "auroc": 0.959375,
+          "delta_vs_full": -0.0006246875000000025,
+          "full_minus_ablated_ci95": [
+            -0.013445312499999995,
+            0.011332031249999963
+          ],
+          "p_sensor_not_helping": 0.418
+        }
+      },
+      "fusion_vs_best_single": {
+        "best_single": "ISP",
+        "gain": 0.0024871875000000276,
+        "gain_ci95": [
+          -0.010394531249999983,
+          0.01726953125
+        ],
+        "p_value": 0.36
+      },
+      "raw_untrained_baselines": {
+        "AAS_mean": {
+          "auroc": 0.498125,
+          "auroc_if_inverted": 0.5018750000000001
+        },
+        "AAS_max": {
+          "auroc": 0.55140625,
+          "auroc_if_inverted": 0.44859375
+        },
+        "EEM_mean": {
+          "auroc": 0.180625,
+          "auroc_if_inverted": 0.819375
+        },
+        "EEM_max": {
+          "auroc": 0.5890624999999999,
+          "auroc_if_inverted": 0.41093750000000007
+        },
+        "DST_mean": {
+          "auroc": 0.41140625,
+          "auroc_if_inverted": 0.58859375
+        },
+        "DST_max": {
+          "auroc": 0.722421875,
+          "auroc_if_inverted": 0.277578125
+        },
+        "ENT_mean": {
+          "auroc": 0.18234375,
+          "auroc_if_inverted": 0.81765625
+        },
+        "ENT_max": {
+          "auroc": 0.583046875,
+          "auroc_if_inverted": 0.41695312500000004
+        },
+        "NLL_mean": {
+          "auroc": 0.14843750000000003,
+          "auroc_if_inverted": 0.8515625
+        },
+        "LEN": {
+          "auroc": 0.95125,
+          "auroc_if_inverted": 0.04874999999999996
+        }
+      },
+      "complementarity_at_10pct_fpr": {
+        "ISP": {
+          "recall_at_fpr": 0.95,
+          "unique_catches": 0.9375
+        },
+        "AAS": {
+          "recall_at_fpr": 0.025,
+          "unique_catches": 0.025
+        },
+        "EEM": {
+          "recall_at_fpr": 0.0,
+          "unique_catches": 0.0
+        },
+        "DST": {
+          "recall_at_fpr": 0.0125,
+          "unique_catches": 0.0
+        },
+        "union_recall": 0.975,
+        "fpr_level": 0.1
+      },
+      "sensor_correlation": {
+        "ISP": {
+          "ISP": 1.0,
+          "AAS": -0.04745782754226677,
+          "EEM": -0.611668186771916,
+          "DST": 0.24509217481570272
+        },
+        "AAS": {
+          "ISP": -0.04745782754226677,
+          "AAS": 1.0,
+          "EEM": 0.18903346772699695,
+          "DST": -0.7537175011385555
+        },
+        "EEM": {
+          "ISP": -0.611668186771916,
+          "AAS": 0.18903346772699695,
+          "EEM": 0.9999999999999999,
+          "DST": -0.34332577520173935
+        },
+        "DST": {
+          "ISP": 0.24509217481570275,
+          "AAS": -0.7537175011385555,
+          "EEM": -0.3433257752017394,
+          "DST": 1.0
+        }
+      },
+      "diagnostics": [
+        "EEM_mean: raw AUROC=0.181 (<0.5) -> signal points the OPPOSITE way on halueval_qa (inverted AUROC=0.819); logistic fusion flips its sign automatically.",
+        "DST_mean: raw AUROC=0.411 (<0.5) -> signal points the OPPOSITE way on halueval_qa (inverted AUROC=0.589); logistic fusion flips its sign automatically.",
+        "ENT_mean: raw AUROC=0.182 (<0.5) -> signal points the OPPOSITE way on halueval_qa (inverted AUROC=0.818); logistic fusion flips its sign automatically.",
+        "NLL_mean: raw AUROC=0.148 (<0.5) -> signal points the OPPOSITE way on halueval_qa (inverted AUROC=0.852); logistic fusion flips its sign automatically.",
+        "Fusion gain over ISP is +0.002 but 95% CI [-0.010, 0.017] crosses 0 (p=0.36)."
+      ]
+    },
+    "truthful_qa": {
+      "n_rows": 160,
+      "n_questions": 80,
+      "fusion": {
+        "threshold": 0.48131511099251856,
+        "auroc": 0.743515625,
+        "auprc": 0.6856643210126857,
+        "accuracy": 0.7125,
+        "precision": 0.6888888888888889,
+        "recall": 0.775,
+        "f1": 0.7294117647058822,
+        "tp": 62,
+        "fp": 28,
+        "tn": 52,
+        "fn": 18,
+        "auroc_fold_mean": 0.754296875,
+        "auroc_fold_std": 0.06169402194499885,
+        "auroc_ci95": [
+          0.66919921875,
+          0.8204296875
+        ],
+        "ece": 0.08003116213166733
+      },
+      "single_sensor_trained": {
+        "ISP": {
+          "auroc": 0.765546875,
+          "auroc_ci95": [
+            0.693986328125,
+            0.8385351562500001
+          ],
+          "fold_mean": 0.773046875,
+          "fold_std": 0.04454495403171385
+        },
+        "AAS": {
+          "auroc": 0.484609375,
+          "auroc_ci95": [
+            0.430384765625,
+            0.545390625
+          ],
+          "fold_mean": 0.507421875,
+          "fold_std": 0.0985149744724755
+        },
+        "EEM": {
+          "auroc": 0.382578125,
+          "auroc_ci95": [
+            0.31112500000000004,
+            0.449599609375
+          ],
+          "fold_mean": 0.385546875,
+          "fold_std": 0.04511000010391266
+        },
+        "DST": {
+          "auroc": 0.48945312499999993,
+          "auroc_ci95": [
+            0.40818359375,
+            0.573525390625
+          ],
+          "fold_mean": 0.487109375,
+          "fold_std": 0.08662368099645154
+        }
+      },
+      "ablation_leave_one_out": {
+        "without_ISP": {
+          "auroc": 0.5477343750000001,
+          "delta_vs_full": -0.19610906250000001,
+          "full_minus_ablated_ci95": [
+            0.10763281250000001,
+            0.27587109375
+          ],
+          "p_sensor_not_helping": 0.0
+        },
+        "without_AAS": {
+          "auroc": 0.747265625,
+          "delta_vs_full": 0.0033268750000000013,
+          "full_minus_ablated_ci95": [
+            -0.015558593750000065,
+            0.007582031250000037
+          ],
+          "p_sensor_not_helping": 0.724
+        },
+        "without_EEM": {
+          "auroc": 0.7522656249999999,
+          "delta_vs_full": 0.008072812499999998,
+          "full_minus_ablated_ci95": [
+            -0.024531249999999952,
+            0.006644531249999954
+          ],
+          "p_sensor_not_helping": 0.858
+        },
+        "without_DST": {
+          "auroc": 0.7527343750000001,
+          "delta_vs_full": 0.009039062500000005,
+          "full_minus_ablated_ci95": [
+            -0.024375000000000036,
+            0.0050898437499999755
+          ],
+          "p_sensor_not_helping": 0.886
+        }
+      },
+      "fusion_vs_best_single": {
+        "best_single": "ISP",
+        "gain": -0.0211803125,
+        "gain_ci95": [
+          -0.04109375000000004,
+          -0.002789062499999905
+        ],
+        "p_value": 0.984
+      },
+      "raw_untrained_baselines": {
+        "AAS_mean": {
+          "auroc": 0.46492187500000004,
+          "auroc_if_inverted": 0.535078125
+        },
+        "AAS_max": {
+          "auroc": 0.4846875,
+          "auroc_if_inverted": 0.5153125000000001
+        },
+        "EEM_mean": {
+          "auroc": 0.505546875,
+          "auroc_if_inverted": 0.49445312500000005
+        },
+        "EEM_max": {
+          "auroc": 0.509375,
+          "auroc_if_inverted": 0.490625
+        },
+        "DST_mean": {
+          "auroc": 0.43585937500000005,
+          "auroc_if_inverted": 0.564140625
+        },
+        "DST_max": {
+          "auroc": 0.4892968750000001,
+          "auroc_if_inverted": 0.5107031249999999
+        },
+        "ENT_mean": {
+          "auroc": 0.506953125,
+          "auroc_if_inverted": 0.493046875
+        },
+        "ENT_max": {
+          "auroc": 0.51734375,
+          "auroc_if_inverted": 0.48265625
+        },
+        "NLL_mean": {
+          "auroc": 0.49656249999999996,
+          "auroc_if_inverted": 0.5034375
+        },
+        "LEN": {
+          "auroc": 0.464140625,
+          "auroc_if_inverted": 0.535859375
+        }
+      },
+      "complementarity_at_10pct_fpr": {
+        "ISP": {
+          "recall_at_fpr": 0.275,
+          "unique_catches": 0.15
+        },
+        "AAS": {
+          "recall_at_fpr": 0.125,
+          "unique_catches": 0.05
+        },
+        "EEM": {
+          "recall_at_fpr": 0.125,
+          "unique_catches": 0.0375
+        },
+        "DST": {
+          "recall_at_fpr": 0.0875,
+          "unique_catches": 0.0625
+        },
+        "union_recall": 0.425,
+        "fpr_level": 0.1
+      },
+      "sensor_correlation": {
+        "ISP": {
+          "ISP": 1.0,
+          "AAS": -0.07790274471969637,
+          "EEM": 0.15613012627968498,
+          "DST": -0.27016789686676024
+        },
+        "AAS": {
+          "ISP": -0.07790274471969637,
+          "AAS": 1.0,
+          "EEM": 0.25847354088832974,
+          "DST": -0.5179220504762345
+        },
+        "EEM": {
+          "ISP": 0.15613012627968498,
+          "AAS": 0.25847354088832974,
+          "EEM": 1.0,
+          "DST": -0.4516362577045468
+        },
+        "DST": {
+          "ISP": -0.27016789686676024,
+          "AAS": -0.5179220504762345,
+          "EEM": -0.4516362577045468,
+          "DST": 1.0
+        }
+      },
+      "diagnostics": [
+        "AAS_mean: raw AUROC=0.465 (<0.5) -> signal points the OPPOSITE way on truthful_qa (inverted AUROC=0.535); logistic fusion flips its sign automatically.",
+        "DST_mean: raw AUROC=0.436 (<0.5) -> signal points the OPPOSITE way on truthful_qa (inverted AUROC=0.564); logistic fusion flips its sign automatically.",
+        "LEN: raw AUROC=0.464 (<0.5) -> signal points the OPPOSITE way on truthful_qa (inverted AUROC=0.536); logistic fusion flips its sign automatically.",
+        "Fusion did NOT beat best single sensor (ISP=0.766 vs fusion=0.744); non-ISP sensors add noise on this dataset."
+      ]
+    }
+  },
+  "cross_dataset": {
+    "halueval_qa": {
+      "tau_warning": 0.5860419408728774,
+      "tau_fault": 0.5860419408728774,
+      "transfers": {
+        "truthful_qa": {
+          "threshold": 0.5860419408728774,
+          "auroc": 0.439921875,
+          "auprc": 0.48919712773861507,
+          "accuracy": 0.51875,
+          "precision": 0.5114503816793893,
+          "recall": 0.8375,
+          "f1": 0.6350710900473934,
+          "tp": 67,
+          "fp": 64,
+          "tn": 16,
+          "fn": 13,
+          "auroc_ci95": [
+            0.383421875,
+            0.4994374999999999
+          ],
+          "isp_only_transfer_auroc": 0.441953125,
+          "unsupervised_sensors_transfer_auroc": 0.475234375
+        }
+      }
+    },
+    "truthful_qa": {
+      "tau_warning": 0.49902069711960345,
+      "tau_fault": 0.7280944397542038,
+      "transfers": {
+        "halueval_qa": {
+          "threshold": 0.49902069711960345,
+          "auroc": 0.3853125,
+          "auprc": 0.41302285329863375,
+          "accuracy": 0.4375,
+          "precision": 0.44047619047619047,
+          "recall": 0.4625,
+          "f1": 0.45121951219512196,
+          "tp": 37,
+          "fp": 47,
+          "tn": 33,
+          "fn": 43,
+          "auroc_ci95": [
+            0.32318359375,
+            0.44711523437499995
+          ],
+          "isp_only_transfer_auroc": 0.26468749999999996,
+          "unsupervised_sensors_transfer_auroc": 0.5057812500000001
+        }
+      }
+    }
+  },
+  "notes": [
+    "All numbers computed from REAL model activations cached in results\\cache\\gpt2",
+    "Grouped 5-fold CV keeps both answers of each question in the same fold.",
+    "ISP probes and fusion weights are fit inside each fold (inner OOF stacking prevents probe leakage)."
+  ]
+}

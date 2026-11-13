@@ -1,0 +1,16 @@
+{
+  "model": "gpt2",
+  "device": "cpu",
+  "n_prompts": 6,
+  "tokens_per_prompt": 10,
+  "vanilla_ms_per_token": 159.87758000000002,
+  "trueguard_online_ms_per_token": 143.368485,
+  "trueguard_sensor_math_only_ms_per_token": 19.140664999999753,
+  "trueguard_online_overhead_ms_per_token": -16.50909500000003,
+  "trueguard_online_relative_overhead": -0.1032608512087813,
+  "trueguard_postpass_ms_per_token": 390.72600000000006,
+  "trueguard_postpass_overhead_ms_per_token": 230.84842000000003,
+  "multi_sample_5x_ms_per_token": 1361.49218,
+  "speedup_online_vs_5x": 9.496453701104535,
+  "speedup_postpass_vs_5x": 3.4845190235612673
+}

@@ -1,0 +1,9 @@
+Hardware_Model,Mode,Ms_Per_Token,Overhead_Ms_Per_Token,Overhead_Pct,Speedup_vs_5Sample
+TinyLlama-1.1B (Tesla T4 GPU),Vanilla Decode,33.49,+0.00,+0.0%,5.05x
+TinyLlama-1.1B (Tesla T4 GPU),TRUEGUARD Post-Pass,36.41,+2.91,+8.7%,4.65x
+TinyLlama-1.1B (Tesla T4 GPU),TRUEGUARD Online (KV),39.30,+5.81,+17.3%,4.31x
+TinyLlama-1.1B (Tesla T4 GPU),5-Sample Consistency,169.31,+135.82,+405.5%,1.00x
+GPT-2 124M (Local CPU),Vanilla Decode,159.88,+0.00,+0.0%,8.52x
+GPT-2 124M (Local CPU),TRUEGUARD Post-Pass,390.73,+230.85,+144.4%,3.48x
+GPT-2 124M (Local CPU),TRUEGUARD Online (KV),143.37,-16.51,-10.3%,9.50x
+GPT-2 124M (Local CPU),5-Sample Consistency,1361.49,+1201.61,+751.6%,1.00x
