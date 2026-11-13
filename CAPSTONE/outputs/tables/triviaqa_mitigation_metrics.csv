@@ -1,0 +1,17 @@
+Metric,Value
+n_cal,150
+n_test,150
+tau_warning,0.6114
+tau_fault,0.8984
+test_detection_auroc_on_own_generations,0.7948
+baseline_accuracy,0.3800
+baseline_hallucination_rate,0.6200
+coverage,0.4333
+accuracy_among_answered,0.6000
+hallucination_rate_among_answered,0.4000
+hallucination_rate_system_wide,0.1733
+relative_hallucination_reduction_among_answered,35.48%
+relative_hallucination_reduction_system_wide,72.04%
+AURC_TRUEGUARD,0.4118
+AURC_Entropy,0.5260
+AURC_NLL,0.6028

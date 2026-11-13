@@ -1,0 +1,3987 @@
+=====PAGE 1=====
+ 
+ 
+ 
+ 
+ A project report on  
+GEOFENCE: A UNIFIED GEOFENCING-
+BASED ASSET MONITORING, 
+ENCROACHMENT DETECTION AND ALERT 
+MANAGEMENT SYSTEM 
+Submitted in partial fulfillment for the award of the degree of 
+M.Tech. (Integrated) Computer Science and 
+Engineering with Specialization in Business 
+Analytics 
+by 
+ABISHEK. B 
+(22MIA1075) 
+ 
+ 
+SCHOOL OF COMPUTER SCIENCE AND ENGINEERING 
+NOVEMBER 2026 
+ 
+ 
+ 
+
+=====PAGE 2=====
+ 
+ 
+ 
+ 
+GEOFENCE: A UNIFIED GEOFENCING-
+BASED ASSET MONITORING, 
+ENCROACHMENT DETECTION AND ALERT 
+MANAGEMENT SYSTEM 
+ 
+Submitted in partial fulfillment for the award of the degree of 
+M.Tech. (Integrated) Computer Science and 
+Engineering with Specialization in Business 
+Analytics 
+by 
+ABISHEK. B 
+(22MIA1075) 
+ 
+SCHOOL OF COMPUTER SCIENCE AND ENGINEERING 
+NOVEMBER 2026 
+ 
+
+=====PAGE 3=====
+ 
+ 
+ 
+ 
+ 
+DECLARATION 
+ 
+I hereby declare that the thesis entitled “GeoFence: A Unified 
+Geofencing-Based Asset Monitoring, Encroachment Detection and Alert 
+Management System” submitted by me, for the award of the degree of M.Tech 
+(Integrated) Computer Science and Engineering with Specialization in 
+Business Analytics, Vellore Institute of Technology, Chennai, is are cord of 
+bonafide work carried out by me under the supervision of Dr. Sivagam M. 
+I further declare that the work reported in this thesis has not been 
+submitted and will not be submitted, either in part or in full, for the award of 
+any other degree or diploma in this institute or any other institute or university. 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+Place: Chennai                                                                              
+Date:                                                                     Signature of the Candidate 
+ 
+
+=====PAGE 4=====
+ 
+ 
+ 
+ 
+School of Computer Science and Engineering 
+CERTIFICATE 
+This is to certify that the report entitled “GeoFence: A Unified 
+Geofencing-Based Asset Monitoring, Encroachment Detection and Alert 
+Management System” is prepared and submitted by Abishek.B 
+(22MIA1075) to Vellore Institute of Technology, Chennai, in partial 
+fulfillment of the requirement for the award of the degree of M.Tech 
+(Integrated) Computer Science and Engineering with Specialization 
+in Business Analytics programme is a bonafide record carried out under 
+my guidance. The project fulfills the requirements as per the regulations 
+of this University and in my opinion meets the necessary standards for 
+submission. The contents of this report have not been submitted and will 
+not be submitted either in part or in full, for the award of any other degree 
+or diploma and the same is certified. 
+ 
+Signature of the Guide: 
+Name: Dr. SIVAGAMI M 
+ 
+ 
+Date: 
+ 
+Signature of the Examiner 1 
+                                      Signature of the Examiner 2 
+ Name:                                                                               Name:                   
+          Date: 
+ 
+ 
+                                                    Date: 
+ 
+ 
+        Approved by the Head of Department 
+
+=====PAGE 5=====
+ 
+ 
+ 
+ 
+ABSTRACT 
+Geo Fence is a holistic geofences based asset monitoring, encroachment detection, alert 
+management system, devised to bridge the gap between traditional asset management 
+systems and geographic monitoring systems. Existing asset management systems maintain 
+ownership, inventory, financial, agricultural, and documentary information; while 
+geographic monitoring systems are concerned with detecting geographic events.  
+Combined usage of the two systems without a bridge between them makes it difficult to 
+find out which asset is hit by a spatial event, whether the event is persistent, what its 
+magnitude, and what response priority should be assigned to the event.  Geo Fence tackles 
+this problem by employing land parcels as the geographic anchor, and by integrating 
+polygon-based geofencing with mixed asset information such as vehicles, machines, 
+tractors, plantations, livestock, jewelry, artwork and wills.  It provides a common workflow 
+covering land and boundary registration, asset association, spatial monitoring, 
+encroachment detection, persistency computation, risk assessment, alert management, and 
+notification.  
+The system was built for deployment as a web-based GIS application, via Python, FastAPI, 
+SQLAlchemy, PostgreSQL, PostGIS, HTML, CSS, JavaScript, Leaflet. PostGIS is used 
+for spatial geometry validation, containment, intersection, distance, and area-based 
+analysis. The system captures spatial observations and tests repeat observations in 
+configured temporal and spatial windows for persistence. Asset criticality and property-
+value information is integrated as contextual information and, for the higher sample size, a 
+composite risk score aggregation of overlap, persistence, severity, proximity, and asset 
+criticality is used. The system includes boundary-status validation, boundary details and 
+version history, registry-boundary comparison, portfolio exposure analysis, optional 
+priority-based alert generation, email alert, and dashboard monitoring.   
+Functional tests including land registration, invalid-geometry rejection, spatial 
+encroachment, persistence of repeated observations, asset-aware risk calculation, portfolio 
+exposure calculation, boundary-status classification, registry comparison, and alert-priority 
+generation. In a representative final test, the system identified a persistent encroachment 
+with 100% overlap, seven observations, PERSISTENT status, 90 machine asset criticality, 
+property value at ₹8,500,000, and prototype portfolio exposure score of 99.42. Registry 
+comparison tests differentiated close digitization variance from serious geometric 
+mismatch and unavailable registry information. These tests demonstrate the successful 
+integration of geospatial monitoring, heterogenous asset management, temporal analysis, 
+contextual risk calculation, and operational alert generation in the prototype. The project 
+makes no claim of survey-grade or legal cadastral precision, real-time continuous satellite 
+acquisition, statistically validated remote-sensing performance, nor of a new remote-
+sensing detection algorithm; only the integration of existing capabilities into a decision-
+support system.  
+Keywords: Geofencing, PostGIS, Asset Monitoring, Encroachment Detection, Spatial 
+Analysis, Temporal Persistence, Risk Scoring, AHP, XGBoost, Alert Prioritization. 
+ 
+i 
+
+=====PAGE 6=====
+ 
+ 
+ 
+ 
+ACKNOWLEDGEMENT 
+ 
+It is my pleasure to express with deep sense of gratitude to Dr. Sivagami M, Professor, 
+School of Computer Science and Engineering, Vellore Institute of Technology, Chennai, 
+for his/her constant guidance, continual encouragement, understanding; more than all, 
+he/she taught me patience in my endeavour. My association with him/her is not confined 
+to academics only, but it is a great opportunity for my part of work with an intellectual and 
+expert in the field of Computer Science. 
+It is with gratitude that I would like to extend my thanks to the visionary leader Dr. G. 
+Viswanathan our Honourable Chancellor, Mr. Sankar Viswanathan, Dr. Sekar 
+Viswanathan, Dr. G V Selvam Vice Presidents, Dr. Sandhya Pentareddy, Executive 
+Director, Ms. Kadhambari S. Viswanathan, Assistant Vice-President, Dr. V. S. Kanchana 
+Bhaaskaran  Vice-Chancellor, and Dr. T. Thyagarajan Pro-Vice Chancellor, VIT Chennai 
+for providing an exceptional working environment and inspiring all of us during the tenure 
+of the course. 
+Special mention to Dr. Viswanathan V, Dean, Dr. Nithyanandam P, Dr. Suganya G, and 
+Dr. Sweetlin Hemalatha C, Associate Deans, School of Computer Science and Engineering, 
+Vellore Institute of Technology, Chennai, for spending their valuable time and efforts in 
+sharing their knowledge and for helping us in every aspect. 
+In jubilant state, I express ingeniously my whole-hearted thanks to Dr. Appalaraju 
+Muralidhar, Head of the Department, SCOPE, Vellore Institute of Technology, Chennai, 
+for their valuable support and encouragement to take up and complete the thesis. 
+My sincere thanks to all the faculty and staff members at Vellore Institute of Technology, 
+Chennai, who helped me acquire the requisite knowledge. I would like to thank my parents 
+for their support. It is indeed a pleasure to thank my friends who encouraged me to take up 
+and complete this task.  
+ 
+ 
+Place: Chennai                                                                                  
+Date:                                                                                                    ABISHEK. B          
+ 
+ 
+ii 
+
+=====PAGE 7=====
+ 
+ 
+ 
+ 
+CONTENTS 
+ABSTRACT — i 
+ACKNOWLEDGEMENT — ii 
+LIST OF FIGURES — vii 
+LIST OF TABLES — viii 
+CHAPTER 1 INTRODUCTION 
+1.1 Introduction — 1 
+1.2 Background of the Project — 2 
+1.3 Motivation — 3 
+1.4 Problem Statement — 4 
+1.5 Research Gap — 5 
+1.6 Objectives — 6 
+1.7 Scope of the Project — 7 
+1.8 Contributions of the Project — 8 
+1.8.1 Unified Asset-Geofencing Framework — 8 
+1.8.2 Detection-to-Alert Integration — 8 
+1.8.3 Asset-Aware Monitoring — 8 
+1.8.4 Temporal Persistence Tracking — 8 
+1.8.5 Risk-Aware Scoring — 8 
+1.8.6 Portfolio Exposure Context — 8 
+1.8.7 Priority-Tiered Alerts — 9 
+1.8.8 Boundary Provenance and Version History — 9 
+1.8.9 Registry Comparison and Digitization-Variance Handling — 9 
+ 
+CHAPTER 2 BACKGROUND AND THEORETICAL FOUNDATION 
+2.1 Introduction — 9 
+2.2 Geofencing — 10 
+2.2.1 Concept of Geofencing — 10 
+2.2.2 Point, Line and Polygon Geometries — 10 
+2.2.3 Polygon-Based Geofencing in GeoFence — 11 
+2.3 Geographic Information Systems — 11 
+2.3.1 Role of GIS — 11 
+ 
+iii 
+
+=====PAGE 8=====
+ 
+ 
+ 
+ 
+2.3.2 Web GIS Architecture — 12 
+2.4 Spatial Databases and PostGIS — 12 
+2.4.1 Conventional Databases and Spatial Data — 12 
+2.4.2 PostGIS — 12 
+2.4.3 WKT and GeoJSON — 13 
+2.5 Spatial Relations — 13 
+2.5.1 Containment — 13 
+2.5.2 Intersection — 14 
+2.5.3 Distance and Proximity — 14 
+2.6 Spatial Uncertainty and Boundary Representation — 14 
+2.7 Remote-Sensing Change Detection — 15 
+2.8 Temporal Observation and Persistence — 15 
+2.9 Multi-Asset Management — 16 
+2.10 Property and Financial Information — 17 
+2.11 Risk Assessment — 17 
+2.12 Alert Management and Prioritization — 18 
+2.13 Boundary Provenance and Versioning — 18 
+2.14 Registry Comparison — 19 
+2.15 Dashboard Analytics — 19 
+CHAPTER 3 LITERATURE REVIEW 
+3.1 Literature Review Matrix — 20 
+CHAPTER 4 SYSTEM ANALYSIS AND REQUIREMENTS 
+4.1 Existing System — 24 
+4.1.1 Existing System Categories — 24 
+4.1.2 Consequences of System Fragmentation — 25 
+4.2 Proposed System — 25 
+4.2.1 Design Principles — 26 
+4.3 Functional Requirements — 26 
+4.4 Non-Functional Requirements — 28 
+4.5 Technology Stack — 28 
+CHAPTER 5 SYSTEM ARCHITECTURE AND DATABASE DESIGN 
+5.1 System Architecture Overview — 29 
+5.2 Architectural Layers — 30 
+iv 
+ 
+ 
+
+=====PAGE 9=====
+ 
+ 
+ 
+ 
+5.2.1 Presentation Layer — 30 
+5.2.2 Application Layer — 31 
+5.2.3 Domain Processing Layer — 31 
+5.2.4 Data Access Layer — 32 
+5.2.5 Spatial Database Layer — 32 
+5.2.6 Notification Layer — 32 
+5.3 Database Architecture — 32 
+5.4 Entity and Relationship Design — 33 
+5.5 Spatial Data Model and Boundary Management — 34 
+5.6 System Data Flow — 36 
+ 
+CHAPTER 6 METHODOLOGY AND ALGORITHMIC DESIGN 
+6.1 Overall Methodology — 38 
+6.2 Land Registration and Boundary Management — 39 
+6.2.1 Boundary Validation — 39 
+6.2.2 Boundary Verification — 39 
+6.2.3 Boundary Provenance and Versioning — 40 
+6.3 Multi-Asset Management — 40 
+6.3.1 Operational Assets — 41 
+6.3.2 Plantation and Livestock — 41 
+6.3.3 Portfolio and Documentary Assets — 41 
+6.4 Spatial Encroachment Detection — 41 
+6.4.1 Geometry Construction — 42 
+6.4.2 Intersection Analysis — 42 
+6.4.3 Overlap Percentage — 42 
+6.4.4 Observation Recording — 43 
+6.5 Temporal Persistence Analysis — 43 
+6.6 Asset Criticality Assessment — 44 
+6.7 Portfolio Exposure Analysis — 44 
+6.8 Risk Score Calculation — 44 
+6.9 Xgboost Based Classification — 45  
+6.10 Alert Generation and Prioritization — 45 
+6.11 Registry Comparison and Boundary Verification — 46 
+ 
+ 
+v 
+
+=====PAGE 10=====
+ 
+ 
+ 
+ 
+CHAPTER 7 SYSTEM IMPLEMENTATION 
+7.1 Implementation Environment and Project Setup — 47 
+7.2 Backend Service and API Implementation — 48 
+7.2.1 API Request Processing — 48 
+7.3 Frontend and GIS Interface Implementation — 49 
+7.3.1 Land Registration Interface — 49 
+7.3.2 Map Interaction — 49 
+7.3.3 Monitoring Interface — 49 
+7.3.4 Boundary and Registry Interfaces — 50 
+7.3.5 Frontend–Backend Integration — 50 
+7.4 Database Integration and Module Implementation — 51 
+7.4.1 Asset and Property Data Integration — 51 
+7.4.2 Observation Storage — 51 
+7.4.3 Boundary History Implementation — 52 
+7.4.4 Registry Data Integration — 52 
+7.4.5 Alert Persistence — 52 
+7.5 Dashboard, Alert and Notification Interface Implementation — 53 
+7.5.1 Dashboard Implementation — 53 
+7.5.2 Timeline Implementation — 54 
+7.5.3 Risk Summary Interface — 54 
+7.5.4 Alert Display — 54 
+7.5.5 Email Notification Implementation — 54 
+7.5.6 Final User Interface Integration — 54 
+CHAPTER 8 TESTING, RESULTS AND DISCUSSION 
+8.1 Testing Methodology — 55 
+8.2 Functional Testing of Core Modules — 56 
+8.2.1 Land Registration — 56 
+8.2.2 Encroachment Processing — 57 
+8.2.3 Observation Storage — 57 
+8.2.4 Asset and Financial Context — 57 
+8.2.5 Boundary and Version Operations — 57 
+8.3 Spatial, Persistence and Risk Results — 57 
+8.3.1 Model Performance Evaluation — 59 
+8.4 Registry, Alert and Dashboard Results — 60 
+8.4.1 Registry Comparison Results — 60 
+ 
+vi 
+
+=====PAGE 11=====
+ 
+ 
+ 
+ 
+ 
+8.4.2 Alert Results — 60 
+8.4.3 Dashboard Results — 61 
+CHAPTER 9 CONCLUSION AND FUTURE WORK 
+9.1 Conclusion — 64 
+9.2 Future Work — 64 
+APPENDICES 
+APPENDIX A - System API inventory — 65 
+APPENDIX B - Database and Postgres Implementation — 65 
+APPENDIX C - Final Testing and Validation Evidence — 66 
+APPENDIX D - Spatial and Risk Processing Logic — 67 
+APPENDIX E - Asset and Portfolio Management — 69 
+APPENDIX F - User Operating Procedure — 70 
+REFERENCES — 71 
+LIST OF FIGURES 
+Figure 5.1: GeoFence System Architecture — 30 
+Figure 5.2: GeoFence Database Entity-Relationship Diagram — 34 
+Figure 5.3: Spatial Data Flow from Frontend to PostGIS — 36 
+Figure 6.1: End-to-End GeoFence Processing Workflow — 38 
+Figure 6.2: Risk Score Calculation Flow — 45 
+Figure 7.1: GeoFence Project Implementation Environment — 47 
+Figure 7.2: GeoFence GIS User Interface — 50 
+Figure 7.3: Land Registration / Map Interaction — 51 
+Figure 7.4: Application Module–Database Interaction — 53 
+Figure 8.1: Final Encroachment Test API Response — 59 
+Figure 8.2: XGBoost Model Evaluation Metrics — 59 
+Figure 8.3: Permutation Feature Importance Of The XGBoost Mode — 60 
+Figure 8.4: Dashboard Test Result — 62 
+Figure 8.5: Alert History / Priority Display — 63 
+ 
+vii 
+
+=====PAGE 12=====
+ 
+ 
+ 
+ 
+LIST OF TABLES 
+Table 2.1: Multi-Asset Categories and Their Association with GeoFence — 16 
+Table 2.2: Risk Score Components and Weights — 17 
+Table 4.1: Functional Requirements — 26 
+Table 4.2: Non-Functional Requirements — 28 
+Table 4.3: Technology Stack — 28 
+Table 5.1: Core Database Entities and Their Purpose — 33 
+Table 7.2: Implemented API Services — 48 
+Table 7.3: Module-to-Database Integration — 52 
+Table 8.1: Functional Test Cases — 55 
+Table 8.2: Representative Final Encroachment Result — 58 
+Table 8.3: Dashboard Test Results — 61 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+viii 
+
+=====PAGE 13=====
+ 
+ 
+ 
+ 
+1 
+ 
+CHAPTER 1 
+INTRODUCTION 
+1.1 INTRODUCTION 
+Handling of assets that are geographically distributed of conventional ownership, inventory, 
+financial and documentary records alone is not enough. Assets like land parcels, properties, 
+agricultural resources, vehicles, equipment, plantations, animals and other tangible 
+valuables are linked with one or more geographical locations and in many cases with a 
+geographical extent as well. Thus managing a GIS asset implies maintaining not only the 
+descriptive attribute values linked with it but also the spatial extents or location information. 
+While the existing asset-management systems are clearly capable of storing detailed 
+information about an asset, they are not sufficient to determine if a geographic event has 
+occurred about an asset, unless the event information is incorporated into the framework.  
+That is, they can store information like ‘who owns’, ‘what is the asset’, ‘what is its financial 
+worth’, ‘what insurance details exist’ and ‘what all supporting documents are archived 
+against’ but alone this does not necessarily provide an indication of whether or not a 
+geographic event has happened about, or has any effect on, the asset. Existing geospatial 
+monitoring systems can perform operations against geographic coordinates and/or 
+boundaries but there is not the necessarily additional asset, financial or operational 
+information to interpret the significance of the event detected or not. 
+The geofence concept can be employed as spatial ring border on the target of interest. 
+Boundary infringement detection makes use of spatial rings concept for example in 
+application of UAV system to demonstrate how significant the use of spatial ring boundary 
+can be in border infringement detection of monitored object [1]. Land and property 
+monitoring gradually increases in requirement due to irregular polygon shape of land plots 
+and boundary event matching with the ownership data, asset name, previous monitoring, 
+investment risk and possible compensation.  
+For the GeoFence effort the paradigm was selected to be the usage of a parcel of land as 
+the primary geo-reference, with a polygon to delineate the boundary being watched. Assets 
+and information would then be related in a geo-context that would enable the output of a 
+spatio-temporal incident as an asset event. When the incident polygon intersected the learn 
+boundary the system would perform a geo query, record the event, consult with the 
+signature database to decide if it was historically relevant, record asset and dollar value, 
+generate an event risk score, determine alert priority, and record in the persistent state. 
+Hence, the project looks to be using geofencing only the first stage in a large detection-to-
+decision sequence. The sequence covers the following: geographic registration, spatial 
+calculation, temporal proof, asset context, monetary liability, risk posture, alarm listing, 
+dashboard analysis and alert.  
+Variations may arise depending upon coordinate source, manual digitizing, map resolution 
+or other representational aspects. Accordingly, the final prototype builds upon existing 
+geospatial and asset-managing capabilities and does not incorporate a proposed new 
+remote-sensing detection algorithm or survey-grade cadastral positioning system.  Rather, 
+
+=====PAGE 14=====
+ 
+ 
+ 
+ 
+2 
+ 
+it aims to show how a geographic event can be converted into an asset-aware and explicable 
+operational alert. 
+ 
+1.2 BACKGROUND OF THE PROJECT 
+A geofence is an electronically established barrier in a known geographic area for enlisting 
+events that take place inside, outside or flow of a predetermined geographic area. The 
+irregularity of land parcels’ shape makes polygon boundaries more suitable. The essential 
+geographic entity that makes up the Geo Fence system is the land parcel, each land record 
+has a registered Identification and a polygon defining the context (boundary). Spatial 
+Database capabilities can then be leveraged to perform operations such as containment, 
+intersection, measuring distance and calculating area, so that the application compares 
+submitted geographic observations against the registered boundary, rather than reading text 
+based or manually derived location information.  
+Further complications are also introduced in the real world where the system must 
+determine if the event is significant. The in/out states do not provide enough information 
+to get a measure of the magnitude of the entry if needed; a single observed event position 
+might be checked against a map, but multiple observed position points over the same area 
+suggests a persistent large event. Emerging capability of remote sensing led to the physical 
+parameters monitoring. Abdelhamid et al. (2004) had explored the building change 
+detection through both previous and latest Remote sensing images [2], regarding 
+encroachment and unlawful developments on the government owned pristine Lands.  It 
+proves the practicability of physical change analysis on land monitoring in automated mode.  
+Nevertheless, identification of the changed site is just one job, operational incident is 
+another. 
+GeoFence addresses mainly the second system level problem. Once developed, the project 
+creates a workflow in which a spatial observation can be linked to: 
+• Associated assets 
+• Historical observations 
+• Temporal persistence 
+• Asset criticality 
+• Property value 
+• Portfolio exposure 
+• Risk components 
+• Alert priority 
+• Notification and  
+• historical monitoring records. 
+This approach can provide contextualization of a geocentric event with respect to the asset. 
+Boundary versioning is important as the semantics of monitored event changing with 
+boundary controlling it. This has been proven, then this defines Registry Comparison. It 
+may be, that the digitized boundary of an overlay is further from the nearest registry 
+boundary than registry boundaries are from each other so system did not detect each 
+circumstantial difference in the ge as conflicting ownership.  If comparison can be 
+
+=====PAGE 15=====
+ 
+ 
+ 
+ 
+3 
+ 
+performed  and the difference is also a good match, the system transfers record of the origin 
+digitized version between source and digital difference, and the margin. 
+Thus, the background of the project combines three related areas: 
+1. Geospatial boundary management, which provides the spatial representation of 
+land; 
+2. Asset and portfolio management, which provides contextual information about 
+what is associated with the land; and 
+3. Monitoring and decision support, which converts geographic observations into 
+prioritized and traceable operational events. 
+Besides the geographic boundaries of land parcels and land patches, an argument was made 
+for Geo Fence to be developed into a multi-asset management system. The land parcel is 
+the obvious geographic entity to be attached to various categories of assets including 
+vehicles, machines, tractors, plantations, livestock, jewelry, artwork and wills. The 
+motivation for this is to include heterogeneous assets into the same managing system and 
+not make land encroachment a standalone issue.  For some assets like plantations and 
+livestock, they are directly geographic related to a land parcel. For some assets like jewelry, 
+artwork and wills, their management is more like a portfolio of assets or other documentary 
+assets.   
+1.3 MOTIVATION 
+The motivation for creating GeoFence comes from the challenge of observing 
+geographically distributed assets along with their operational and financial context. 
+Manual surveillance naturally becomes even more burdensome as the number of 
+geographically dispersed assets grows.  The user can expect to be forced to review multiple 
+maps, asset records, historical observations, financial information, and alert records.  This 
+hopping around raises the overhead for discerning whether a particular event warrants 
+attention, and what next step should be taken. 
+The second reason is that asset information is separated from geographic information. An 
+asset record may describe who owns the value of the asset without representing the physical 
+boundary of the asset.  The map can show a happening close to the boundary without 
+specifying which asset is involved and the importance of the asset.  
+The third reason is to differentiate between one-off observations and continuous events.  
+One off-population observations can result from transient phenomena, spatial uncertainty 
+and other sources. Repeated observations on roughly the same location strengthen the 
+temporal evidence.  GeoFench keeps recording observation history and uses the 
+information to determine one event. 
+The project is also motivated by the requirement for context-aware prioritization. Not every 
+spatial event requires the same level of response. Asset criticality and financial exposure 
+can provide additional information for deciding which events require greater attention. 
+
+=====PAGE 16=====
+ 
+ 
+ 
+ 
+4 
+ 
+The major motivations can therefore be summarized as follows: 
+• Inefficiency in manually managing geographically dispersed assets. 
+• The access for attribute records separate from the geographic boundaries.  
+• It is necessary to connect the spatial event with the affected asset. 
+• have to separate the transitory from the chronic. 
+• Need to include asset criticality when interpreting events. 
+• To ensure that the above list has been led, we need to first give the customer’s 
+financial exposure context. 
+• Must be cautious with false alarms. Alerts should be prioritized based on the 
+context of the event. 
+• Must still preserve alert information from the past. 
+• Should deliver meaningful alerts and have one monitoring interface.  
+• The system needed to maintain different types of assets in the context of a single 
+land and property system.  
+• Agricultural assets like plantations and stock(agriculture) need received a treated 
+up with the land geography 
+• Portfolio and documentary assets like jewelry, paintings, wills are to be handled 
+as they are to be depicted, without being framed under the geographic map.  
+• Information regarding the financial status of the property can help give additional 
+information on the exposure posed by the monitored land parcel. 
+1.4 PROBLEM STATEMENT 
+Handling land holdings and assets, which are spread across various locations, goes beyond 
+keeping traditional ownership, inventory, and financial records. In many real-world 
+applications, data on land locations, assets, financial value, and spatial events often resides 
+in different sources or systems.  Therefore, it can become increasingly hard to detect if an 
+external spatial event impacts a specific asset or property, as the number of assets or 
+properties grows.  
+One of the most difficult problems lies with land encroachment and boundary violation 
+detection and mitigation. Human visualization of land boundaries is arduous and the 
+absence of an automatic, reliable, standard process for temporally recording, spatially 
+storing, comparing and analyzing ongoing spatial events presents further problems. A one-
+off event may not be as significant in terms of operations as the context of that event is not 
+known and not able to be factored in to an event decision. For instance, an encroachment 
+involving a premise holding a high value machine or asset may draw more concern than 
+that involving a premise holding comparatively lower value assets. 
+All existing research concerning geofences and Remote-sensing based change detection 
+deals with specific technical solutions like spatial boundary violation detection [1], [2].  
+What is missing is a connected system, linking spatial detection with asset information, 
+financial exposure, persistence over time and alert processing.  In the absence of such a 
+system a user may find a geographical change but not yet enough information which 
+property, asset etc. has been touched, whether the change is persistent and if the situation 
+needs to be taken care of immediately.  
+
+=====PAGE 17=====
+ 
+ 
+ 
+ 
+5 
+ 
+Hence, the issue this project tackles is how to design a complete GeoFence solution, 
+offering land and asset monitoring, which would store land and assets information,  depict 
+land boundaries as spatial polygons,  use spatial operations to differentiate from potential 
+illegal land uses and assets encroachment,  keep history of potential encroachment 
+observations, link detected encroachment events to existing land and assets database, thus 
+to existing financial data and offer a risk evaluation and event prioritization mechanism,  
+so that the system would provide usable information not only spatial observations. 
+Furthermore, the system should accommodate for the boundary uncertainty and the 
+discrepancies between the digitized boundaries and the registry information, as some slight 
+discrepancies should be expected from the digitization process, originating from the 
+digitizer, coordinate source, or differences of the representations. Thus, an integrated asset-
+management and geofencing system should be developed to achieve the connection of 
+heterogeneous asset registration, land and property information, geographic boundary 
+management, spatial event detection, time verification, financial context, risk evaluation, 
+alert classification as well as deliverance in one consistent workflow. 
+1.5 RESEARCH GAP 
+Research on geographic monitoring can be classified into several tracking specific 
+directions.  Several systems based on geofence explored the construction and assessment 
+of geofences as well as the detection of geofence violations [1]. Remote-sensing oriented 
+research focused on the investigation on change detection of structures and land based on 
+multi-temporal imagery, related to various applications including encroachment detection 
+[2].  With advances in deep learning, recent work is focused on extending change detection 
+with multi-scale feature extraction, attention mechanism, semantic information, vision 
+transformer, vision foundation models and other learning architecture.  
+While these methods do offer critical capabilities for detecting and interpreting geographic 
+change, the scope of the existing literature reviewed for this project examines largely 
+individual technical layers.  For example, a change-detection method might identify a 
+changed area, while a geofencing approach could classify an observation as violating a 
+boundary yet such results alone may not contribute to the operational context needed for 
+assets management. 
+Hence, the gap we have identified is not just a case of there not being another detection 
+algorithm.  However that there is less integration between:  
+Spatial detection --> asset association --> temporal evidence --> risk context --> portfolio 
+exposure --> alert prioritization --> notification. 
+ 
+ 
+ 
+
+=====PAGE 18=====
+ 
+ 
+ 
+ 
+6 
+ 
+Existing capability 
+Typical focus 
+Requirement addressed by 
+GeoFence 
+Geofencing 
+Geographic 
+boundary 
+violation 
+Asset-aware monitoring 
+Remote-sensing 
+change 
+detection 
+Identification of changed 
+regions 
+Operational 
+event 
+management 
+Semantic change detection Interpretation of changed 
+objects 
+Asset association 
+Temporal monitoring 
+Change 
+across 
+observations 
+Persistence classification 
+Asset management 
+Asset 
+records 
+and 
+attributes 
+Geographic event association 
+Risk analysis 
+Contextual evaluation 
+Integrated spatial and asset 
+risk 
+Alert systems 
+Notification 
+Detection-to-alert workflow 
+Portfolio analysis 
+Financial information 
+Geographic-event 
+financial 
+exposure 
+ 
+1.6 OBJECTIVES 
+The aims of the Geo Fence project are designed to relate to the problem in the research gap 
+identified. 
+1. Centralized Heterogeneous Asset and Geographic Information 
+• To establish a common system for managing land, property and 
+heterogenous assets information and their associated spatial context.  
+2. Polygon-Based Geofencing and Spatial Boundary Management 
+• With the aim of implementing polygon based geofences that would depict 
+irregular land boundaries and the use of supporting boundary editing and 
+validation functionalities.  
+3. Spatial Encroachment Detection 
+• To establish if the geometry of a feature has co-incident with the recorded 
+land boundary along with the spatial properties of when the event occurred. 
+4. Temporal Persistence Analysis 
+• To keep record of observations taken over a period of time to ascertain 
+whether a condition encountered is new, observed, repeated or persistent 
+event. 
+
+=====PAGE 19=====
+ 
+ 
+ 
+ 
+7 
+ 
+5. Risk Assessment Using Spatial, Temporal and Asset Factors 
+• For determining a contextual risk score by considering risk components 
+(overlap, persistence, severity, proximity and asset criticality) and their 
+value playing the role of guide. 
+6. Alert Management, Prioritization, Dashboard and Notification 
+• How do we translate what we have detected into sensible alarms, with 
+defined response levels, visual dashboard monitoring, and automated 
+notifications. 
+7. Boundary Provenance, Versioning and Registry Comparison 
+• To be able to keep a record of boundary sources and versions in order to 
+make a comparison of the operational boundary representations with the 
+registry representations and to differentiate variance due to digitization 
+from meaningful geometric differences. 
+Its goals consist of a sequence from the registration of data to the spatial detection, to the 
+contextual analysis and the working response. 
+1.7 SCOPE OF THE PROJECT 
+The scope of the Geo Fence is to develop a web-based prototype of geofencing based asset 
+monitoring and encroachment management. The system keeps registering land parcels 
+articulated by polygonal geographic shapes. It has spatial operations to validate submitted 
+geographic observations using the registered land patches. The system also manages 
+attributes linked to asset data and caters for many asset classes in the context of the portfolio. 
+The asset-management layer is designed as a heterogeneous layer. Land and property 
+provide the geographic platform, whereas vehicles, machinery and tractors act as 
+operational assets, plantations and livestock are agricultural assets attached to a particular 
+land asset, and jewelry and art are portfolio assets. Wills exist as document-based records 
+within the asset-management layer.  This separation does not allow all assets to be 
+separated geographically (have their own boundary) but relies on them having association 
+with a specific property or portfolio, that does. 
+The implemented prototype covers the following major areas: 
+• land and property registration. 
+• polygon-based boundary representation. 
+• spatial geometry validation. 
+• geofence management. 
+• spatial intersection and encroachment detection. 
+• observation storage. 
+• temporal persistence analysis. 
+• asset criticality. 
+• property financial information. 
+• portfolio exposure. 
+• composite risk scoring. 
+• alert generation. 
+
+=====PAGE 20=====
+ 
+ 
+ 
+ 
+8 
+ 
+• alert prioritization. 
+• email notification. 
+• dashboard analytics. 
+• boundary-status verification. 
+• boundary provenance. 
+• registry geometry comparison. 
+These become significant because the geographic calculations performed by the prototype 
+rely on digital representations of boundaries and test data. A computational tolerance for 
+verification should not be taken as a legal tolerance for land occupation. 
+1.8 CONTRIBUTIONS OF THE PROJECT 
+Overall, the primary innovation of GeoFence is the maturation of several existing 
+techniques into a single operating paradigm. 
+1.8.1 UNIFIED ASSET-GEOFENCING FRAMEWORK 
+The nodes link geographically based land boundaries with well-structured asset data so a 
+spatial event can be explained in terms of the asset experienced.  
+1.8.2 DETECTION-TO-ALERT INTEGRATION 
+One geographic event can go from the observation storage, persistence analysis, contextual 
+risk calculation, prioritization, alert generation, and notification stages without manual 
+handoff between separate systems. 
+1.8.3 ASSET-AWARE MONITORING 
+The system takes into account asset type and criticality from the event interpretation.  So, 
+spatial events can be associated with information relative to the asset impacted. 
+1.8.4 TEMPORAL PERSISTENCE TRACKING 
+The system further preserves a collection of past observations and applies to current spatial-
+temporal inference to determine whether the event is new, observed, under process, or 
+persistent. 
+1.8.5 RISK-AWARE SCORING 
+The spatial and contextual factors are normalized and included in a combined risk score, 
+which enables an understandable comparison of the various event importances of the 
+prototype. 
+1.8.6 PORTFOLIO EXPOSURE CONTEXT  
+The project builds on spatial event analysis by providing property-value data within a 
+normalized portfolio-exposure indicator, facilitating the financial valuation of the affected 
+property in relationship to its space and function. 
+
+=====PAGE 21=====
+ 
+ 
+ 
+ 
+9 
+ 
+1.8.7 PRIORITY-TIERED ALERTS  
+The system maps risk and persistence values onto notify priority levels to separate events 
+that must be urgently investigated from those that can be reviewed at lower levels of 
+interest. 
+1.8.8 BOUNDARY PROVENANCE AND VERSION HISTORY  
+The system captures boundary source and version information for better traceability since, 
+for the recording of monitoring results, the digital boundary used for assessing the event, 
+etc. would be necessary. 
+1.8.9 REGISTRY COMPARISON AND DIGITIZATION-VARIANCE HANDLING  
+The system will allow one to compare the working geometry with the registry geometry. 
+Slight variations can be accepted as digitization variance, rather than scored automatically 
+as an ownership conflict.  
+These inputs all help to establish. In consensus, Newsgor has a take-home hybrid-geopedia 
+information structure that served to form the current-GeoFence as an integrated 
+geosuftware assets-monitoring and decision-support prototype. 
+CHAPTER 2 
+BACKGROUND AND THEORETICAL FOUNDATION 
+2.1 INTRODUCTION 
+GeoFence sits at the convergence of a number of fields of study - geographic information 
+systems, spatial databases, geofencing, asset management, spatial event monitoring, 
+temporal analysis, risk analysis and notification systems. The theoretical underpinnings of 
+the project thus extend well beyond the notion of a geofence, which merely supplies the 
+geospatial context for an event. An effective monitoring and notification system also 
+depends on a means of storing assets, correlating associated geographies, recording 
+observations, establishing persistence, performing risk calculations and communicating a 
+decision.  
+Land is the geographic “anchor” for all business data in GeoFence. A land parcel is 
+depicted as a polygon boundary and stored as a spatial entity.  Various attributes then can 
+be linked to the land This provides a geographic framework to which all individual asset 
+references can be linked directly or indirectly, such as land used in conjunction with fleet, 
+implements, livestock, or land alone used for a specific project such as a fossil or 
+archaeological excavation, or a portfolio, such as jewelry, paintings and houses, or a 
+document, such as a will. It is necessary to differentiate these assets from the morphological, 
+defined land boundary asset class because not all objects in the system should assume 
+necessarily a spatial object. 
+ 
+
+=====PAGE 22=====
+ 
+ 
+ 
+ 
+10 
+ 
+2.2 GEOFENCING 
+2.2.1 CONCEPT OF GEOFENCING 
+Geofencing is a location based approach whereby a virtual geographic boundary is set 
+around a real world geographical area. Attempts to do something at a location can then be 
+assessed in relation to this boundary. 
+A geofence may be defined in other shapes such as circles or polygons when the application 
+is simple.  As we are working with land parcels, the application is more complex and 
+polygon shapes are used in GeoFence. Circle shape can be specified when working with 
+fixed point data, while for land parcels complex polygon shape must be used. 
+The fundamental operation can be represented as: 
+G = {(x 1, y 1), (x 2, y 2) ....(x n, y n)} 
+Where G is the geofence polygon and each coordinate pair corresponds to a vertex of the 
+boundary. 
+A spatial observation (P= (x, y)) can then be evaluated against (G): 
+P∈G 
+if the point lies within the registered polygon. 
+Thus, geofencing offers the fundamental process through which the GeoFence business 
+system is capable of transforming spatial data into a functional surveillance condition. 
+2.2.2 POINT, LINE AND POLYGON GEOMETRIES  
+Various geographic data exist in a spatial database by means of geometrical primitive 
+objects like point and lines, lines and polygons etc.  
+A point is a single point on the earth's surface. This is suitable when representing a position 
+such as a vehicle position, an observation point or a coordinate from a positioning system. 
+A line is a series of coordinates connected together and can be used for representing roads, 
+routes, paths of movement or outlines that are not required to be closed areas. 
+The shape of the defined geographic location in GeoFences, the shape of the polygon is 
+used for it is usually considered as a land parcel not a point.  
+This distinction is significant to the system because each monitoring event may have a 
+different spatial form. A point can be tested as to whether it falls within a polygon of the 
+registered land, and an observed polygon can be tested for intersection with the registered 
+land boundary. 
+ 
+
+=====PAGE 23=====
+ 
+ 
+ 
+ 
+11 
+ 
+2.2.3 POLYGON-BASED GEOFENCING IN GEOFENCE  
+The geofencing layer in GeoFence follows the sequence:  
+• Land Registration→ polygon creation→ Geometry Validation→ spatial Storage→ 
+observation of spatial data→ comparison of spatial data 
+The user provides the administrative data as well as the land extent at the point of 
+registration. The extent has to be checked before storage to prevent an erroneous geometry 
+being stored in the reference for later monitoring. 
+The approved polygon is saved on the PostgreSQL with the PostGIS extension. When 
+spatial observations are sent, the backend converts the geographical form received into a 
+geometry suitable for the database and executes the spatial operation. 
+The frontend supplies the user interaction geographic interface. The backend and the 
+database performs the real spatial calculation. This architecture prevents the clients 
+interface from independently deciding an event as an encroachment. 
+2.3 GEOGRAPHIC INFORMATION SYSTEMS 
+2.3.1 ROLE OF GIS 
+A GIS offers facilities to store, manage, analyze and visualize this information in relation 
+to geographic locations. While most traditional information systems have information 
+stored as textual or numerical attributes, an applications function on a direct relationship 
+between the information and the geographic space.  
+GeoFence applies GIS principles as the system is required to associate land parcel and 
+monitoring information with land boundaries. The map interface provides land records to 
+the users and facilitates the creation or inspection of geographic boundaries. The spatial 
+database provides an analytical layer to facilitate GIS object relationships. 
+GIS is therefore used at two levels in the project: 
+• Visualization - representations of the land boundaries and other spatial information 
+over an interactive map. 
+• Spatial analysis - measurement of containment, intersection, distance and area 
+associations. 
+This distinction is significant because the visualization itself is insufficient to implement 
+geofencing.  In other words, a map can indicate a perimeter, but the system needs a 
+geographic condition-check to know if an observation meets a defined geographic 
+constraint. 
+ 
+ 
+
+=====PAGE 24=====
+ 
+ 
+ 
+ 
+12 
+ 
+2.3.2 WEB GIS ARCHITECTURE 
+Web GIS is a form of Web-based GIS which has GIS functions. Web GIS provides GIS 
+functions through web pages, rather than a set of tools upon which a dedicated GIS desktop 
+application is built. The GIS data can be showed via a browser.  
+The web GIS interaction in Geo Fence is realized with a frontend map interface and the 
+backend offers application services in land registration, spatial checking and the like. 
+Persistent spatial data layer is provided by PostgreSQL/PostGIS. 
+Conceptually, the system therefore separates three responsibilities: 
+• Presentation layer- delivers the map, the web forms and the user interface. 
+• Application layer accepts the request, checks the validity of the input, and controls 
+all of the operations of the system. 
+• Spatial data layer- contains geographic objects and handles spatial database queries. 
+2.4 SPATIAL DATABASES AND POSTGIS 
+2.4.1 CONVENTIONAL DATABASES AND SPATIAL DATA 
+A traditional relational database is a preferred mode to hold attributes that are well defined 
+such as name, id, date, quantity and amounts etc.  Whereas, a geographic application needs 
+a third layer to show the geometric data. 
+For example, a land record may contain: 
+• Land identifier 
+• Owner information 
+• Survey number 
+• Purchase value 
+• Current value 
+• Tax information 
+• Insurance information 
+• Polygon boundary 
+The text and numeric attributes could be represented in the usual relational columns, and 
+the polygon would need to be a spatial data type. A spatial database built upon the relational 
+model can store and query geographic objects directly, instead of just treating the 
+coordinates abstractly as numbers, and manipulation of geographic relationships can be 
+integrated into database operations. 
+2.4.2 POSTGIS 
+PostGIS is the spatial extension for use with PostgreSQL that is employed by GeoFence. 
+It was specifically created to enrich the spatial capabilities of PostgreSQL by adding new 
+
+=====PAGE 25=====
+ 
+ 
+ 
+ 
+13 
+ 
+types of data structure as well as functions that enable the storage and the processing of 
+geographic geometries inside the relational database system.  
+PostGIS plays a key role in that all of the fundamental operations of Geo Fence are spatial. 
+These are: 
+• Geometry validation 
+• Point-in-polygon containment 
+• Polygon intersection 
+• Distance and proximity evaluation 
+• Spatial intersection extraction 
+• Area calculation 
+The database is thus not only a system to store description of the boundary but it is also a 
+system to give the computer an environment to test the spatial relationships. This method 
+also prevents inconsistency from arising through the use of the same registered land 
+geometry as the basis for all later spatial observations. 
+2.4.3 WKT AND GEOJSON 
+The geographic information can be stored in various text-based or structured formats at 
+different entry or exit points of the system.  
+The Well-Known Text (WKT) specification offers a textual way of representing a 
+geometric object.  As an example, a polygon could be represented by following list of 
+coordinate pairs which would describe the boundary of a polygon: 
+GeoJSON is a JavaScript Object Notation (JSON) based way of representing and sharing 
+geographic data in web application. It is ideal for communication with map mod by browser 
+and server. 
+Within GeoFence, geographic information may therefore pass through several 
+representation stages: 
+Web Map / Geo JSON to processing on back end which handle the spatial geometry to 
+store on PostGIS 
+The key distinction is that these formats are just for allowing geographic information to be 
+communicated or stored, whereas PostGIS supplies the spatial functions needed for 
+analysis. 
+2.5 SPATIAL RELATIONS 
+2.5.1 CONTAINMENT 
+Containment- evaluates the inclusion of a geographic object within another geographic 
+object. We used the containment relation between a registered land polygon and an 
+observed point in GeoFence.  
+
+=====PAGE 26=====
+ 
+ 
+ 
+ 
+14 
+ 
+If the location of the observation is within the registered extent line, it meets the spatial 
+condition of the relevant boundary. Otherwise the observation is located outside the 
+registered extent, it could be a boundary breach or other phenomenon and needs to be 
+checked. The implementation, PostGIS spatial predicates (ST_Contains) are the database 
+level mechanism for this. 
+2.5.2 INTERSECTION 
+Additionally, containment is not enough when the reference and result objects are the areas. 
+An instance is whether the constructed or changed area represented as polygon intersecting 
+the registered land polygon. 
+2.5.3 DISTANCE AND PROXIMITY 
+Distance is also a relevant spatial relationship.  Even if two geographic objects do not 
+intersect with one another, they may be distant and thus this distance may be relevant to 
+monitoring. 
+A proximity condition can be represented conceptually as: 
+d (A, B) ≤ r 
+where d (A, B) represents the spatial distance between two objects and r represents an 
+application-defined threshold. 
+GeoFence incorporates a spatial distance measure into its temporal observation association. 
+With proximity measures, two observations are potentially related if they are within the 
+configured spatial association distance.  The prototype utilizes a 20-metre spatial 
+association distance mechanism in conjunction with the recent observation time window. 
+It gives the system the ability to decide between multiple observations being viewed as 
+separate, ongoing incidents or the same incident happening repeatedly. 
+2.6 SPATIAL UNCERTAINTY AND BOUNDARY REPRESENTATION 
+Digital geographic boundaries are not necessarily accurate to the physically or legally 
+defined boundary, and should not be assumed to be so.  Discrepancies can occur due to 
+digitization process, source data, coordinate system, survey methods, or other sources of 
+spatial uncertainty. 
+This distinction becomes even more critical for a system like GeoFence in which an 
+encountered geographic phenomenon might be near a boundary and yet not give enough 
+evidence for a conclusive operational decision. 
+GeoFence has therefore adopted the concept of boundary verification. For the boundary 
+verification, if a spatial result satisfies the set verification condition configured, then it can 
+be treated as: 
+• INSIDE – the placement registers a spatial condition that is hereby registered. 
+
+=====PAGE 27=====
+ 
+ 
+ 
+ 
+15 
+ 
+• OUTSIDE - the note is outside the boundary as noted on the register.  
+• VERIFY_BOUNDARY - the result is close enough to the boundary that further 
+checking makes sense.  
+It recognizes inherent uncertainty in operational geospatial data and offers a way to identify 
+unambiguous spatial outcomes versus boundary-sensitive instances.  
+2.7 REMOTE-SENSING CHANGE DETECTION 
+Remote-sensing change detection aims to find the difference between two observations 
+over the same geographical area obtained at different times. It has been widely studied for 
+applications including land use monitoring, urban development, building change detection 
+and environment observation.  Some advanced techniques have been further developed to 
+detect changes in high-resolution remote-sensing images, for example multi-scale feature 
+extraction, semi-supervised learning, attention based architecture and semantic change 
+detection. Fu et al.  Researched building change detection over remote-sensing imagery. 
+Feature interaction and learning based approach have been further studied for high-
+resolution remote-sensing imagery change detection. 
+Change detection using remote-sensing techniques is predominantly oriented toward 
+understanding what change has occurred in an image, GeoFence is primarily directed 
+towards understanding what that change portends when viewed from the registered land, 
+asset and operations backdrop. A change detected by remote sensing in the image may then 
+be related to registered land, spatial overlap with that registered land, relevant assets, 
+persistence over time, asset criticality, financial context, risk, alert priority etc.  
+2.8 TEMPORAL OBSERVATION AND PERSISTENCE 
+In some cases, a single spatial observation cannot provide enough evidence to state that an 
+event is a persistence.  So, temporal interaction offers an additional way of separating 
+observations, which are the space-time isolated points, from those repeated events in time. 
+Repeated observations in time, keeping the right concept of the spatial relationship, can be 
+linked. 
+GeoFence employs a prototype persistence mechanism which utilizes recent observations 
+within an interval of 24 hours and spatial association radius of 20 meters. Such an event 
+can reach the following states according to the number of matching observations:  
+NEW → OBSERVED → REVIEW → PERSISTENT 
+Where for NEW the associated values are for OBSERVED, the associated values are for 
+REVIEW the associated values are and for PERSISTENT represents three or more 
+associated observations. This enables the system to differentiate between early detection 
+and accumulating evidence. Persistence may then play a role in the risk evaluation and 
+alert-prioritization that was mentioned earlier. 
+ 
+
+=====PAGE 28=====
+ 
+ 
+ 
+ 
+16 
+ 
+2.9 MULTI-ASSET MANAGEMENT 
+GeoFence is meant to be one integrated asset-management and geofencing system and it is 
+not an Enroachment detection system alone. The system considers heterogeneous asset 
+categories such as vehicles, machines, tractors, plantations, livestock, jewelry, artwork, 
+wills. 
+Asset Category 
+Primary 
+Representation 
+Geographic Relationship 
+Land 
+Spatial polygon 
+Primary geographic anchor 
+Vehicle 
+Asset record 
+Associated 
+with 
+monitored 
+land/location 
+Machine/Equipment 
+Asset record 
+Associated with land/location 
+Tractor 
+Asset record 
+Associated with agricultural land 
+Plantation 
+Land-associated asset 
+Directly associated with land 
+Livestock 
+Land-associated asset 
+Associated 
+through 
+land/property 
+context 
+Jewelry 
+Portfolio asset 
+Primarily non-spatial 
+Artwork 
+Portfolio asset 
+Primarily non-spatial 
+Will 
+Documentary asset 
+Associated 
+with 
+owner/property/portfolio 
+ 
+TABLE 2.1: MULTI-ASSET CATEGORIES AND THEIR ASSOCIATION WITH 
+GEOFENCE 
+The land parcel is the primary spatial reference for the system. The land parcel polygon 
+boundary is used as the comparison for observations that are geographically relevant. 
+Vehicles, machines and tractors are used as operational assets in the geographic context 
+and plantations and livestock as land based agricultural assets. 
+Plantation records contain structured information on plantation or agricultural assets within 
+a land parcel. The current implementation does not support automatic crop-health analysis 
+and yield estimation. Likewise, livestock is considered a set of geographically associated 
+assets, not a continuously moved object.  This implementation does not support continuous 
+movement tracking and monitoring of livestock health.  
+
+=====PAGE 29=====
+ 
+ 
+ 
+ 
+17 
+ 
+Since jewelry and artwork are portfolio-oriented assets, they do not fall under the 
+possession of individual geographic polygon requirement. Wills would fall into the same 
+document-oriented assets category. They are assets that could link back to their owner, 
+property or general portfolio. This is also Showed that GeoFence does not provide 
+geographic representation for each asset class. 
+The multi-asset model therefore enables the system to bring together in a single framework 
+the geographical, operational, agricultural, portfolio and documentary information while 
+maintaining the difference between spatial and no spatial assets. 
+2.10 PROPERTY AND FINANCIAL INFORMATION 
+Property information introduces an additional contextual dimension to geographic 
+monitoring. GeoFence maintains financial characteristics for each property, such as value 
+at purchase, current value, yearly tax, insurance and insurance expiration. 
+While the polygon defines the mass of the property, the financial attribute does a good job 
+of defining the relative economic circumstance. This separation allows spatial event 
+interpretation with respect to the amenity of changing financial circumstances that are 
+defined for the property. 
+More generally, the GeoFence model also generates a prototype portfolio-exposure metric 
+which is a function of the current market value of the targeted property in proportion to the 
+aggregate market value of the targeted portfolio: 
+Portfolio Exposure = Total Portfolio Value/Affected Property Value ×100 
+This metric is proposed primarily as an initial tool to assist decision-making rather than as 
+an expert financial valuation, insurance or legal valuation.  It is offered to aid interpreting 
+the impact of a spatial event. 
+2.11 RISK ASSESSMENT 
+The risk assessment weightings were calculated with the Analytic Hierarchy Process 
+(AHP) which is a multi-criteria decision making method using pair-wise comparisons of 
+the five risk factors: percentage overlap, temporal duration, severity, proximity,  and asset 
+criticality. 
+The prototype risk score is calculated as: 
+Risk Score = 
+0.35(Overlap)+0.25(Persistence)+0.20(Severity)+0.10(Proximity)+0.10(Asset 
+Criticality). 
+Component 
+Weight 
+Purpose 
+Overlap 
+0.35 
+Represents the spatial significance of the affected region 
+
+=====PAGE 30=====
+ 
+ 
+ 
+ 
+18 
+ 
+Persistence 
+0.25 
+Represents repeated evidence of the event 
+Severity 
+0.20 
+Represents the assessed seriousness of the event 
+Proximity 
+0.10 
+Represents spatial closeness relevant to the monitoring 
+condition 
+Asset 
+Criticality 
+0.10 
+Represents the importance assigned to the associated 
+operational asset 
+ 
+TABLE 2.2: RISK SCORE COMPONENTS AND WEIGHTS 
+The prototype provides criticality values to asset types of interest. In the prototype 75 has 
+been used for vehicle, 90 for machine, 50 for tractor and 25 as default value. The higher 
+criticality is defined if more than one of the asset systems of interest exist with the event. 
+The risk model is designed to be interpretable. A score is created from components that 
+can be identified rather than predicted in a mysterious fashion. The weights are engineering 
+decisions for the prototype and are not presented as statistically learned coefficients. 
+2.12 ALERT MANAGEMENT AND PRIORITIZATION  
+Detection and alerting are separate phases in the monitoring process. When a spatial 
+observation is identified, the contextual information about the event may be used to 
+determine whether an alert should be issued. 
+The conceptual progression is the Observation of the spatial features is used to verify the 
+application or system. If the spatial features can sustain their properties after they are 
+observed, risk of their apply can be predicted. The higher the persistence is, the greater the 
+risk is. Based on the risk level, an alert should be sent to user with different priority. 
+Alert severity addresses the gravity of an event, and alert priority indicates the operational 
+urgency of addressing the event. Persistence is significant since multiple observations can 
+prove more reliable than a single observation. Alert history is maintained by the system so 
+that multiple observations can be associated with ongoing events instead of creating a new 
+alert record for each observation. This supports a more manageable alert lifecycle and 
+provides history for dashboard review. 
+2.13 BOUNDARY PROVENANCE AND VERSIONING  
+Digital geographic limits need to be constructed as managed information rather than 
+immutable permanently fixed boundaries, as they may change. These changes may be as a 
+result of source information alteration, scanning, digitization, editing or correction, or other 
+boundary management processes. As a result the history of boundary representations may 
+be important in the interpretation of events of historic monitoring. GeoFence uses 
+boundary-history information to keep track of already registered versions of boundary. In 
+principle, the boundary may go through three states as follows: 
+
+=====PAGE 31=====
+ 
+ 
+ 
+ 
+19 
+ 
+Boundary(t1) → Boundary(t2) → Boundary(t3) 
+Which enables the system to differentiate the present boundary from the previous versions 
+that could have been useful in past observations. 
+2.14 REGISTRY COMPARISON 
+GeoFence also considers the comparison of an operationally digitized boundary with an 
+available registry representation. This comparison can reveal potential dissimilarity 
+between geographic sources.  
+The comparison may focus on registry of the presence, spatial coincidence, the difference 
+of areas and the difference of geometrical. The three main categorizations are used in this 
+prototype as follows: 
+• REGISTRY_NOT_FOUND – registration geometry is not available. 
+• DIGITIZATION_VARIANCE – the geometries are generally similar but with 
+discernable variance. 
+• MISMATCH –the geometries are quite different.  
+2.15 DASHBOARD ANALYTICS 
+Dashboard analysis enables the combined presentation of all information produced by the 
+various GeoFence modules. For details that might have, otherwise, have been physically 
+audited separately at the database level, the dashboard would be able to present information 
+concerning registered land, assets, property financials, encroachment detection, persistence, 
+alerts, risk information, portfolio exposure, boundary verification and registry comparison. 
+The dashboard is therefore the presentation layer to the system’s detection-to-decision flow. 
+It allows users to review the status of monitored properties and the associated assets as well 
+as the history of the alert information. Furthermore, there could be summary indicators, 
+event logs, and financial data on the dashboard. Any number that would be displayed in 
+the prototype should be understood as the presence of the test database rather than an 
+indication of actual incident rate. 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+
+=====PAGE 32=====
+ 
+ 
+ 
+ 
+20 
+ 
+CHAPTER 3  
+LITERATURE REVIEW 
+3.1 LITERATURE REVIEW MATRIX 
+S. 
+No. 
+Author(s), 
+Year 
+Method 
+/ 
+Approach 
+Key Contribution 
+Gap Identified 
+1 
+Arora 
+& 
+Deswal, 2025 
+Mathematical 
+geofencing and 
+convex-hull 
+boundary-
+violation 
+detection 
+Proposes a convex-
+hull-based 
+method 
+for detecting UAV 
+boundary violations 
+and 
+evaluates 
+computational 
+efficiency 
+and 
+accuracy. 
+UAV-focused; 
+does 
+not 
+integrate 
+land 
+assets, 
+temporal 
+persistence, 
+risk 
+assessment, 
+or 
+operational 
+alert 
+management. 
+2 
+AbdElhamied 
+et al., 2025 
+Deep-learning 
+building change 
+detection using 
+remote-sensing 
+imagery 
+Addresses 
+building 
+changes, 
+encroachments, and 
+construction 
+on 
+government 
+land 
+using remote-sensing 
+imagery. 
+Detection is primarily 
+image-based and does 
+not provide integrated 
+asset 
+management, 
+persistence analysis, 
+risk 
+scoring, 
+or 
+automated 
+notification.  
+3 
+Fu 
+et 
+al., 
+2025 
+Spatio-spectral 
+information 
+aggregation for 
+building change 
+detection 
+Uses 
+cross-scale 
+heterogeneous 
+convolution 
+and 
+spatio-spectral 
+information fusion to 
+improve 
+building-
+change detection. 
+Focuses on image-
+level 
+change 
+detection rather than 
+asset-aware 
+geographic 
+monitoring 
+and 
+operational response.  
+4 
+Ren et al., 
+2024 
+MFINet 
+– 
+multi-scale 
+feature 
+interaction 
+network 
+Models interactions 
+between bi-temporal 
+features 
+for 
+high-
+resolution 
+remote-
+sensing 
+change 
+detection. 
+Primarily 
+addresses 
+detection-model 
+performance; 
+no 
+downstream 
+asset, 
+persistence, risk, or 
+alert layer. 
+
+=====PAGE 33=====
+ 
+ 
+ 
+ 
+21 
+ 
+5 
+Chen et al., 
+2024 
+JointNet4BCD 
+– 
+semi-
+supervised joint 
+learning 
+with 
+decision fusion 
+Reduces dependence 
+on large quantities of 
+pixel-level 
+labelled 
+data 
+for 
+building 
+change detection. 
+Concentrates 
+on 
+supervised/semi-
+supervised 
+image 
+interpretation 
+rather 
+than 
+operational 
+geofencing or asset 
+monitoring.  
+6 
+Li et al., 2024 
+MDFA-Net 
+– 
+multi-scale 
+differential 
+feature 
+self-
+attention 
+Uses 
+differential 
+feature extraction and 
+self-attention 
+to 
+improve multi-scale 
+building-change 
+detection. 
+No 
+temporal 
+persistence decision 
+layer, 
+asset 
+association, 
+risk 
+prioritization, or alert 
+management.  
+7 
+Huang et al., 
+2025 
+TextSCD 
+– 
+text-guided 
+semantic 
+change 
+detection 
+Incorporates 
+text-
+based 
+semantic 
+guidance into remote-
+sensing 
+semantic 
+change detection. 
+Improves 
+semantic 
+interpretation 
+but 
+does 
+not 
+connect 
+detected changes to 
+registered assets and 
+operational alerts. 
+8 
+Long et al., 
+2025 
+BGSNet 
+– 
+boundary-
+guided Siamese 
+multitask 
+semantic 
+change 
+detection 
+Uses 
+boundary 
+semantics to improve 
+semantic consistency 
+and preserve change 
+boundaries 
+while 
+reducing 
+pseudo-
+changes. 
+Remains a semantic 
+change-detection 
+framework without an 
+integrated asset, risk, 
+persistence, and alert 
+workflow. 
+9 
+DFANet, 
+2025 
+Deep 
+Feature 
+Attention 
+Network 
+Uses spatial-channel 
+attention 
+and 
+contextual 
+feature 
+modelling 
+for 
+building 
+change 
+detection and pseudo-
+change reduction. 
+Detection-focused; 
+does 
+not 
+provide 
+asset-aware decision-
+making or automated 
+operational response. 
+10 
+SDDGRNets, 
+2025 
+Level-level 
+semantic 
+decomposition 
+and 
+dynamic 
+graph reasoning 
+Models 
+semantic 
+relationships 
+using 
+dynamic 
+graph 
+reasoning for remote-
+sensing 
+semantic 
+change detection. 
+Does 
+not 
+extend 
+semantic 
+change 
+detection into asset-
+level monitoring, risk 
+assessment, or alert 
+prioritization.  
+
+=====PAGE 34=====
+ 
+ 
+ 
+ 
+22 
+ 
+11 
+Zhu et al., 
+2026 
+ChangeViT 
+– 
+plain 
+Vision 
+Transformer for 
+multi-scale 
+change 
+detection 
+Demonstrates 
+the 
+effectiveness of plain 
+ViTs for multi-scale 
+remote-sensing 
+change detection and 
+introduces 
+detail-
+capture and feature-
+injection 
+mechanisms. 
+Focuses on the vision 
+backbone 
+and 
+detection 
+accuracy 
+rather 
+than 
+operational land/asset 
+monitoring. 
+12 
+Huang et al., 
+2026 
+ChangeVFM – 
+vision 
+foundation 
+models 
+for 
+semantic 
+change 
+detection 
+Integrates 
+vision 
+foundation 
+models 
+with spatiotemporal 
+modelling and feature 
+injection for semantic 
+change detection. 
+Does not provide an 
+integrated 
+cadastral/asset-
+management 
+and 
+alert-decision layer. 
+13 
+Li et al., 2026 
+RoCD 
+– 
+foundation-
+vision-model 
+refine-and-fuse 
+framework 
+Uses FastSAM-based 
+foundation 
+features 
+refinement and fusion 
+mechanisms 
+for 
+robust 
+remote-
+sensing 
+change 
+detection. 
+Concentrates 
+on 
+robust image change 
+detection; no asset 
+association, portfolio 
+context, 
+or 
+operational alerting. 
+14 
+Dong et al., 
+2026 
+PeftCD 
+– 
+parameter-
+efficient 
+adaptation 
+of 
+vision 
+foundation 
+models 
+Investigates 
+parameter-efficient 
+fine-tuning 
+of 
+foundation 
+models 
+such as SAM2 and 
+DINOv3 for remote-
+sensing 
+change 
+detection. 
+Model-adaptation 
+focus; 
+does 
+not 
+address the complete 
+monitoring-to-alert 
+decision workflow. 
+15 
+Lei 
+et 
+al., 
+2026 
+Deep-learning 
+remote-sensing 
+change-
+detection 
+survey 
+Systematically 
+reviews 
+deep-
+learning 
+methods, 
+datasets, 
+supervised/semi-
+supervised 
+approaches 
+and 
+change-detection 
+directions. 
+A survey of detection 
+methods rather than 
+an 
+implemented 
+operational 
+asset 
+monitoring system.  
+
+=====PAGE 35=====
+ 
+ 
+ 
+ 
+23 
+ 
+16 
+Lu 
+et 
+al., 
+2025 
+Vision 
+foundation-
+model 
+survey 
+for 
+remote 
+sensing 
+Reviews 
+vision 
+foundation 
+models, 
+training 
+strategies, 
+applications 
+and 
+challenges in remote 
+sensing. 
+Provides 
+research-
+level synthesis rather 
+than an end-to-end 
+asset monitoring and 
+alert implementation. 
+17 
+Xiao et al., 
+2025 
+Foundation 
+models 
+for 
+remote sensing 
+and 
+Earth 
+observation 
+survey 
+Reviews 
+visual 
+foundation 
+models, 
+vision-language 
+models and LLMs for 
+remote sensing and 
+Earth observation. 
+Broad 
+foundation-
+model 
+perspective; 
+does not implement 
+the specific geofence-
+to-asset-to-alert 
+workflow required by 
+GeoFence.  
+18 
+Kaur & Afaq, 
+2024 
+Deep-learning 
+change-
+detection 
+review 
+Reviews 
+developments in deep 
+learning for remote-
+sensing 
+change 
+detection 
+and 
+summarizes 
+major 
+methodological 
+directions. 
+Research 
+survey 
+rather 
+than 
+an 
+operational 
+system 
+integrating 
+spatial 
+boundaries, assets and 
+alerts. 
+19 
+Farooq 
+& 
+Manocha, 
+2024 
+Satellite-based 
+multi-objective 
+change-
+detection 
+review 
+Reviews 
+satellite-
+based 
+change 
+detection 
+across 
+multiple 
+objectives 
+and 
+discusses 
+methods, datasets and 
+applications. 
+Focuses on change-
+detection 
+research 
+rather 
+than 
+asset-
+aware 
+event 
+persistence, risk and 
+notification. 
+20 
+Xiao & Ma, 
+2025 
+LLM-agent 
+framework for 
+intelligent 
+remote-sensing 
+change analysis 
+Integrates LLMs with 
+vision 
+foundation 
+models to support 
+more 
+flexible 
+and 
+intelligent 
+urban 
+change 
+analysis 
+through 
+an 
+agent 
+framework. 
+Focuses on intelligent 
+image/change 
+analysis rather than 
+cadastral boundaries, 
+multi-asset 
+records, 
+property context and 
+operational 
+alert 
+management.  
+ 
+ 
+ 
+
+=====PAGE 36=====
+ 
+ 
+ 
+ 
+24 
+ 
+CHAPTER 4 
+SYSTEM ANALYSIS AND REQUIREMENTS 
+4.1 EXISTING SYSTEM 
+The design of the existing system analysis for GeoFence derives from the assumption that 
+geographic asset monitoring systems are commonly broken down by the type of software 
+system. Asset-management systems tend to primarily handle discrete data such as asset 
+identity, ownership, inventory, financial information and supporting docs.  Traditional 
+geofencing systems define position relative to a geographic region as in, out, nearby. 
+Remote-sensing change-detection systems defined physical change from imagery collected 
+at different times. Registry-oriented workflows maintain administrative or reference 
+boundary data.  
+All three approaches hold a key aspect to the total monitoring problem.  But each isolated 
+implementation of these capabilities results in atomized pieces of information needed to 
+make a full monitoring decision. A geographic event could exist without having a one-to-
+one reference to the asset record.  Likewise, an asset-management system could have a 
+property found without the ability to make the judgment of a spatial event to its boundary. 
+GeoFence considers the existing system as no one competing application but as a plurality 
+of fragmented capabilities. The aim of the new system is to link these capabilities on a 
+single land-based geographic reference frame. 
+4.1.1 EXISTING SYSTEM CATEGORIES 
+The main variables that are most appropriate to the phenomenon being considered are: 
+Asset-management systems: 
+• Asset-management applications are intended to keep an organized record of 
+physical and non-physical assets; the types of information generally kept can be 
+asset identification, ownership, financial information, documents, status and 
+administrative records.  These types of applications can provide very valuable 
+portfolio summary information but do not provide the polygon-based geographic 
+monitoring of assets. 
+Conventional geofencing systems: 
+• Traditional geofencing systems define a pre-determined virtual geographic 
+boundary, and trigger an event when the tracked object enters, leaves or approaches 
+this area.  This is effective for place-based location awareness, but the spatial event 
+may not carry the broader asset, financial or historical context that is useful for 
+decision support. 
+Remote-sensing change-detection systems: 
+
+=====PAGE 37=====
+ 
+ 
+ 
+ 
+25 
+ 
+• Remote-sensing systems examine imagery from various dates to reveal factors such 
+as alterations in buildings, land use or other landscape characteristics.  Recent 
+advances in remote sensing include deep learning, semantic change detection, as 
+well as foundation-model-based remote sensing.  Yet typically the main deliverable 
+remains a detected or classified change, not a lifecycle of asset-management & alert. 
+4.1.2 CONSEQUENCES OF SYSTEM FRAGMENTATION  
+There can also be some operational difficulties as the above functions are held separately. 
+• First, the event itself recorded geographically may not directly link to the particular 
+asset that the event has occurred on. User can punch a manual journey to find the 
+property or asset in the other system.  
+• Secondly, it might be necessary to manage repeated observations manually. In the 
+absence of an observation history, it may be confused whether an isolated incident 
+is a phenomenon just occurred a number of times in a short period. 
+• Third, various spatial events might attract varying intensity of attention, yet a 
+disintegrated system may lack an explicit process to establish an alert priority based 
+on the specifics of the events and the context of the assets. 
+• Fourth, changes in the boundary may pose traceability problems if the previous 
+boundary is simply overwritten. Historical monitoring results may become difficult 
+to interpret as the geometry that was in use when a decision was made can no longer 
+be seen directly. 
+• Finally, a notification can become out of sync with its evidence. A message such 
+as email describes an event, but without recording the event, its level of severity, 
+its priority and its evidence, the notification offers a partial trail only. 
+4.2 PROPOSED SYSTEM 
+GeoFence is a comprehensive geofencing-based asset monitoring system where a land 
+parcel is used as the main geographic context. The land boundary is modeled using polygon 
+geometry and various types of asset information are modeled as contextual information 
+related to the relevant land or land property.  
+A browser interface is also provided by the system to allow users to access land and asset 
+data and operations relevant to monitoring; the application services are made available to 
+users via the FastAPI in the backend, with data stored and processed spatially by 
+PostgreSQL and PostGIS. 
+A spatial observation entered in the system is compared to the matching recorded boundary.  
+As long as the spatial observation meets the defined encroachment requirements, the 
+observation can be stored and later examined for persistence. The system also populates 
+and retrieves asset and financial context, determine the set risk score and define the alert 
+priority. The generated event can then be stored in the alert history and published via 
+automated e-mail notification.  
+The overall conceptual sequence is: 
+
+=====PAGE 38=====
+ 
+ 
+ 
+ 
+26 
+ 
+Land Registration → Boundary Definition → Spatial Observation → Encroachment 
+Detection → Observation Storage → Persistence Analysis → Asset/Financial Context → 
+Risk Assessment → Alert Prioritization → Notification and Dashboard Review 
+This order creates a set of dependencies between the various functions.  Risk assessment, 
+for instance, is meaningless if the event has not been detected and the context must not be 
+retrieved. Alert prioritization relies also on the persistence information. In the current 
+prototype, this operational system could handle the supervised or applications-produced 
+spatial observations with potential to embed automated change detection by remote-
+sensing satellites or UAV (uninhabited aerial vehicle) as upstream data source. 
+4.2.1 DESIGN PRINCIPLES 
+The system proposed adheres by the following design principles. 
+1. Geography as first-class information: The geometry of land is stored within the 
+spatial database itself, not just as a visual depiction on a map. 
+2. Land as the common geographic key: The land identifier acts as a link between the 
+spatial geometry of a feature and the non-spatial data, including assets and financial 
+information, attached to it. 
+3. Evidence before interpretation: Any spatial observation is kept as alarming 
+evidence until a false alarm or a detection of a state. 
+4. Explicit risk components: Rather than simply being an arbitrary number, the risk 
+score is made up of identifiable factors. 
+5. Separation of severity and priority: The event severity is the particulars of what was 
+detected and alert priority is how quickly any handling of the system needs to 
+respond to the event. 
+6. Boundary traceability: Boundary modifications are recorded with version info so 
+that changes made to the operational geometry can be checked. 
+4.3 FUNCTIONAL REQUIREMENTS 
+Functional requirements describe what the system should do. Each requirement is part of 
+a dependency chain, going from land and geometry handling to monitoring, risk 
+interpretation, alerting and analytics. 
+S.NO 
+Requirement 
+Description 
+1 
+Land Registration 
+Store administrative information and polygon geometry 
+for registered land. 
+2 
+Geometry Validation Validate submitted land geometry and reject invalid 
+polygon boundaries. 
+3 
+Geofence 
+Management 
+Create, store and associate polygon boundaries with 
+registered land. 
+
+=====PAGE 39=====
+ 
+ 
+ 
+ 
+27 
+ 
+4 
+Asset Management 
+Maintain heterogeneous asset records associated with 
+relevant land or property context. 
+5 
+Encroachment 
+Detection 
+Evaluate 
+submitted 
+spatial 
+information 
+against 
+registered land boundaries. 
+6 
+Risk Assessment 
+Calculate a component-based risk score using spatial, 
+temporal and asset-related factors. 
+7 
+Portfolio Exposure 
+Retrieve property-value information and calculate the 
+configured exposure context. 
+8 
+Alert Priority 
+Assign an alert priority based on the resulting 
+monitoring and risk information. 
+9 
+Alert Management 
+Store alerts and suppress duplicate alert creation for the 
+same operational condition where applicable. 
+10 
+Automated 
+Notification 
+Send email notifications for configured alert conditions. 
+11 
+Boundary Status 
+Return INSIDE, OUTSIDE or VERIFY_BOUNDARY 
+according to the spatial verification logic. 
+12 
+Registry Comparison Compare the operational land boundary against 
+available registry geometry. 
+13 
+Dashboard Analytics 
+Present portfolio, monitoring, alert and risk-related 
+information through the dashboard. 
+TABLE 4.1: FUNCTIONAL REQUIREMENTS 
+These functional requirements fully specify the entire working flow of the proposed system 
+on a use case basis. First, land registration, geometry registration and validation, system 
+management through lands is performed, then geofence management using polygons, 
+heterogonous asset registration are applied, spatial observations will be validated with 
+registered geofences and stored for further temporal persistence analysis. The detected 
+events will be associated with internal and external contextual information, i.e. assets and 
+property types, respectively for risk assessment, portfolio exposure analysis and alert 
+priority calculation.  Alerts along with boundary status, geofence registry comparison and 
+boundary versioning can be stored and transmitted via email notification, if required.  
+ 
+ 
+
+=====PAGE 40=====
+ 
+ 
+ 
+ 
+28 
+ 
+4.4 NON-FUNCTIONAL REQUIREMENTS 
+Non-functional requirements specify the qualities to be maintained by the system, not 
+specific business functions. 
+S.NO 
+Requirement 
+Description 
+1 
+Usability 
+Provide a browser-based interface with maps, forms 
+and dashboards for user interaction. 
+2 
+Maintainability 
+Separate API, CRUD, spatial and risk-related logic into 
+manageable modules. 
+3 
+Data Integrity 
+Validate geometry and required information before 
+persistence. 
+4 
+Security 
+Keep database and mail-service credentials outside 
+application source code. 
+5 
+Scalability 
+Use database-side spatial processing and spatial 
+indexing mechanisms. 
+6 
+Explainability 
+Expose component-level risk information rather than 
+only a final score. 
+7 
+Reliability 
+Preserve monitoring records independently of external 
+notification success. 
+TABLE 4.2: NON-FUNCTIONAL REQUIREMENTS 
+4.5 TECHNOLOGY STACK 
+Layer 
+Technology 
+Purpose 
+Frontend 
+HTML5, 
+CSS3, 
+JavaScript 
+Web-based user interface 
+GIS / Mapping 
+Leaflet.js 
+Interactive map visualization 
+Polygon Editing 
+Leaflet-Geoman 
+Drawing and editing geographic 
+boundaries 
+Spatial Data Format 
+GeoJSON 
+Transfer and representation of 
+geographic features 
+
+=====PAGE 41=====
+ 
+ 
+ 
+ 
+29 
+ 
+Charts 
+Chart.js 
+Dashboard visualization 
+Backend 
+Python 
+Core application development 
+API Framework 
+FastAPI 
+REST-based backend services 
+Application Server 
+Uvicorn 
+ASGI server for FastAPI 
+Database Access 
+SQLAlchemy 
+Database sessions and query 
+management 
+Database 
+PostgreSQL 
+Relational data persistence 
+Spatial Database 
+PostGIS 
+Spatial geometry storage and 
+analysis 
+Testing 
+/ 
+API 
+Documentation 
+Swagger/OpenAPI 
+API inspection and functional 
+verification 
+Database Verification 
+SQL 
+Direct data and result verification 
+TABLE 4.3: TECHNOLOGY STACK 
+CHAPTER 5 
+SYSTEM ARCHITECTURE AND DATABASE DESIGN 
+5.1 SYSTEM ARCHITECTURE OVERVIEW 
+GeoFence system employs a layered web-based system architecture which differentiates 
+user interface from application and spatial modeling, analytics from persistent storage.  It 
+links the web browser GIS interface to a FastAPI back end and a PostgreSQL database 
+with Post GIS spatial extensions. This design aims to keep geographical processing near 
+spatial data and application processing in the backend service layer. 
+The system is established on individual land parcel as the dominant entity for geographical 
+referencing. Each land record thus can contain identification data, and a polygon boundary 
+that indicates the operational geofence.  In cases of multiple heterogeneous assets, the 
+assets can be linked to the relevant land/entity status: monitoring event is then tested by 
+the registered boundary and linked to observations, persistence data, asset criticality, 
+monetary context, risk score and alert if needed.  
+So, the design of the architecture does not consider the geofence as a stand-alone function.  
+A spatial event first passes through several processing stages and eventually results in an 
+alarm. The information generated at each stage is captured by the database so that the 
+
+=====PAGE 42=====
+ 
+ 
+ 
+ 
+30 
+ 
+system can keep a history of observations and alarms instead of simply getting the response 
+from the API. 
+The principal components of the architecture are: 
+1. GIS Presentation Layer – This is the front end where the map is display and the 
+user interacts with the data. 
+2. API and Application Layer – handles request and application logic. 
+3. Domain and Processing Layer – leads to the event processing in the spatial domain, 
+assessment of event persistence, computation of severity and prioritization of 
+danger message. 
+4. Spatial Database Layer – maintains the land geometries, asset records, observation 
+units, financial data and alerts. 
+5. Notification Layer (External) – an email notification that is issued upon an alert 
+occurring. 
+ 
+FIGURE 5.1: GEOFENCE SYSTEM ARCHITECTURE 
+5.2 ARCHITECTURAL LAYERS 
+The system has been separated into different functionality layers so as to keep individual 
+tasks separated. The separating of functionality layers also will ensure easier maintenance 
+of the prototype along with providing a guide for future versions on how to enhance 
+individual parts. 
+5.2.1 PRESENTATION LAYER 
+Display layer is created by HTML, CSS and JavaScript. Leaflet used to provides the 
+interactive layer of the map, users could view the land boundary and interact with it based 
+on the spatial information.  
+
+=====PAGE 43=====
+ 
+ 
+ 
+ 
+31 
+ 
+The map interface depicts the spatial condition of the system but does not itself perform 
+the authoritative spatial calculations. User interaction such as drawing, submitting a parcel 
+boundary are converted into requests to the backend. This is a crucial distinction because 
+the browser side visualization should not be considered the ultimate source of truth for 
+spatial validation.  All the geometry related processing happens on the backend and spatial 
+database. 
+5.2.2 APPLICATION LAYER  
+Application layer is implemented using Python and FastAPI. It offers REST-style 
+endpoints for frontend to interact with backend. 
+The application layer is responsible for:  
+• Accepting HTTP requests. 
+• To validate the request data that we are receiving. 
+• Invalidating database operations. 
+• Coordinating spatial processing. 
+• Providing retrieving asset and financial context 
+• Calling for persistence and risk assessment 
+• Already creating new alert records and 
+• Talks about handling return of formatted responses to the front end.  
+It also offers API documentation based on OpenAPI, enabling functional testing of the API 
+and testing endpoints when developing. 
+5.2.3 DOMAIN PROCESSING LAYER 
+The domain layer contains the application-specific logic that converts raw spatial 
+observations into structured monitoring information. 
+The processing includes: 
+• geometry preparation. 
+• spatial intersection. 
+• overlap calculation. 
+• observation creation. 
+• temporal persistence evaluation. 
+• asset-criticality determination. 
+• portfolio exposure calculation. 
+• composite risk calculation and 
+• alert-priority generation. 
+Keeping these operations separate from direct database access prevents the API endpoint 
+from becoming responsible for every individual processing operation. 
+ 
+
+=====PAGE 44=====
+ 
+ 
+ 
+ 
+32 
+ 
+5.2.4 DATA ACCESS LAYER  
+The data access layer interacts with Postgres using SQLAlchemy. The CRUD operations 
+abstract the interaction with the database so that application logic can query, insert and 
+update records without having its queries mixed directly into the API endpoints.  
+Such separation helps greatly for GeoFence. This is because GeoFence has multiple links 
+between entities. A monitoring request will access land, asset, financial, observation and 
+alert tables, among others. 
+5.2.5 SPATIAL DATABASE LAYER 
+PostgreSQL provides relational data persistence, while PostGIS extends PostgreSQL with 
+spatial data types and spatial functions. 
+The spatial database is responsible for storing polygon boundaries and performing 
+operations such as: 
+• geometry validation. 
+• Containment. 
+• Intersection. 
+• intersection geometry creation. 
+• distance/proximity evaluation and 
+• spatial area calculations. 
+The database therefore acts as both a persistence layer and an important computational 
+component of the system. 
+5.2.6 NOTIFICATION LAYER  
+Notification component part provides email-based communication for generated alerts. 
+Notification has been designed as an output of the monitoring workflow instead of the 
+primary storage. This is also present to ensure that any temporary email delivery problems 
+do not remove the underlying monitor event from the historical records. 
+5.3 DATABASE ARCHITECTURE 
+The platform for the GeoFence system is based on PostgreSQL with PostGIS extension. 
+The database on which the system works keeps land boundaries, heterogeneous assets, 
+financial information, encroachment observations/alerts, registry data and boundary 
+history. Spatially enabled relational database is used to manage both conventional 
+structured information and geographic information in one data layer. 
+The database architecture is structured around the land parcel as the key geographic 
+reference.  All registered land parcels hold some form of identifying information (owner 
+name, survey number) and their digital boundary. Spatially contextual assets and notes can 
+be attached to the pertinent land, while non-spatial assets (jewelry, works of art, wills) can 
+
+=====PAGE 45=====
+ 
+ 
+ 
+ 
+33 
+ 
+be held as portfolio or documentary records without the need for a separate geographic 
+polygon. 
+PostGIS adds support for geographic objects to the PostgreSQL. The database is managed 
+via the backend with SQLAlchemy, which provides an abstraction layer to the database for 
+the application. This isolates low-level database management from the various API 
+endpoints. The database management is implemented in re-usable data-access and CRUD 
+functions: 
+ 
+TABLE 5.1: CORE DATABASE ENTITIES AND THEIR PURPOSE 
+5.4 ENTITY AND RELATIONSHIP DESIGN 
+Geo Fence entities design is relational as the land entity is the main point of reference for 
+all geographically related data. The land entity provides the main identifier for each 
+property and the relation scheme for overlaying assets, financial data, observations and 
+alerts. One asset can have several land records for example: agricultural land can have 
+records of a tractor, plantation, equipment etc. The same asset can have several 
+observations over time, each observing the detection or submission of a spatial event. These 
+observations can lead later to one or several alert depending on the persistence and risk of 
+the event. 
+Entity 
+Purpose 
+lands 
+Stores land identity, ownership information, survey number 
+and digital polygon boundary 
+assets 
+Stores heterogeneous assets associated with land or property 
+context 
+property_financials 
+Stores purchase value, current value, tax and insurance 
+information 
+encroachment_observations 
+Stores 
+spatial 
+observations 
+associated with 
+possible 
+encroachment events 
+alerts 
+Stores generated alerts, priority information and alert status 
+land_registry 
+Stores reference registry information used for boundary 
+comparison 
+land_boundary_history 
+Maintains historical versions or provenance information 
+associated with land boundaries 
+
+=====PAGE 46=====
+ 
+ 
+ 
+ 
+34 
+ 
+Property financial attributes are separated from the land record, because their imperatively 
+spatial attributes are always the same, and their financial attributes are flexible to be 
+changed. And the financial attributes are only updated and kept. 
+The major relationships can be represented as follows: 
+• Land → Assets: One land parcel can be associated with multiple assets. 
+• Land → Property Financials: A land/property can have associated financial 
+information. 
+• Land → Encroachment Observations: A land parcel can have multiple observations 
+over time. 
+• Observation → Alerts: An observation or evaluated event can result in an alert. 
+• Land → Boundary History: A land parcel can have multiple historical boundary 
+records. 
+• Land → Registry Information: A land parcel can be compared with corresponding 
+registry information using identifiers such as survey number. 
+ 
+ 
+FIGURE 5.2: GEOFENCE DATABASE ENTITY-RELATIONSHIP DIAGRAM 
+Similarly, the entity relationship design facilitates the definition between spatial assets and 
+non-spatial ones. The geographically encompassing assets included land, plantations and 
+the associated operational assets, are all monocularly compared to a property boundary. 
+Portfolio-centric assets such as jewelry and paintings mostly provide ownership 
+information about the owner. Wills are included as documentary assets and associated with 
+an owner, property or portfolio entity.  
+5.5 SPATIAL DATA MODEL AND BOUNDARY MANAGEMENT 
+The spatial data model is key to any implementation of the GeoFence because the 
+geographic reference for the assessment of observations is the land boundary. GeoFence 
+depicts land boundaries as polygons. Polygon is well suited since the land parcel is a 
+bounded location not a point location. 
+
+=====PAGE 47=====
+ 
+ 
+ 
+ 
+35 
+ 
+The stored boundary corresponds to the spatial representation implemented by PostGIS. 
+The project implements SRID 4326, a standardized spatial representation providing a 
+geographic coordinate system referencing latitudes and longitudes. The geographic 
+coordinates submitted are transformed into the spatial representation prior to being handled 
+by the database. 
+ The general processing path is: 
+Frontend Coordinates → API Request → Geometry Construction → PostGIS Processing 
+→ Spatial Result 
+The longitutes and latitudes are collected by the map on the frontend side. When the 
+coordinate is submitted to the FastAPI backend, it converts into a format for database 
+processing. Spatial operations do not happen on the frontend side anymore and they happen 
+on the backend via PostGIS. 
+The system uses spatial operations including: 
+• Geometry validity checking to be able to check that geometries stored/submitted 
+can be handled consistently. 
+• Containment analysis a process used to assess if a geographic feature is contained 
+within a registered land boundary.  
+• Overlap-Applies an intersection analysis to discover if two geometries share 
+overlapping spatial areas. 
+• Calculation of intersection geometry in order to identify the common volume.  
+• Analysis of distance/proximity where need to relate the spatial association between 
+observations 
+• Computing the area of the triangles for a land and an intersection geometry. 
+Boundary management can also include the situation that a digital record of the boundary 
+may not even accurately represent the physical or legitimate boundary. Hence the system 
+needs to keep information relating to the boundary distinct from operational encroachment 
+observations. The boundary model is designed to be a supporting tool for operational 
+monitoring and support in spatial decision-making. The project uses three conceptual 
+boundary verification states: 
+• INSIDE – the observation or compared geometry is consistent with the registered 
+spatial boundary. 
+• OUTSIDE – the spatial observation falls outside the registered boundary. 
+• VERIFY_BOUNDARY – the available spatial information is insufficient or 
+inconsistent enough to require verification. 
+
+=====PAGE 48=====
+ 
+ 
+ 
+ 
+36 
+ 
+ 
+FIGURE 5.3: SPATIAL DATA FLOW FROM FRONTEND TO POSTGIS 
+5.6 SYSTEM DATA FLOW 
+The total data flow of GeoFence links the user interface, application service, database, 
+spatial processing layer, risk analysis, notification generation and alarm. 
+The process starts when a user registers a land parcel or submits information for a given 
+property. Land information is maintained in conjunction with its digital boundary.  Further 
+assets and property information can then be attached to the land.  
+Spatial Geometry Validation Once submitted, the geocoded spatial information is sent to 
+the FastAPI backend from the frontend. The backend confirms the observation request is 
+valid and forwards the spatial information to the database. The database then utilizing the 
+PostGIS evaluates the whether the geometries are within the registered land boundary.  
+A record of the observation is generated if an overlap in spatial position or a crossing of 
+the boundary occurs. The record then checks if the event is an isolated single occurrence 
+or if it has been observed previously or is during the course of a number of identical 
+previous observations. 
+The persistence information obtained from this process is then aggregated with situational 
+information from other situational factors (overlap, severity, proximity and asset criticality).  
+The risk score generated from this aggregation is then used to establish the operational 
+priority of the event. 
+ 
+ 
+ 
+ 
+
+=====PAGE 49=====
+ 
+ 
+ 
+ 
+37 
+ 
+The high-level flow is: 
+Land Registration 
+↓ 
+Asset and Property Information Association 
+↓ 
+Spatial Observation Submission 
+↓ 
+Geometry Validation and PostGIS Analysis 
+↓ 
+Encroachment Observation Recording 
+↓ 
+Temporal Persistence Evaluation 
+↓ 
+Risk Assessment 
+↓ 
+Alert Generation and Prioritization 
+↓ 
+Notification 
+↓ 
+Dashboard and Historical Review 
+The current architecture also enables non-spatial data to be included in the decision-making 
+process.  The frontend dashboard is the presentation and monitoring layer. It accesses the 
+processed information from the backend and visually displays land information, 
+observations, alerts, persistence states, risk information and portfolio-related indicators in 
+a common interface. The dashboard thus assumes a operational perspective over the 
+information produced by the underlying spatial and relational information layers. 
+The design also separates the data storage, spatial processing, business rules and the 
+presentation layer. This make the application simple to maintain and changes can be made 
+to the spatial processing part or to the risk computation or the notification mechanism 
+without needing to change everything 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+
+=====PAGE 50=====
+ 
+ 
+ 
+ 
+38 
+ 
+CHAPTER 6 
+METHODOLOGY AND ALGORITHMIC DESIGN 
+6.1 OVERALL METHODOLOGY 
+The approach of the GeoFence system employs a sequential, decision-support chain that 
+converts geographic observations into contextualized watchlist warnings. The system does 
+not approach encroachment detection as a purely spatial operation.  Rather, a detected 
+spatial event is considered and combined with temporal observations, assets, domain 
+information, risk factors, and alert-priority rules. 
+The first stage defines the land parcel and its digital polygon boundary. This boundary will 
+act as the spatial reference for the comparisons made between observations at a later date. 
+Information on assets and property can then be linked to the registered land.  
+The arriving observation is checked for validity of spatial data submitted based on existing 
+boundary data. If an intersection or boundary violation occurs, then an observation record 
+is created.  Multiple observation records are subsequently checked over a period of time 
+for spatial and temporal association rules to establish whether the event is anomalous or 
+continuous. The system then pulls relevant asset and financial context. Asset criticality is 
+used to provide the operational importance of the impacted asset, and property value 
+provides a portfolio-exposure context. These are joined with spatial, temporal and severity 
+information in a deterministic risk-scoring model. Lastly, the system uses the calculated 
+risk and persistence data to generate the alert priority. The alert is placed in a database table 
+for later retrieval and, if enabled, an email notification can also be sent. 
+ 
+FIGURE 6.1: END-TO-END GEOFENCE PROCESSING WORKFLOW 
+
+=====PAGE 51=====
+ 
+ 
+ 
+ 
+39 
+ 
+6.2 LAND REGISTRATION AND BOUNDARY MANAGEMENT 
+Land registration marks the beginning of the monitoring, the first step in the execution of 
+the GeoFence.  The land record frames the geographical entity to be monitored and puts 
+the assets to be monitored into reference context. 
+The land-registration process accepts information including: 
+• Owner name 
+• Survey number 
+• Land usage 
+• Polygon coordinates 
+• Boundary source 
+The general process is: 
+Land Information → Polygon Coordinates → Geometry Construction → Geometry 
+Validation → Database Storage 
+If validation is successful, the land record is recorded into the lands table. The generated 
+land id is then used to link assets, financial records, observations and alerts back to the 
+specific property. 
+6.2.1 BOUNDARY VALIDATION  
+Boundary validation is required because with the spatial operations rely on valid geometry. 
+For example the polygon is not valid, then the result of the intersection or the calculation 
+of area would not be accurate. Thus validating the submitted geometry before insertion. 
+Only valid geometry can be the working boundary of reference; invalid geometry is 
+rejected rather than being silently stored. 
+6.2.2 BOUNDARY VERIFICATION  
+Point-based boundary-status checking is also available in the system. It can determine the 
+status of a point based on the registered boundary. 
+The possible operational states are:  
+• INSIDE – the point is located well inside of the registered boundary. 
+• OUTSIDE – the point lies outside of the relevant boundary and verification zone. 
+• VERIFY_BOUNDARY – the accuracy of the result is not guaranteed to the point 
+being so near to the boundary. 
+The VERIFY_BOUNDARY state is important as for digital boundaries coordinate or 
+digitization uncertainty can exist. It should be emphasized that it a software verification 
+state and not a ownership determination in law. 
+ 
+
+=====PAGE 52=====
+ 
+ 
+ 
+ 
+40 
+ 
+6.2.3 BOUNDARY PROVENANCE AND VERSIONING 
+GeoFence stores details of the origin of each boundary and its version. When a boundary 
+is changed the old geometry can be stored as historical data and a new version set to active. 
+Conceptually: 
+Boundary Version 1 → Boundary Version 2 → Boundary Version 3 
+This method avoids the unnoticed substitution of the previous operational limit and offers 
+traceability when it is necessary to adapt an observation to the limit in force at an instant 
+of time. 
+6.3 MULTI-ASSET MANAGEMENT 
+One of the strengths of Geo Fence is its provision of a common property and monitoring 
+system for heterogeneous assets. The model makes no assumptions about the spatial 
+characteristics of all assets in the system: 
+Asset Category 
+Representation 
+Relationship with GeoFence 
+Land / Property 
+Geographic 
+polygon 
+Primary geographic anchor 
+Vehicle 
+Asset record 
+Operational asset associated with land/location 
+Equipment 
+/ 
+Machine 
+Asset record 
+Operational asset with criticality 
+Tractor 
+Asset record 
+Agricultural operational asset 
+Plantation 
+Land-associated 
+record 
+Agricultural asset associated with property 
+Livestock 
+Land-associated 
+record 
+Asset associated through property context 
+Jewelry 
+Portfolio record 
+Primarily non-spatial asset 
+Artwork 
+Portfolio record 
+Primarily non-spatial asset 
+Wills 
+Documentary 
+record 
+Associated 
+with 
+owner/property/portfolio 
+context 
+
+=====PAGE 53=====
+ 
+ 
+ 
+ 
+41 
+ 
+The design distinguishes geographic identity and asset identity.  To represent a land parcel, 
+a polygon is necessary because land presents an area.  A jewelry item or a will, on the other 
+hand, does not need an independent geographic polygon. 
+6.3.1 OPERATIONAL ASSETS 
+Vehicles, machinery and farm tractors are operating assets, associated with assets on the 
+property.  They are of significance in the context of risk assessment, because the 
+operational significance has potential to influence the priority given to an event detected. 
+For such instances, a machine is given a prototype criticality value higher than would 
+otherwise be calculated solely on the assessed criticality of a land area being monitored. 
+This value then factors into the risk calculation. 
+6.3.2 PLANTATION AND LIVESTOCK 
+Plantation and livestock records broaden the system away from the traditional equipment-
+centered asset management. A plantation by nature is always rooted into the land. So the 
+GEO scope or coverage of a plantation can be taken from the land boundary itself without 
+an additional geofence for plantation data.  
+Livestock, again, can be associated with the land/property perspective. The current 
+prototype does not include the continuous tracking of movement, health and trajectory of 
+livestock over time but rather uses them as an asset associated with land as part of a 
+common asset-management information system. 
+6.3.3 PORTFOLIO AND DOCUMENTARY ASSETS 
+Jewelry and artwork are treated as portfolio assets. Their relation to GeoFence is in context 
+to ownership and portfolio. Wills are regarded as documentary assets the owner, property 
+or portfolio may be linked with a will but it does not constitute a geographic object. 
+This enables GeoFence to unify spatial assets, operational assets, portfolio assets and 
+documentary assets together into one integrated information model, while still preserving 
+the distinctions between the types of assets. 
+6.4 SPATIAL ENCROACHMENT DETECTION 
+Spatial encroachment detection is the main geographic processing stage of the system. This 
+part of the system is designed to decide if an observation submitted by the user fails to 
+intersect with the land boundary registered in the system. The input starts when a user or 
+third-party provides a set of lat/long designated as a monitored event. The backend will 
+convert these into a spatial geometry for use with PostGIS. 
+The processing sequence is: 
+Coordinate Input → Polygon Construction → Geometry Validation → Spatial Intersection 
+→ Overlap Calculation → Observation Recording 
+
+=====PAGE 54=====
+ 
+ 
+ 
+ 
+42 
+ 
+The system uses the PostGIS spatial intersection function to assess how the submitted 
+geometry relates to the registered land boundary.  
+6.4.1 GEOMETRY CONSTRUCTION 
+The coordinates supplied are transformed into a polygon.  The spatial geometry is also built 
+from an implementation in the backend using a WKT representation before being sent to 
+postGIS. 
+Conceptually: 
+P= {(x1, y1), (x2, y2) ...,(xn,yn)} 
+where P represents the submitted polygon and each pair represents a geographic coordinate. 
+The registered land boundary is represented as another polygon: 
+G= {(x1, y1), (x2, y2)..., (xm,ym)} 
+The spatial relationship between P and G is then evaluated. 
+6.4.2 INTERSECTION ANALYSIS 
+The intersection operation provides the common geographic extent of the GIS geometries 
+submitted and the official land boundary. 
+Conceptually: 
+I=P∩G 
+where I represents the intersection geometry. 
+If: 
+I≠∅ 
+then a spatial overlap exists. From the resulting geometry the system can then extract a 
+representative location in space and record the event as an observation. 
+6.4.3 OVERLAP PERCENTAGE 
+This part of the prototype works by calculating the percentage of overlap as area of the 
+intersection over the submitted observation geometry. 
+Overlap Percentage=Area(P)/Area(I) ×100 
+where: 
+• I = intersection between the submitted geometry and land boundary 
+
+=====PAGE 55=====
+ 
+ 
+ 
+ 
+43 
+ 
+• P = submitted observation polygon 
+For instance, when the submitted geometry is entirely enclosed within the corresponding 
+spatial domain, the overlap calculated can be as high as 100%. The calculations are based 
+on the geographic area so that the resulting area is given in a meaningful metric. 
+6.4.4 OBSERVATION RECORDING  
+Once a suitable intersection has been chosen, the event is entered into the observation 
+system. The observation includes such information as: 
+• Land identifier 
+• Geographic coordinates 
+• Overlap percentage 
+• Severity 
+• Observation source 
+• Observation timestamp 
+6.5 TEMPORAL PERSISTENCE ANALYSIS 
+Temporal persistence estimation helps to assess the likelihood if a spatial event is just an 
+isolated point observation or a persistent event. A single observation may be due to 
+transient processes or positional inaccuracies, while multiple observations of the same 
+event within a specified temporal and spatial threshold indicates persistence.  
+The system records the observation time and space for every new observation.  It attempts 
+to find the existing observation related to the same piece of land within 24 hours period 
+and 20 meters spatial association distance.  When the time and space meet the above 
+conditions, then an observation is related to a former event. 
+The prototype classifies the persistence of an event according to the number of matching 
+observations: 
+Persistence State 
+Matching Observations 
+NEW 
+0 
+OBSERVED 
+1 
+REVIEW 
+2 
+PERSISTENT 
+3 or more 
+ 
+ 
+
+=====PAGE 56=====
+ 
+ 
+ 
+ 
+44 
+ 
+6.6 ASSET CRITICALITY ASSESSMENT 
+The asset criticality module provides each asset affected by an encroachment with an 
+operational asset criticality value. The function of the asset criticality module is to avoid 
+the risk assessment from representing only the location attributes of an encroachment.  
+Asset categories have been defined with different criticality rankings for the specific 
+GeoFence system.  For this prototype, a set of values has been provided to various 
+operational assets. 
+In case of machine or equipment asset, as the event on machine or equipment asset might 
+be more important for operation than the event on lower priority asset, it is given much 
+higher level of criticality. Also the scores are engineering defined values applied to the 
+prototype,  and not learnt from the dataset. If more than one asset is associated with a given 
+spatial event, the highest applicable criticality value is used in the risk calculation, to avoid 
+missing an important asset when multiple assets are associated with one observation. 
+The calculated criticality score is then normalized by the risk assessment framework and 
+is given a weight of 10% of the total risk score. 
+6.7 PORTFOLIO EXPOSURE ANALYSIS 
+Portfolio exposures module correlates the land incident that is identified with the 
+corresponding business-analytics view in the financial world of the incidents property. 
+The prototype compares the current property value allocated to the specific land lost with 
+the total value of the portfolio under observation. 
+Portfolio Exposure=Total Portfolio Value/Affected Property Value ×100 
+For instance, if the current value of the one of the affected properties is (₹ 8,500,000) and 
+of the monitored portfolio (₹ 11,950,000), the direct calculation used from these two is (₹ 
+8,500,000 / ₹ 11,950,000) which gives around 71.13%. 
+6.8 RISK SCORE CALCULATION 
+The risk assessment weightings were calculated with the Analytic Hierarchy Process 
+(AHP) which is a multi-criteria decision making method using pair-wise comparisons of 
+the five risk factors: percentage overlap, temporal duration, severity, proximity, and asset 
+criticality. 
+The prototype uses the following weighted model: 
+Risk Score = 
+0.35(Overlap)+0.25(Persistence)+0.20(Severity)+0.10(Proximity)+0.10(Asset Criticality) 
+
+=====PAGE 57=====
+ 
+ 
+ 
+ 
+45 
+ 
+ 
+FIGURE 6.2: RISK SCORE CALCULATION FLOW 
+6.9 XGBOOST-BASED CLASSIFICATION 
+A classification model based on XGBoost was created in order to improve the analysis 
+capabilities of GeoFence system.  This model classifies the observed land characteristics 
+and determines if they are encroachment or non-encroachment cases. XGBoost (Extreme 
+Gradient Boosting) is an ensemble learning method that combines several classifiers to 
+optimize classification accuracy.  Selection of XGBoost was based on its ability to capture 
+nonlinear relationships and interactions among the structured input features. 
+Dataset Preparation and Model Training: 
+The training data for the model consists of 12,000 records.  Land identifiers were used in 
+group-based splitting to guarantee that land observations were not included in both training 
+and validation, or training and testing data. Training data, validation data and test data were 
+set in roughly the ratio 70:15:15. The training data was used to create the classifier, while 
+the validation data was used to determine the cutoff score for the classifications. The held-
+out test data was used to determine the performance of the classifier. The model used 
+predictors included of overlap%, persistence score, asset criticality, boundary-area 
+difference, proximity score and registry match score. 
+6.10 ALERT GENERATION AND PRIORITIZATION 
+The alert management module translates a spatial event that has undergone the processing 
+into a definable alert.  Alerts are issued only after the spatial validation process, the 
+persistence analysis process and the risk determination step have been made. 
+The processing sequence is: 
+Observation → Spatial Validation → Persistence Analysis → Risk Assessment → Alert 
+Generation → Priority Assignment 
+
+=====PAGE 58=====
+ 
+ 
+ 
+ 
+46 
+ 
+Prioritization involves weighing up events and observations to determine those that need 
+more attention. Persistence is applied during prioritization so that observed events that have 
+been encountered more than once are given a higher degree of operational attention than 
+those that have just been observed once. 
+The prototype supports priority levels such as: 
+• Immediate 
+• Urgent 
+• Critical 
+• High 
+6.11 REGISTRY COMPARISON AND BOUNDARY VERIFICATION 
+The registry comparison module compares the digitally represented land boundary with the 
+registered boundary (if registry information is available). It aims to identify any possible 
+discrepancies between the two geometries and assist boundary validation. 
+The prototype uses three principal outcomes: 
+Outcome 
+Meaning 
+REGISTRY_NOT_FOUND 
+No corresponding registry boundary is available 
+DIGITIZATION_VARIANCE 
+Operational boundary differs within an acceptable 
+comparison range 
+MISMATCH 
+Substantial geometric difference is detected 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+
+=====PAGE 59=====
+ 
+ 
+ 
+ 
+47 
+ 
+CHAPTER 7 
+SYSTEM IMPLEMENTATION 
+7.1 IMPLEMENTATION ENVIRONMENT AND PROJECT SETUP 
+The GeoFence prototype was developed as a web application with a front-end and back-
+end connected to a PostgreSQL database extended with PostGIS. The development 
+environment was set up to facilitate developing an API in Python, interacting with 
+relational database and performing spatial processing and visualization in a web browser. 
+The backend application was implemented in Python, using FastAPI and run using Uvicorn.  
+The application functionality was exposed via HTTP endpoints by FastAPI while 
+SQLAlchemy was used for the database session management and the implementation of 
+the queries. The spatial database was realized using PostgreSQL with the extension 
+PostGIS. 
+The client side was created in HTML, CSS and JavaScript.  The interactive map interface 
+and interaction with the polygons were created using Leaflet and the graphical dashboard 
+components created using Chart. Js.  Communication with the server was by means of 
+HTTP requests with JSON reply. All of the information relating to the database connection 
+as well as all credentials relating to notifications are stored as configuration information.  
+The application was constructed by integrating the individual services first and testing if 
+they worked before combining them into a workflow. This meant that database actions, the 
+API returning data and spatial processing and communication to the front end could be 
+separately tested. 
+ 
+FIGURE 7.1: GEO FENCE PROJECT IMPLEMENTATION ENVIRONMENT 
+
+=====PAGE 60=====
+ 
+ 
+ 
+ 
+48 
+ 
+7.2 BACKEND SERVICE AND API IMPLEMENTATION 
+The backend implementation executes the functional requirements as Web services. The 
+FastAPI application serves as the layer of communication between the browser and the 
+database. It receives requests from the frontend, validates their (request’s) parameters and 
+forwards them to the right application function and then sends back structured response. 
+The implementation relies on the separation of the API handling from the database 
+manipulation. Database accessing is performed through SQL alchemy sessions. The 
+requests to the database are done through reusable handling of database operation that are 
+not storing in the API endpoint definition. The handling of the risk is stored in the dedicated 
+risk.py component so that the rules used for the analysis can be changed without having to 
+change the API layer. 
+7.2.1 API REQUEST PROCESSING 
+A typical request follows the sequence: 
+HTTP Request → FastAPI Endpoint → Input Validation → Application Function → 
+Database Operation → JSON Response 
+This structure is used across the major services. As a result, the frontend does not need to 
+know how the database query or internal processing is implemented. 
+The principal implemented endpoints are listed below. 
+Method 
+Endpoint 
+Implementation Role 
+POST 
+/lands 
+Processes new land submissions 
+GET 
+/lands 
+Retrieves registered land records 
+POST 
+/encroachment/check 
+Processes 
+submitted 
+monitoring 
+events 
+POST 
+/encroachment/observation 
+Persists monitoring observations 
+GET 
+/geofence/boundary-status 
+Processes point-status requests 
+GET 
+/registry/compare/{land_id} 
+Retrieves comparison results 
+GET 
+/alerts 
+Retrieves stored alert records 
+GET 
+/dashboard/analytics 
+Supplies dashboard analytics 
+
+=====PAGE 61=====
+ 
+ 
+ 
+ 
+49 
+ 
+GET 
+/dashboard/timeline 
+Supplies activity information 
+GET 
+/property-financials/{land_id} 
+Retrieves 
+property-financial 
+information 
+Table 7.2: Implemented API Services 
+7.3 FRONTEND AND GIS INTERFACE IMPLEMENTATION 
+The frontend serves as an application layer for the backend services which were 
+implemented. JavaScript is used for retrieving inputs from users, interacting with the API 
+and displaying information based on the corresponding response. 
+The GIS part of the system is developed with Leaflet.  It sends from a script loaded in the 
+browser the command to setup the map, which offers the working space for all spatial 
+operation. Polygon drawing feature allows user to supply the required coordinates for land 
+registration and monitoring tasks. 
+7.3.1 LAND REGISTRATION INTERFACE 
+The land-registration web page integrates both the form fields and the map component.  
+The land-authoritative information can be captured by form while the shape could be 
+provided by the map.  Once the user confirms the forms the JavaScript side gathers all the 
+data and the GPS coordinates to generate the backend request. 
+7.3.2 MAP INTERACTION  
+Leaflet is responsible to display the geographic information in the browser. The Polygon 
+objects, retrieved or created while interacting, can be displayed on the map. The user will 
+be able to visually link the record with the geographic location. 
+The coordinates sent from the browser are in longitude-latitude format that can be 
+interpreted into the spatial information that back end uses. The spatial calculations are not 
+done in the front end. Instead the geographic information is sent to the back end. This keeps 
+the spatial decision logic centralized in the application service rather than replicating on 
+the client. 
+7.3.3 MONITORING INTERFACE  
+The monitoring interface takes the geographic data for an encroachment and makes 
+requests to the correct api endpoint. The interface can display returned values such as: 
+• Encroachment status 
+• Overlap information 
+• Persistence state 
+• Asset-related information 
+• Risk information 
+
+=====PAGE 62=====
+ 
+ 
+ 
+ 
+50 
+ 
+• Alert priority 
+The frontend therefore acts as a presentation layer for values generated by the backend 
+rather than independently calculating those values. 
+7.3.4 BOUNDARY AND REGISTRY INTERFACES  
+The boundary-status request is submitted to check the boundary status and the land registry 
+comparison request is submitted to compare the current land record. The separate interface 
+actions are provided. The classification and comparison information that has been returned 
+is then sent back to the user without changing any of the underlying record made directly 
+from the browser. 
+7.3.5 FRONTEND–BACKEND INTEGRATION  
+The working interface performs asynchronous HTTP queries to the FastAPI app in order 
+to update specific portions of page after an operation instead of manually rebuilding 
+application state. The separation also help in solving the project easier to test since API can 
+be tested independently on Swagger/OpenAPI and the same endpoint has been consumed 
+by browser. 
+ 
+FIGURE 7.2: GEO FENCE GIS USER INTERFACE  
+
+=====PAGE 63=====
+ 
+ 
+ 
+ 
+51 
+ 
+ 
+FIGURE 7.3: LAND REGISTRATION / MAP INTERACTION 
+7.4 DATABASE INTEGRATION AND MODULE IMPLEMENTATION 
+The app-level interaction with database is implemented based on SQLAlchemy in the back-
+end. The records necessary for each functional module are retrieved via back-end services, 
+not directly from the browser. 
+7.4.1 ASSET AND PROPERTY DATA INTEGRATION 
+The asset information is retrieved via the land association stored in the application.  For a 
+monitoring request with contextual asset information, the server-side retrieves the 
+corresponding records from the database and supplies the necessary information to the 
+processing layer. Financial information of property is also queried in case while monitoring 
+workflow needs financial information.  Here, financial records are kept separate from the 
+update activities to the property location.  
+The separation is relevant at the implementation level since updating an asset or a financial 
+record does not imply modification of the related geographic record. 
+7.4.2 OBSERVATION STORAGE 
+After the monitoring event being processed, the observation service will generate the 
+corresponding historical record. The information stored is the location, overlaps 
+information, severity, source, and the observation time.  
+It hence follows the observation table serves as the long-term data storage utilized by 
+subsequent monitoring requests.  It stores added observations rather than updating existing 
+observation. The application can remember the history of events. 
+ 
+
+=====PAGE 64=====
+ 
+ 
+ 
+ 
+52 
+ 
+7.4.3 BOUNDARY HISTORY IMPLEMENTATION  
+Any updates to boundaries are stored separately to the normal land retrieval process. When 
+a change occurs to a boundary, the historical boundary, prior to the change, is stored in the 
+boundary-history record. The reason for change and the version information is also 
+captured. A controlled implementation test showed a change from one boundary version to 
+another maintaining the previously recorded version. 
+7.4.4 REGISTRY DATA INTEGRATION  
+The registry comparison service calls the registry record from the chosen survey 
+information and forwards both geometries to the comparison functions. The generated 
+comparison information is fed back through the API and can be sent to the frontend for 
+display. The operational geometry and registry information are two different records, so 
+the comparison operation will not alter either. 
+7.4.5 ALERT PERSISTENCE  
+Alerts produced by the monitoring workflow are stored to the database and include land, 
+severity, priority and message information. Prior to instantiating an equivalent alert, the 
+implementation will check the history of alerts already in place. This leads to the kind of 
+duplicate-suppressing back-end behavior that is necessary when a repeated monitor event 
+needs to be logged, without losing the actual history. 
+7.4.6 MODULE INTEGRATION 
+The major implementation modules are connected through database-backed service calls 
+rather than through direct module-to-module manipulation of frontend state. 
+Application Module 
+Database Information Used 
+Land Management 
+Land records and boundary information 
+Asset Management 
+Asset records associated with land 
+Property Financials 
+Property and financial records 
+Boundary History 
+Previous and active boundary versions 
+Registry Comparison 
+Operational and registry records 
+
+=====PAGE 65=====
+ 
+ 
+ 
+ 
+53 
+ 
+Alert Management 
+Stored alert history 
+Dashboard 
+Aggregated application records 
+Table 7.3: Module-to-Database Integration 
+ 
+ 
+FIGURE 7.4: APPLICATION MODULE–DATABASE INTERACTION 
+7.5 DASHBOARD, ALERT AND NOTIFICATION INTERFACE 
+IMPLEMENTATION  
+The last implementation layer displays the processed information to the user and gives the 
+external notification system. The dashboard receives its data through specific API calls 
+rather than querying the database directly. 
+7.5.1 DASHBOARD IMPLEMENTATION  
+The dashboard is built as a set of summaries that call the analytics endpoints for the data. 
+Then, JavaScript will request the data needed and update the interface element accordingly. 
+The implemented dashboard services include: 
+• Portfolio analytics 
+• Asset information 
+• Risk summary 
+• Alert summary 
+• Recent activity 
+• Timeline information 
+
+=====PAGE 66=====
+ 
+ 
+ 
+ 
+54 
+ 
+Chart.js was used where graphics were required. Numerical values and event details were 
+included as well, so that summarized and detailed information could be displayed. 
+7.5.2 TIMELINE IMPLEMENTATION  
+Content of the timeline interface: The timeline interface fetches recent activity of 
+application from the timeline endpoint. What it get back is a list of records, sorted by 
+timestamp, showing recent activity. This implementation directly interfaces to the existing 
+historical data maintained by the backend rather than an additional activity dataset. 
+7.5.3 RISK SUMMARY INTERFACE  
+The risk-summary endpoint aggregates monitoring data for the dashboard. The frontend 
+maps the returned values to summary cards. The dashboard thus will not be recalculating 
+the underlying values for risk, but rather displaying the values generated by the backend 
+layers. 
+7.5.4 ALERT DISPLAY  
+Alerts stored in the Alert database can be retrieved by the alert endpoint and then viewed 
+in the monitor screen. Information that can be displayed includes the related land, severity, 
+priority and alert message. As the alert is stored before it is displayed, the dash board is 
+able to show past alert information even if it did not notify the user. 
+7.5.5 EMAIL NOTIFICATION IMPLEMENTATION  
+Notification is performed via an external SMTP-based service. When an alert satisfies the 
+notification condition, the notification component is handed the relevant alert data, then it 
+sends this data to the configured mail service. The notification mechanism is intentionally 
+kept separate from alert persistence: 
+Alert Database Record → Notification Service → SMTP Service 
+Thus, a failure of external mail-delivery does not delete the record in the database. The 
+mail feature relies on the correct external SMTP setup and login. 
+7.5.6 FINAL USER INTERFACE INTEGRATION 
+The frontend orchestrates the individual services into a single user-facing workflow. A user 
+can query geographic records, submit monitoring jobs, inspect returned analytical data, 
+browse alert history and view dashboard summaries without ever directly accessing the 
+database. 
+The completed implementation can consequently be viewed at three practical levels: 
+1. Interaction Layer – browser forms, map and dashboard. 
+2. Service Layer – FastAPI endpoints and application functions. 
+3. Persistence Layer – PostgreSQL/PostGIS records and historical information. 
+
+=====PAGE 67=====
+ 
+ 
+ 
+ 
+55 
+ 
+CHAPTER 8 
+TESTING, RESULTS AND DISCUSSION 
+8.1 TESTING METHODOLOGY 
+Testing conducted after development of the major application modules was used to ensure 
+that the developed system has returned the correct output for the defined functional 
+scenario. The particular area of concern was the correctness of the function and interaction 
+of the major system modules. 
+Three mechanisms were used during verification: 
+1. Swagger/OpenAPI interface that provides a means of making API requests and 
+inspecting the responses. 
+2. PostgreSQL queries to verify all database entries were as expected. 
+Browser inspection for compare the map display, the dashboard display and the front end-
+back end communication. 
+The testing procedure was requirement oriented, each major function was run with a 
+predefined input and the returned value checked against the expected system behavior. 
+Database entries were checked where persistence of information was required for the 
+output to be correct.  
+Tests were carried out on land registration, geometry tests, spatial event processing, 
+multiple observations, asset context, financial data, boundary testing, registry comparison, 
+boundary history, alert creation and dashboard summaries. 
+Test 
+ID 
+Test Case 
+Expected Result 
+Result 
+01 
+Valid land registration 
+Land record created successfully 
+PASS 
+02 
+Invalid/self-intersecting 
+boundary 
+Invalid geometry rejected 
+PASS 
+03 
+Encroachment 
+intersection 
+and centroid 
+Intersection detected and result 
+returned 
+PASS 
+04 
+No-intersection response 
+No encroachment reported 
+PASS 
+
+=====PAGE 68=====
+ 
+ 
+ 
+ 
+56 
+ 
+05 
+Observation persistence 
+Observation stored successfully 
+PASS 
+06 
+Repeated observations 
+PERSISTENT state reached after 
+repeated events 
+PASS 
+07 
+Machine asset criticality 
+Criticality value returned as 90 
+PASS 
+08 
+Property 
+value/exposure 
+retrieval 
+Financial context returned 
+PASS 
+09 
+Near-boundary point 
+VERIFY_BOUNDARY returned 
+PASS 
+10 
+Point outside verification zone OUTSIDE returned 
+PASS 
+11 
+Close registry geometry 
+Digitization variance identified 
+PASS 
+12 
+Different registry geometry 
+MISMATCH identified 
+PASS 
+13 
+Alert priority logic 
+Priority generated successfully 
+PASS 
+14 
+Dashboard risk summary 
+Summary information displayed 
+PASS 
+Table 8.1: Functional Test Cases 
+The result of all fifteen functional cases was a PASS. Test evidence indicates that the 
+primary implemented workflows did behave according to the way they were defined in the 
+prototype. 
+8.2 FUNCTIONAL TESTING OF CORE MODULES  
+First set of tests tested for the most basic of operations that would needed for the system to 
+accept, process and store information. 
+8.2.1 LAND REGISTRATION  
+The successfully completed land-registration test generated a land register with the 
+submitted administrative and geographical data. The relevant database record was checked 
+
+=====PAGE 69=====
+ 
+ 
+ 
+ 
+57 
+ 
+following the submission. The second test was an invalid boundary line being self-
+intersecting. The application refused to save the geometry as a valid monitoring reference 
+rather than accept it. These 2 tests showed the registering and rejecting input working 
+correctly. 
+8.2.2 ENCROACHMENT PROCESSING  
+The positive spatial test resulted in an encroachment when the submitted monitoring 
+geometry crossed the registered land boundary. The response contained the expected 
+spatial output including the representative event location and overlap information. In 
+addition to a negative test using a geometry with an intersection, a negative test was 
+performed using a geometry with no intersection. Here, the system detected non-
+encroachment. They matter because they confirm both sides of the fundamental spatial 
+decision: a qualifying event exists, an unrelated geometry does not produce an 
+encroachment event simply. 
+8.2.3 OBSERVATION STORAGE  
+The observation-storage test proved that a processed monitoring event could be saved in 
+the observation history. This would allow subsequent requests to run based on stored 
+observations.  Repeated observation test also indicated us that the stored records are taken 
+into account during the successive monitoring events. The last controlled scenarios got in 
+the PERSISTENT state after seven recent observations. 
+8.2.4 ASSET AND FINANCIAL CONTEXT  
+The asset-context test confirmed that Machine asset was returned with the value 90 of the 
+configured criticality. The financial-context test verified the recall of the value of the 
+property when it was located to the impact land. The recorded value of the property in the 
+representative final test was Rs. 8,500,000. The tests indicate that it is possible for the 
+monitoring response to include stored information accumulated even though the spatial 
+event has occurred. 
+8.2.5 BOUNDARY AND VERSION OPERATIONS  
+Boundary-status testing gave the expected values for controlled points, with the point 
+placed near the configured verification zone receiving VERIFY_BOUNDARY, and the 
+point placed well outside the zone receiving OUTSIDE. Boundary-version testing also 
+verified that an update had not just overwritten the historical reference. 
+8.3 SPATIAL, PERSISTENCE AND RISK RESULTS  
+A generic final encroachment test was applied to confirm the interaction of the primary 
+monitoring outputs. The /encroachment/check request resulted in an encroachment 
+condition with 100% overlap. The response was for observation 23 and identified 7 new 
+observations which will lead to a PERSISTENT state. The above record was referenced to 
+a Machine asset and an asset criticality of 90. The relevant property record had a value of 
+8,500,000 and the portfolio exposure output was 99.42. 
+
+=====PAGE 70=====
+ 
+ 
+ 
+ 
+58 
+ 
+Table 8.2: Representative Final Encroachment Result 
+Output Field 
+Observed Result 
+Encroachment 
+true 
+Overlap 
+100% 
+Observation 
+23 
+Recent observations 
+7 
+Persistence 
+PERSISTENT 
+Asset type 
+Machine 
+Asset criticality 
+90 
+Property value 
+₹8,500,000 
+Portfolio exposure score 
+99.42 
+Alert priority 
+Generated from returned risk and persistence context 
+
+=====PAGE 71=====
+ 
+ 
+ 
+ 
+59 
+ 
+ 
+FIGURE 8.1: FINAL ENCROACHMENT TEST API RESPONSE 
+8.3.1 MODEL PERFORMANCE EVALUATION 
+The trained XGBoost classifier was tested on accuracy, precision, recall, F1-score, 
+balanced accuracy, ROC-AUC and PR-AUC. In the experimental evaluation, the model 
+obtained around 94% in the accuracy and 94% in the ROC-AUC. The precision and recall 
+are representative of the model’s capacity to detect encroachment while considering false-
+positive and false-negative labeling. 
+ 
+FIGURE 8.2: XGBOOST MODEL EVALUATION METRICS 
+Permutation-Based Feature Importance Analysis: 
+
+=====PAGE 72=====
+ 
+ 
+ 
+ 
+60 
+ 
+ 
+FIGURE 8.3: PERMUTATION FEATURE IMPORTANCE OF THE XGBOOST MODE 
+The analysis showed that the feature with the most impact was the percentage of overlap, 
+with persistence score and asset criticality as second and third. This signifies that the extent 
+of the area of overlay (percentage of overlap) and persistence of change had significant 
+contributions to the prediction. Boundary-area difference, proximity score,  registry match 
+score offer further predictive insights, while the other features show relatively minor 
+contributions. 
+8.4 REGISTRY, ALERT AND DASHBOARD RESULTS 
+8.4.1 REGISTRY COMPARISON RESULTS 
+The three registry scenarios were tested  
+• We first set the operational and registry geometries to a similar real extent. Both 
+were 13,797.5-meter square. The overlap was measured at 98.8% and the difference 
+at 2.4%. The system guessed this to be a a case of DIGITIZATION_VARIANCE.  
+• Number 2 scenario showed very different geometries. The land area in operation 
+was 13,797.5 m 2. and the registry geometry was found to be 378,068.22-meter 
+square, a difference of 100.36%.  The recorded overlap was 0%. The score was 
+MISMATCH. 
+• The third case was a survey reference for which there was no record of it in any 
+registry. This was classified as REGISTRY_NOT_FOUND 
+8.4.2 ALERT RESULTS  
+The testing of alert proved that the system was able to generate a priority for the 
+participating monitoring events. The alert records were stored in the database and could be 
+fetched separately from the notification system. Failed, duplicate-alert test proved the 
+expected suppression of duplicate alerts. It is to be able to avoid generating redundant alerts 
+for repeated monitoring requests. Lastly, the final testing checklist provided the evidence 
+
+=====PAGE 73=====
+ 
+ 
+ 
+ 
+61 
+ 
+that the generation of alert priority and the retrieval of the alert history were functioning 
+properly as well. 
+8.4.3 DASHBOARD RESULTS  
+The dashboard was tested through the use of the records stored in the prototype database. 
+The result generated are as follows. 
+Dashboard Metric 
+Observed Value 
+Encroachment observations 
+14 
+Persistent events 
+1 
+Historical HIGH/CRITICAL 
+alerts 
+132 
+Urgent alerts 
+3 
+Immediate alerts 
+1 
+Critical alerts 
+1 
+Tested property portfolio total 
+₹11,950,000 
+Table 8.3: Dashboard Test results 
+The dashboard has yielded the monitoring, alert and the portfolio information via our 
+analytics services. The activities timeline and the risk-summary functions were identified 
+as properly implemented. The 132 HIGH/CRITICAL’s are historical database-state 
+indicators and are not to be confused with 132 active incidents. 
+The Dashboard test results are: 
+
+=====PAGE 74=====
+ 
+ 
+ 
+ 
+62 
+ 
+ 
+FIGURE 8.4 (a): MONITORING DASHBOARD 
+ 
+FIGURE 8.4 (b): PORTFOLIO VALUE 
+
+=====PAGE 75=====
+ 
+ 
+ 
+ 
+63 
+ 
+ 
+FIGURE 8.4 (c): PIE CHART OF PORTFOLIO DISTRIBUTION 
+ 
+FIGURE 8.4 (d): BAR CHART OF ASSET DISTRIBUTION 
+ 
+FIGURE 8.5: ALERT HISTORY / PRIORITY DISPLAY  
+
+=====PAGE 76=====
+ 
+ 
+ 
+ 
+64 
+ 
+CHAPTER 9 
+CONCLUSION AND FUTURE WORK 
+9.1 CONCLUSION 
+The GeoFence project implemented a multi-paradigm geofencing-based platform 
+integrating land boundary monitoring, asset logging, risk detection, and alert generation. 
+The platform connects providing Common PostgresSQL/PostGIS database and FastAPI on 
+the backend integrated to a web land GIS viewing frontend that allows ease of management 
+of land boundaries and assets. 
+The system now in operation can be used to enable polygon land registration, geographic 
+containment and intersect statistics, to temporally persist an encroachment observation, to 
+provide asset criticality information, proximal asset visibility, and valuation of a property, 
+risk scoring, boundary checking, registry comparison, and to generate priority alerts.  By 
+combining all, both the geographic event and the above item, the geographic event can be 
+robustly evaluated. 
+The functional test were successfully passed.  This means that the essential modules all 
+work correctly in the set of specific test cases. These test cases were land registration, 
+encroachment, observation persistence, boundary checks, registry matching, risk 
+evaluation, alert generation and dashboard analysis. The project successfully meets the 
+planned goal of a integrated prototype for monitoring and decision support of geographic 
+assets. 
+However, this is a prototype implementation and the system is far from providing 
+constantly live satellite monitoring, statistically validated remote sensing accuracy, survey 
+good position, legally dogastal certified, or professional estate valuation. The risk 
+parameters in the system are also engineering defined values for decision support. 
+9.2 FUTURE WORK  
+In the future, raw live satellite, drone, or GNSS data streams could be incorporated to 
+automate creation of geographic observations. Additionally, custom remote-sensing 
+change-detection models could be used to preliminarily identify suspicious areas prior to 
+the spatial and risk-analysis pipeline. While the risk model has been calibrated and tested 
+with a very limited history, it can be enhanced to make use of extensive historical data. It 
+can also be scaled up for large scale deployments by additional features such as spatial 
+indexing, asynchronous execution, and scheduled monitoring. Alert handling can also be 
+revamped with role based routing and acknowledgement, escalation, and better audit trail.  
+Additional future work could extend the monitoring range for assets such as plantations 
+and flock of animals, while retaining effective catalogue and document management for 
+assets like jewelry, paintings and will documents. Lastly, assessment with larger and more 
+realistic data sets could offer quantitative evidence of system efficiency on top of the 
+functional prototype testing in this project. 
+
+=====PAGE 77=====
+ 
+ 
+ 
+ 
+65 
+ 
+APPENDICES 
+APPENDIX A — SYSTEM API INVENTORY 
+This appendix documents the primary REST API endpoints within the GeoFence system.  
+These APIs expose land registry, encroachment detection, persistence of observation, 
+boundary validation, registry comparison, alert management, financial data and dashboard 
+analytics. 
+A.1 Example API Request 
+• The encroachment-check service is invoked using: 
+• POST /encroachment/check 
+Example request structure: 
+{ 
+    "land_id": 1, 
+    "coordinates": [ 
+        [longitude, latitude], 
+        [longitude, latitude], 
+        [longitude, latitude], 
+        [longitude, latitude], 
+        [longitude, latitude] 
+    ], 
+    "asset_type": "Machine", 
+    "severity": "HIGH" 
+} 
+The exact coordinates used for the final test should be the coordinates from the actual 
+successful test execution. 
+APPENDIX B — DATABASE AND POSTGIS IMPLEMENTATION 
+This appendix presents the principal database entities and representative spatial queries 
+used by the GeoFence system. 
+B.1 Core Database Entities 
+The system uses PostgreSQL with PostGIS for spatial data management. 
+The principal entities are: 
+• lands 
+• assets 
+• property_financials 
+• encroachment_observations 
+
+=====PAGE 78=====
+ 
+ 
+ 
+ 
+66 
+ 
+• alerts 
+• land_registry 
+• land_boundary_history 
+The lands table stores the primary land identity and polygon boundary, while the other 
+tables provide asset, financial, observation, alert, registry and historical information. 
+B.2 Representative Spatial Query 
+A representative PostGIS operation used for boundary containment is: 
+SELECT ST_Contains( 
+    boundary, 
+    ST_SetSRID( 
+        ST_Point(:longitude, :latitude), 
+        4326 
+    ) 
+) 
+FROM lands 
+WHERE id = :land_id; 
+B.3 Boundary Verification 
+The system also uses a distance-based verification zone around the boundary: 
+ST_DWithin( 
+    boundary::geography, 
+    point::geography, 
+    2 
+) 
+The 2 m value represents an application-level verification zone used to identify points 
+requiring additional boundary verification. It should not be interpreted as a statement about 
+GPS or map positional accuracy. 
+APPENDIX C — FINAL TESTING AND VALIDATION EVIDENCE 
+This appendix contains the testing evidence used to verify the implemented GeoFence 
+workflow. 
+ 
+ 
+ 
+ 
+
+=====PAGE 79=====
+ 
+ 
+ 
+ 
+67 
+ 
+C.1 Final Encroachment Test 
+The final integrated test verifies the complete processing chain: 
+Spatial Input 
+     ↓ 
+Encroachment Detection 
+     ↓ 
+Observation Storage 
+     ↓ 
+Persistence Evaluation 
+     ↓ 
+Asset Criticality 
+     ↓ 
+Portfolio Exposure 
+     ↓ 
+Risk Calculation 
+     ↓ 
+Alert Priority 
+     ↓ 
+Dashboard / Notification 
+The final test documented in the project produced an encroachment result with 100% 
+overlap, observation number 23, seven recent observations, PERSISTENT status, Machine 
+criticality of 90, property value of ₹8,500,000 and portfolio exposure score of 99.42. 
+APPENDIX D — SPATIAL AND RISK PROCESSING LOGIC 
+This appendix documents the principal decision logic implemented in the system. 
+D.1 Encroachment Processing 
+The encroachment workflow performs the following operations: 
+1. Receives the spatial input. 
+2. Constructs the corresponding geometry. 
+3. Validates the geometry. 
+4. Retrieves the registered land boundary. 
+5. Performs spatial intersection analysis. 
+6. Calculates the overlap percentage. 
+7. Generates an observation when an encroachment condition is detected. 
+8. Updates the temporal persistence state. 
+9. Passes the result to the risk-assessment module. 
+D.2 Temporal Persistence 
+The system evaluates recent observations using: 
+
+=====PAGE 80=====
+ 
+ 
+ 
+ 
+68 
+ 
+• 24-hour temporal window 
+• 20 m spatial association radius 
+The persistence states are: 
+Number of Matching Observations 
+State 
+0 
+NEW 
+1 
+OBSERVED 
+2 
+REVIEW 
+3 or more 
+PERSISTENT 
+D.3 Risk Score 
+The implemented risk score is: 
+Risk Score = 0.35(Overlap) + 0.25(Persistence) + 0.20(Severity) + 0.10(Proximity) + 
+0.10(Asset Criticality) 
+The resulting risk levels are: 
+Risk Score 
+Risk Level 
+< 25 
+LOW 
+25 – <50 
+MEDIUM 
+50 – <75 
+HIGH 
+≥75 
+CRITICAL 
+ 
+
+=====PAGE 81=====
+ 
+ 
+ 
+ 
+69 
+ 
+APPENDIX E — ASSET AND PORTFOLIO MANAGEMENT 
+The GeoFence system supports heterogeneous assets associated with a property or portfolio. 
+E.1 Supported Asset Categories 
+• The implementation includes: 
+• Vehicle 
+• Machine/Equipment 
+• Tractor 
+• Plantation 
+• Livestock 
+• Jewelry 
+• Artwork 
+• Wills 
+E.2 Asset Criticality 
+The implemented criticality values include: 
+Asset Type 
+Criticality 
+Machine 
+90 
+Vehicle 
+75 
+Tractor 
+50 
+Other/default 
+25 
+When multiple relevant assets are associated with an event, the system uses the highest 
+applicable criticality value for the risk calculation. 
+E.3 Portfolio Exposure 
+Portfolio exposure uses the current property value associated with the affected land as a 
+decision-support input. The metric is intended for internal risk prioritization and is not 
+presented as a financial, legal or property valuation. 
+ 
+
+=====PAGE 82=====
+ 
+ 
+ 
+ 
+70 
+ 
+APPENDIX F — USER OPERATING PROCEDURE 
+This appendix describes the basic procedure for operating the GeoFence prototype. 
+F.1 Registering a Land Parcel 
+1. Start the FastAPI backend. 
+2. Open the application interface or Swagger UI. 
+3. Select the land-registration operation. 
+4. Enter the land details. 
+5. Provide the polygon boundary. 
+6. Submit the request. 
+7. Verify that the land record is successfully stored. 
+F.2 Performing an Encroachment Check 
+1. Select the registered land. 
+2. Provide the spatial coordinates of the observation. 
+3. Specify the relevant asset type. 
+4. Specify the severity where required. 
+5. Submit the POST /encroachment/check request. 
+6. Review the encroachment result. 
+7. Review the observation and persistence state. 
+8. Review risk and alert-priority information. 
+F.3 Reviewing Boundary Status 
+• Inside the registered boundary 
+• Near the boundary and requires verification 
+• Outside the verification zone 
+F.4 Reviewing Registry Comparison 
+• Close digital representation / digitization variance 
+• Substantial mismatch 
+• Registry geometry unavailable 
+F.5 Reviewing Alerts and Dashboard 
+The user can review: 
+• Alert history 
+• Alert priority 
+• Risk summary 
+• Recent activity 
+• Portfolio information 
+ 
+
+=====PAGE 83=====
+ 
+ 
+ 
+ 
+71 
+ 
+REFERENCES 
+[1] Arora, P., & Deswal, S. (2025). Geofence-based boundary violation detection 
+algorithms in unmanned aerial vehicles. International Journal of Communication Systems, 
+38(4), e6035. https://doi.org/10.1002/dac.6035 (DOI) 
+[2] AbdElhamied, E. M., Youssef, S. M., ElShenawy, M. A., & Salama, G. I. (2025). 
+Enhancing a building change detection model in remote sensing imagery for 
+encroachments and construction on government lands in Egypt as a case study. Applied 
+Sciences, 15(17), 9407. https://doi.org/10.3390/app15179407 (MDPI) 
+[3] Fu, L., Zhang, Y., Zhao, K., Zhang, L., Li, Y., Shang, C., & Shen, Q. (2025). Remote 
+sensing image-based building change detection: A case study of the Qinling Mountains in 
+China. Remote Sensing, 17(13), 2249. https://doi.org/10.3390/rs17132249 (Aberystwyth 
+University) 
+[4] Ren, W., Wang, Z., Xia, M., & Lin, H. (2024). MFINet: Multi-scale feature interaction 
+network for change detection of high-resolution remote sensing images. Remote Sensing, 
+16(7), 1269. https://doi.org/10.3390/rs16071269 (MDPI) 
+[5] Chen, H., Sun, C., Li, J., & Du, C. (2024). JointNet4BCD: A semi-supervised joint 
+learning neural network with decision fusion for building change detection. Remote 
+Sensing, 16(23), 4569. https://doi.org/10.3390/rs16234569 (MDPI) 
+[6] Li, Y., Zou, S., Zhao, T., & Su, X. (2024). MDFA-Net: Multi-scale differential feature 
+self-attention network for building change detection in remote sensing images. Remote 
+Sensing, 16(18), 3466. https://doi.org/10.3390/rs16183466(MDPI) 
+[7] Huang, H., Cheng, Q., Zhu, D., Huang, X., & Zhao, Q. (2025). TextSCD: Leveraging 
+text-based semantic guidance for remote sensing image semantic change detection. ISPRS 
+Annals of the Photogrammetry, Remote Sensing and Spatial Information Sciences, X-G-
+2025, 383–389. https://doi.org/10.5194/isprs-annals-X-G-2025-383-2025 (ISPRS Annals) 
+[8] Liu, X., He, X., Xiao, Z., Du, Z., Hu, Q., Song, S., & Li, Y. (2025). A new triplet-
+branch framework based on pixel-level subtraction features from bi-temporal remote 
+sensing images for semantic change detection. Advances in Space Research, 76(6), 3430–
+3444. https://doi.org/10.1016/j.asr.2025.07.023 (ScienceDirect) 
+[9] Long, J., Liu, S., Li, M., Zhao, H., & Jin, Y. (2025). BGSNet: A boundary-guided 
+Siamese multitask network for semantic change detection from high-resolution remote 
+sensing images. ISPRS Journal of Photogrammetry and Remote Sensing, 225, 221–237. 
+https://doi.org/10.1016/j.isprsjprs.2025.04.030 (ScienceDirect) 
+[10] Lu, P., Ding, H., & Tian, X. (2025). DFANet: A deep feature attention network for 
+building change detection in remote sensing imagery. Remote Sensing, 17(15), 2575. 
+https://doi.org/10.3390/rs17152575 (DOI) 
+
+=====PAGE 84=====
+ 
+ 
+ 
+ 
+72 
+ 
+[11] Xie, Z., Wan, G., Yin, Y., Sun, G., & Bu, D. (2025). SDDGRNets: Level–level 
+semantically decomposed dynamic graph reasoning network for remote sensing semantic 
+change detection. Remote Sensing, 17(15), 2641. https://doi.org/10.3390/rs17152641 
+(MDPI) 
+[12] Zhu, D., Huang, X., Huang, H., Cheng, Q., Huang, Z., & Shao, Z. (2026). ChangeViT: 
+Unleashing plain vision transformers for change detection in remote sensing images. 
+Pattern 
+Recognition, 
+172, 
+112539. 
+https://doi.org/10.1016/j.patcog.2025.112539 
+(ScienceDirect) 
+[13] Huang, H., Ding, K., Wang, S., Zhu, D., & Shao, Z. (2026). ChangeVFM: Unleashing 
+the power of vision foundation models for semantic change detection in remote sensing 
+images. 
+Geo-spatial 
+Information 
+Science. 
+https://doi.org/10.1080/10095020.2026.2646372 (Taylor & Francis Online) 
+[14] Li, M., Zhao, T., Liu, Y., Yu, R., & Wang, L. (2026). RoCD: Leveraging foundation 
+vision models with refine-and-fuse framework for robust change detection. Frontiers in 
+Remote Sensing, 6, 1744950. https://doi.org/10.3389/frsen.2025.1744950 (Frontiers) 
+[15] Dong, S., Hu, Y., Wang, L., Chen, G., & Meng, X. (2026). PeftCD: Leveraging vision 
+foundation models with parameter-efficient fine-tuning for remote sensing change 
+detection. IEEE Journal of Selected Topics in Applied Earth Observations and Remote 
+Sensing. https://doi.org/10.1109/JSTARS.2026.3679260 (GitHub) 
+[16] Lei, T., Zhang, S., Lin, S., Liu, T., Lv, Z., Gao, T., Gong, M., & Nandi, A. K. (2026). 
+Remote sensing image change detection using deep learning techniques: A comprehensive 
+survey. Artificial Intelligence Review, 59, 102. https://doi.org/10.1007/s10462-026-11501-
+0 (Springer) 
+[17] Lu, S., Guo, J., Zimmer-Dauphinee, J. R., Nieusma, J. M., Wang, X., VanValkenburgh, 
+P., Wernke, S. A., & Huo, Y. (2025). Vision foundation models in remote sensing: A 
+survey. IEEE Geoscience and Remote Sensing Magazine, 13(3), 190–215. 
+https://doi.org/10.1109/MGRS.2025.3541952 (Oak Ridge National Laboratory) 
+[18] Xiao, A., Xuan, W., Wang, J., Huang, J., Tao, D., Lu, S., & Yokoya, N. (2025). 
+Foundation models for remote sensing and Earth observation: A survey. IEEE Geoscience 
+and 
+Remote 
+Sensing 
+Magazine, 
+13(4), 
+297–324. 
+https://doi.org/10.1109/MGRS.2025.3576766 (DOI) 
+[19] Xiao, Z., & Ma, J. (2025). LLM agent framework for intelligent change analysis in 
+urban environment using remote sensing imagery. Automation in Construction, 177, 
+106341. https://doi.org/10.1016/j.autcon.2025.106341 
+[20] Shen, H., Yan, L., Xie, H., Wei, Y., Li, X., Shen, W., Lv, P., & Tan, F. (2026). 
+Foundation model-driven semantic change detection in remote sensing imagery. arXiv. 
+https://arxiv.org/abs/2602.13780 

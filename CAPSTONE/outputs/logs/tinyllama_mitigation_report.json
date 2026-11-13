@@ -1,0 +1,654 @@
+{
+  "model": "TinyLlama/TinyLlama-1.1B-Chat-v1.0",
+  "n_cal": 150,
+  "n_test": 150,
+  "tau_warning": 0.6113945209445864,
+  "tau_fault": 0.8983906293458658,
+  "test_detection_auroc_on_own_generations": 0.7947557064704772,
+  "before": {
+    "accuracy": 0.38,
+    "hallucination_rate": 0.62
+  },
+  "after": {
+    "coverage": 0.43333333333333335,
+    "accuracy_among_answered": 0.6,
+    "hallucination_rate_among_answered": 0.4,
+    "hallucination_rate_system_wide": 0.17333333333333334,
+    "relative_hallucination_reduction_among_answered": 0.3548387096774193,
+    "relative_hallucination_reduction_system_wide": 0.7204301075268817
+  },
+  "tier_counts": {
+    "SAFE": 48,
+    "TIER1_RESAMPLE": 11,
+    "TIER2_RETRIEVAL": 6,
+    "TIER3_ABSTAIN": 85
+  },
+  "greedy_hallucinations_corrected": {
+    "by_tier1_resample": 2,
+    "by_tier2_retrieval": 0
+  },
+  "selective_prediction_accuracy_at_coverage": {
+    "TRUEGUARD": {
+      "100%": 0.38,
+      "90%": 0.4148148148148148,
+      "80%": 0.4583333333333333,
+      "70%": 0.5047619047619047,
+      "60%": 0.5111111111111111,
+      "50%": 0.6,
+      "AURC": 0.4117644831204586
+    },
+    "NLL_baseline": {
+      "100%": 0.38,
+      "90%": 0.3851851851851852,
+      "80%": 0.4,
+      "70%": 0.3904761904761905,
+      "60%": 0.4,
+      "50%": 0.44,
+      "AURC": 0.6028393940714305
+    },
+    "Entropy_baseline": {
+      "100%": 0.38,
+      "90%": 0.4074074074074074,
+      "80%": 0.43333333333333335,
+      "70%": 0.4666666666666667,
+      "60%": 0.5111111111111111,
+      "50%": 0.5333333333333333,
+      "AURC": 0.5260223238451469
+    }
+  },
+  "examples": [
+    {
+      "question": "Who made the 1995 album 'Jagged Little Pill' which sold 33 million copies?",
+      "gold": [
+        "alannis morrisette",
+        "morissette",
+        "alanis moriset"
+      ],
+      "greedy_answer": "Who made the 1995 album \"Jagged Little Pill\" by Alanis Morissette,",
+      "greedy_correct": 1,
+      "initial_risk": 0.9158407125227951,
+      "tier": "TIER2_RETRIEVAL",
+      "final_answer": "George Michael, a British singer-songwriter and record producer, made the 1995 album \"J",
+      "final_correct": 0,
+      "sensor_contributions": {
+        "ISP": 0.7760397412718797,
+        "AAS": 0.2829512326038771,
+        "EEM": -0.4066418356011743,
+        "DST": 0.2420191570715453
+      }
+    },
+    {
+      "question": "Which kiddies story book character is called Oui Oui in France?",
+      "gold": [
+        "noddy disambiguation",
+        "noddy"
+      ],
+      "greedy_answer": "The kiddies story book character in France called Oui Oui is called Oui Oui in English.",
+      "greedy_correct": 0,
+      "initial_risk": 0.9431758092114184,
+      "tier": "TIER3_ABSTAIN",
+      "final_answer": "I do not have sufficient verified evidence to answer this reliably.",
+      "final_correct": null,
+      "sensor_contributions": {
+        "ISP": 1.249288636756313,
+        "AAS": 0.019017895307031962,
+        "EEM": 0.191893018559281,
+        "DST": -0.14367185543926947
+      }
+    },
+    {
+      "question": "\"What traditional herb is used in a \"\"Margharita\"\" pizza ?\"",
+      "gold": [
+        "sweet basil",
+        "hot e",
+        "basil seeds"
+      ],
+      "greedy_answer": "The traditional herb used in a Margharita pizza is basil.",
+      "greedy_correct": 1,
+      "initial_risk": 0.5213669346688349,
+      "tier": "SAFE",
+      "final_answer": "The traditional herb used in a Margharita pizza is basil.",
+      "final_correct": 1,
+      "sensor_contributions": {
+        "ISP": -0.40304278599116455,
+        "AAS": -0.19817548739019186,
+        "EEM": -0.8427373563001367,
+        "DST": 0.03671257511605924
+      }
+    },
+    {
+      "question": "What was the name of the character played by Ralph Fiennes in 'Schindler's List'?",
+      "gold": [
+        "goethe amon",
+        "amon leopold goeth",
+        "amon g\u00f6th"
+      ],
+      "greedy_answer": "The name of the character played by Ralph Fiennes in \"Schindler's List\" is Oskar Sch",
+      "greedy_correct": 0,
+      "initial_risk": 0.1835180679220234,
+      "tier": "SAFE",
+      "final_answer": "The name of the character played by Ralph Fiennes in \"Schindler's List\" is Oskar Sch",
+      "final_correct": 0,
+      "sensor_contributions": {
+        "ISP": -1.6464169161727795,
+        "AAS": -0.3214978369550149,
+        "EEM": -0.834712882527903,
+        "DST": -0.18282695285067663
+      }
+    },
+    {
+      "question": "In which country are the wine producing regions Huasco Valley and Choapa Valley?",
+      "gold": [
+        "cxilio",
+        "etymology of chile",
+        "republic of chile"
+      ],
+      "greedy_answer": "The wine producing regions Huasco Valley and Choapa Valley are located in Chile.",
+      "greedy_correct": 1,
+      "initial_risk": 0.26708477090468463,
+      "tier": "SAFE",
+      "final_answer": "The wine producing regions Huasco Valley and Choapa Valley are located in Chile.",
+      "final_correct": 1,
+      "sensor_contributions": {
+        "ISP": -1.3500386901009707,
+        "AAS": -0.1572096614770218,
+        "EEM": -0.8529893884272781,
+        "DST": -0.1419890808179302
+      }
+    },
+    {
+      "question": "Which European city was the venue for the first three World Athletic Championships",
+      "gold": [
+        "helsset",
+        "city of helsinki",
+        "helinski"
+      ],
+      "greedy_answer": "The first three World Athletic Championships were held in Berlin, Germany, in 1930.",
+      "greedy_correct": 0,
+      "initial_risk": 0.9180875308574535,
+      "tier": "TIER3_ABSTAIN",
+      "final_answer": "I do not have sufficient verified evidence to answer this reliably.",
+      "final_correct": null,
+      "sensor_contributions": {
+        "ISP": -0.16114769925549327,
+        "AAS": 0.01995623470418703,
+        "EEM": -0.027873549035465434,
+        "DST": 1.0929436446113416
+      }
+    },
+    {
+      "question": "Chrometophobia is an irrational fear of what?",
+      "gold": [
+        "functions of money",
+        "pelf",
+        "money"
+      ],
+      "greedy_answer": "Chrometophobia is an irrational fear of the color blue.",
+      "greedy_correct": 0,
+      "initial_risk": 0.4857946008550573,
+      "tier": "SAFE",
+      "final_answer": "Chrometophobia is an irrational fear of the color blue.",
+      "final_correct": 0,
+      "sensor_contributions": {
+        "ISP": -1.2229100263998627,
+        "AAS": -0.40286676270863925,
+        "EEM": 0.4592166388573073,
+        "DST": -0.38303957225236723
+      }
+    },
+    {
+      "question": "Kremlin in Russia technically means?",
+      "gold": [
+        "military earthworks",
+        "fortalice",
+        "fieldworks military"
+      ],
+      "greedy_answer": "The Kremlin in Russia is a complex of buildings and structures that serve as the official residence and administrative center of the",
+      "greedy_correct": 0,
+      "initial_risk": 0.5869945791119978,
+      "tier": "SAFE",
+      "final_answer": "The Kremlin in Russia is a complex of buildings and structures that serve as the official residence and administrative center of the",
+      "final_correct": 0,
+      "sensor_contributions": {
+        "ISP": -1.101688644879189,
+        "AAS": -0.47068985676523245,
+        "EEM": 0.3402268838936023,
+        "DST": 0.09094360720645922
+      }
+    },
+    {
+      "question": "Who wrote and had a hit with the instrumental Classical Gas?",
+      "gold": [
+        "mason williams"
+      ],
+      "greedy_answer": "Who composed and had a hit with the instrumental \"Classical Gas\"?",
+      "greedy_correct": 0,
+      "initial_risk": 0.8534417386971753,
+      "tier": "TIER2_RETRIEVAL",
+      "final_answer": "Frank Vincent Zappa wrote and had a hit with the instrumental Classical Gas.",
+      "final_correct": 0,
+      "sensor_contributions": {
+        "ISP": 1.2411153973933648,
+        "AAS": 0.02277801066340962,
+        "EEM": -0.44783241361270865,
+        "DST": -0.5469696305606799
+      }
+    },
+    {
+      "question": "Who, in the Bible, was the eldest son of Isaac?",
+      "gold": [
+        "eisof",
+        "\u05e2\u05b5\u05e9\u05b8\u05c2\u05d5",
+        "esau"
+      ],
+      "greedy_answer": "The eldest son of Isaac in the Bible is Esau.",
+      "greedy_correct": 1,
+      "initial_risk": 0.15486821806059725,
+      "tier": "SAFE",
+      "final_answer": "The eldest son of Isaac in the Bible is Esau.",
+      "final_correct": 1,
+      "sensor_contributions": {
+        "ISP": -2.2369314856239964,
+        "AAS": 0.2713891169547101,
+        "EEM": -0.7421202171429271,
+        "DST": -0.48201841876081974
+      }
+    },
+    {
+      "question": "Who's home runs record did Mark McGwire break in the 1998 season?",
+      "gold": [
+        "roger maris 61 home run season",
+        "roger eugene maras",
+        "roger eugene maris"
+      ],
+      "greedy_answer": "Mark McGwire broke the home run record in the 1998 season, surpassing Babe Ruth'",
+      "greedy_correct": 0,
+      "initial_risk": 0.7346362575697013,
+      "tier": "TIER2_RETRIEVAL",
+      "final_answer": "Canseco broke Mark McGwire's home run record in the 1998 season with 59",
+      "final_correct": 0,
+      "sensor_contributions": {
+        "ISP": -0.4007116762608746,
+        "AAS": 0.09840645279154375,
+        "EEM": 0.266951107414052,
+        "DST": -0.43913455610161184
+      }
+    },
+    {
+      "question": "What magician-turned-actor portrayed a recurring role as a trickster on a few episodes of TV's Cheers before landing a job as a judge?",
+      "gold": [
+        "harry anderson"
+      ],
+      "greedy_answer": "The magician-turned-actor who portrayed a recurring role as a trickster on a few episodes",
+      "greedy_correct": 0,
+      "initial_risk": 0.9603287905835883,
+      "tier": "TIER3_ABSTAIN",
+      "final_answer": "I do not have sufficient verified evidence to answer this reliably.",
+      "final_correct": null,
+      "sensor_contributions": {
+        "ISP": 0.9919497479370206,
+        "AAS": 0.1929937760039028,
+        "EEM": 0.5364327282172566,
+        "DST": -0.027489134045614094
+      }
+    },
+    {
+      "question": "Which year saw the only hijacking of a British commercial flight?",
+      "gold": [
+        "1970",
+        "one thousand nine hundred and seventy"
+      ],
+      "greedy_answer": "The only hijacking of a British commercial flight occurred in 1974, during the Yom Kipp",
+      "greedy_correct": 0,
+      "initial_risk": 0.9661750005653711,
+      "tier": "TIER3_ABSTAIN",
+      "final_answer": "I do not have sufficient verified evidence to answer this reliably.",
+      "final_correct": null,
+      "sensor_contributions": {
+        "ISP": 0.2368999869649033,
+        "AAS": 0.06374423603425618,
+        "EEM": 0.8696729921520884,
+        "DST": 0.6890647284018661
+      }
+    },
+    {
+      "question": "Which entertainer was known as ' The Brazilian Bombshell ' ?",
+      "gold": [
+        "maria do carmo miranda da cuhna",
+        "carmen miranda",
+        "maria de carmo miranda de cunha"
+      ],
+      "greedy_answer": "The Brazilian entertainer who was known as \"The Brazilian Bombshell\" was Maria Antonia de Olive",
+      "greedy_correct": 0,
+      "initial_risk": 0.9632968697703178,
+      "tier": "TIER3_ABSTAIN",
+      "final_answer": "I do not have sufficient verified evidence to answer this reliably.",
+      "final_correct": null,
+      "sensor_contributions": {
+        "ISP": 1.029114303450267,
+        "AAS": -0.045614648762278165,
+        "EEM": 1.1249688789312273,
+        "DST": -0.33373181404719326
+      }
+    },
+    {
+      "question": "Marc Bolland has announced that he is to stand down as Chief Executive of which Major High Street Store?",
+      "gold": [
+        "per una",
+        "marks spencer group plc",
+        "marks spencer"
+      ],
+      "greedy_answer": "Marc Bolland has announced that he is to step down as Chief Executive of Marks & Spencer.",
+      "greedy_correct": 1,
+      "initial_risk": 0.9089764659742686,
+      "tier": "TIER3_ABSTAIN",
+      "final_answer": "I do not have sufficient verified evidence to answer this reliably.",
+      "final_correct": null,
+      "sensor_contributions": {
+        "ISP": 0.07800136135061596,
+        "AAS": -0.048550087570201864,
+        "EEM": 0.0721285687871265,
+        "DST": 0.7068583955933072
+      }
+    },
+    {
+      "question": "What is the name of the agreement under which passport controls have been abolished in 22 EU and 4 non-EU states?",
+      "gold": [
+        "schenigen",
+        "schengen",
+        "schengen disambiguation"
+      ],
+      "greedy_answer": "The name of the agreement under which passport controls have been abolished in 22 EU and 4 non-",
+      "greedy_correct": 0,
+      "initial_risk": 0.7838107214485611,
+      "tier": "TIER3_ABSTAIN",
+      "final_answer": "I do not have sufficient verified evidence to answer this reliably.",
+      "final_correct": null,
+      "sensor_contributions": {
+        "ISP": 0.35134977942377776,
+        "AAS": 0.4810237902763858,
+        "EEM": -1.0174442987984482,
+        "DST": -0.01967889689500385
+      }
+    },
+    {
+      "question": "Which legendary dancer was Oscar-nominated for The Towering Inferno?",
+      "gold": [
+        "fred astairey",
+        "fred astare",
+        "fred astair"
+      ],
+      "greedy_answer": "Oscar-nominated for The Towering Inferno, which legendary dancer was featured in the film",
+      "greedy_correct": 0,
+      "initial_risk": 0.9630025347662332,
+      "tier": "TIER3_ABSTAIN",
+      "final_answer": "I do not have sufficient verified evidence to answer this reliably.",
+      "final_correct": null,
+      "sensor_contributions": {
+        "ISP": 0.6433063041329515,
+        "AAS": -0.4070841836059022,
+        "EEM": 0.6711401904847356,
+        "DST": 0.8590814529216628
+      }
+    },
+    {
+      "question": "As what are the islands previously known as the Danish West Indies now known?",
+      "gold": [
+        "us vi",
+        "education in united states virgin islands",
+        "united states virgin islands"
+      ],
+      "greedy_answer": "The islands previously known as the Danish West Indies are now known as the Danish West Indies.",
+      "greedy_correct": 0,
+      "initial_risk": 0.8867669117738798,
+      "tier": "TIER3_ABSTAIN",
+      "final_answer": "I do not have sufficient verified evidence to answer this reliably.",
+      "final_correct": null,
+      "sensor_contributions": {
+        "ISP": 0.18207018564424185,
+        "AAS": -0.3667753756146902,
+        "EEM": 0.5647112283603092,
+        "DST": 0.18536482792811498
+      }
+    },
+    {
+      "question": "What Latin phrase, which translates to English as \"for this\", is taken to mean something designed for a specific problem or task?",
+      "gold": [
+        "ad hoc",
+        "add hoc",
+        "ad hoc query"
+      ],
+      "greedy_answer": "The Latin phrase \"quid pro quo\" means \"for this\" or \"in exchange for this.\" It is",
+      "greedy_correct": 0,
+      "initial_risk": 0.9643707760226279,
+      "tier": "TIER3_ABSTAIN",
+      "final_answer": "I do not have sufficient verified evidence to answer this reliably.",
+      "final_correct": null,
+      "sensor_contributions": {
+        "ISP": 0.1277991206194491,
+        "AAS": 0.18628871922624024,
+        "EEM": 1.1551320416803652,
+        "DST": 0.3363268853050486
+      }
+    },
+    {
+      "question": "Which famous novelist also wrote under the pseudonym Richard Bachman?",
+      "gold": [
+        "list of times name 22stephen king 22 or stephen king work is mentioned in some context",
+        "stephen edwin king",
+        "stephen e king"
+      ],
+      "greedy_answer": "Richard Bachman, a famous novelist, also wrote under the pseudonym Richard Bachman.",
+      "greedy_correct": 0,
+      "initial_risk": 0.8269536071783066,
+      "tier": "TIER1_RESAMPLE",
+      "final_answer": "The famous novelist Richard Bachman also wrote as Richard Bachman.",
+      "final_correct": 0,
+      "sensor_contributions": {
+        "ISP": -0.29152462470836904,
+        "AAS": 0.40592918183838855,
+        "EEM": -0.2076820893064862,
+        "DST": 0.16470352583571118
+      }
+    },
+    {
+      "question": "What compete at the Burghley Trials, Badminton, the Rolex Kentucky Three Day, the Adelaide Trials, the Luhmhlen Trials and the toiles de Pau?",
+      "gold": [
+        "equestrian sports",
+        "horseback riding",
+        "horse riders"
+      ],
+      "greedy_answer": "Compete at the Burghley Trials, Badminton, the Rolex Kentucky Three Day, the Adela",
+      "greedy_correct": 0,
+      "initial_risk": 0.8446279926362691,
+      "tier": "TIER3_ABSTAIN",
+      "final_answer": "I do not have sufficient verified evidence to answer this reliably.",
+      "final_correct": null,
+      "sensor_contributions": {
+        "ISP": 0.9764556222309543,
+        "AAS": -0.1422507145796778,
+        "EEM": -0.5560859990917723,
+        "DST": -0.07780778936802832
+      }
+    },
+    {
+      "question": "What is a positively charged ion called?",
+      "gold": [
+        "non ionic",
+        "charge chemistry",
+        "oxo anion"
+      ],
+      "greedy_answer": "A positively charged ion is called a cation.",
+      "greedy_correct": 1,
+      "initial_risk": 0.7323919619386339,
+      "tier": "TIER1_RESAMPLE",
+      "final_answer": "A positively charged ion is a cation.",
+      "final_correct": 1,
+      "sensor_contributions": {
+        "ISP": -0.3933080200997149,
+        "AAS": 0.11254257594092057,
+        "EEM": -0.24005204273074582,
+        "DST": 0.03484692225571162
+      }
+    },
+    {
+      "question": "Luminol, a chemical that exhibits chemiluminescence, is often used by forensic examiners to try and detect trace amounts of what?",
+      "gold": [
+        "abo blood groups",
+        "abo grouping",
+        "ab blood"
+      ],
+      "greedy_answer": "Luminol is used by forensic examiners to detect trace amounts of drugs, alcohol, or",
+      "greedy_correct": 0,
+      "initial_risk": 0.6316432874752487,
+      "tier": "TIER3_ABSTAIN",
+      "final_answer": "I do not have sufficient verified evidence to answer this reliably.",
+      "final_correct": null,
+      "sensor_contributions": {
+        "ISP": -0.6993853639401808,
+        "AAS": -0.3801337918118381,
+        "EEM": 0.14381885769383865,
+        "DST": -0.017789825620673994
+      }
+    },
+    {
+      "question": "In darts, what is the highest possible checkout with three darts, finishing with a double?",
+      "gold": [
+        "one hundred and seventy",
+        "170"
+      ],
+      "greedy_answer": "The highest possible checkout with three darts, finishing with a double, is a 100-point checkout.",
+      "greedy_correct": 0,
+      "initial_risk": 0.9751379316500889,
+      "tier": "TIER3_ABSTAIN",
+      "final_answer": "I do not have sufficient verified evidence to answer this reliably.",
+      "final_correct": null,
+      "sensor_contributions": {
+        "ISP": 0.7930686574143533,
+        "AAS": 0.12255978000511494,
+        "EEM": 0.35577668289887215,
+        "DST": 0.9050676495800397
+      }
+    },
+    {
+      "question": "Who was Pope during most of the 1914-18 Great War, succeeding Pius X in September 1914?",
+      "gold": [
+        "giacomo paolo giovanni battista della chiesa",
+        "giacomo cardinal della chiesa",
+        "giacomo della chiesa"
+      ],
+      "greedy_answer": "Who was Pope during the 1914-18 Great War, succeeding Pius X in September",
+      "greedy_correct": 0,
+      "initial_risk": 0.7653822313875813,
+      "tier": "TIER1_RESAMPLE",
+      "final_answer": "Who was Pope during the 1914-18 Great War, succeeding Pius X? The correct",
+      "final_correct": 0,
+      "sensor_contributions": {
+        "ISP": -0.3295688563535255,
+        "AAS": 0.5299249668835638,
+        "EEM": -0.4202649844101389,
+        "DST": -0.09043631850598473
+      }
+    },
+    {
+      "question": "What is the name of Kevin the teenager's friend played by Kathy Burke in a series of sketches with Harry Enfield?",
+      "gold": [
+        "pear wine",
+        "perry drink",
+        "pear scrumpy"
+      ],
+      "greedy_answer": "The name of Kevin the teenager's friend played by Kathy Burke in a series of sketches with",
+      "greedy_correct": 0,
+      "initial_risk": 0.7224138923594399,
+      "tier": "TIER3_ABSTAIN",
+      "final_answer": "I do not have sufficient verified evidence to answer this reliably.",
+      "final_correct": null,
+      "sensor_contributions": {
+        "ISP": 0.46273778236601704,
+        "AAS": 0.05739153043635148,
+        "EEM": -1.0734706775337743,
+        "DST": 0.017045537717019277
+      }
+    },
+    {
+      "question": "What is the furcula of a bird more commonly called?",
+      "gold": [
+        "wishbone",
+        "wishbones",
+        "wish bones"
+      ],
+      "greedy_answer": "The furcula is a bone in the thorax of birds, commonly called the \"tailbone.\"",
+      "greedy_correct": 0,
+      "initial_risk": 0.7156268845596983,
+      "tier": "TIER3_ABSTAIN",
+      "final_answer": "I do not have sufficient verified evidence to answer this reliably.",
+      "final_correct": null,
+      "sensor_contributions": {
+        "ISP": -1.0501208135611073,
+        "AAS": -0.038061277170608934,
+        "EEM": 1.1544279087688392,
+        "DST": -0.6361368040138404
+      }
+    },
+    {
+      "question": "\"Up to 1974, the title of \"\"Negus\"\" was used for the traditional rulers of what country?\"",
+      "gold": [
+        "democratic republic of ethiopia",
+        "\u12a2\u1275\u12ee\u1335\u12eb",
+        "aethiopia"
+      ],
+      "greedy_answer": "The title of \"Negus\" was used for traditional rulers of what country before 1974",
+      "greedy_correct": 0,
+      "initial_risk": 0.8781951135288578,
+      "tier": "TIER3_ABSTAIN",
+      "final_answer": "I do not have sufficient verified evidence to answer this reliably.",
+      "final_correct": null,
+      "sensor_contributions": {
+        "ISP": 1.1016911064527726,
+        "AAS": -0.326483173240572,
+        "EEM": -0.04147723851069568,
+        "DST": -0.25104525097574315
+      }
+    },
+    {
+      "question": "What hill does a bill sit on before it becomes a law?",
+      "gold": [
+        "capitol hill historic district washington d c",
+        "jenkins hill washington d c",
+        "capitol hill wa dc"
+      ],
+      "greedy_answer": "A bill sits on a hill before it becomes a law.",
+      "greedy_correct": 0,
+      "initial_risk": 0.7315492282299012,
+      "tier": "TIER2_RETRIEVAL",
+      "final_answer": "A bill sits on a committee before it becomes a law.",
+      "final_correct": 0,
+      "sensor_contributions": {
+        "ISP": -0.33197318348571914,
+        "AAS": 0.38049618065443014,
+        "EEM": -0.09237868259987951,
+        "DST": -0.4464102274160613
+      }
+    },
+    {
+      "question": "The 1938 work The Black Jacobins by C. L. R. James is an account of what upheaval that took place between 1791 and 1804?",
+      "gold": [
+        "second war of haitian independence",
+        "haitian revolution",
+        "santo domingo rebellion"
+      ],
+      "greedy_answer": "The 1938 work The Black Jacobins by C. L. R. James is an account of the",
+      "greedy_correct": 0,
+      "initial_risk": 0.7201982872960555,
+      "tier": "TIER3_ABSTAIN",
+      "final_answer": "I do not have sufficient verified evidence to answer this reliably.",
+      "final_correct": null,
+      "sensor_contributions": {
+        "ISP": -0.14043752741468024,
+        "AAS": 0.04433688183974344,
+        "EEM": -0.6805849752569846,
+        "DST": 0.22936813364904518
+      }
+    }
+  ]
+}
