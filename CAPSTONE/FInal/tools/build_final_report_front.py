@@ -70,12 +70,12 @@ from report_ch4_to_ch9_data import (
 from report_references_data import ACRONYMS_AND_SYMBOLS, APA_REFERENCES
 
 
-def add_vit_logo(doc, width_cm: float = 9.2) -> None:
+def add_vit_logo(doc, width_cm: float = 13.8) -> None:
     if LOGO_PATH.exists():
         p = doc.add_paragraph()
         p.alignment = WD_ALIGN_PARAGRAPH.CENTER
-        p.paragraph_format.space_before = Pt(6)
-        p.paragraph_format.space_after = Pt(6)
+        p.paragraph_format.space_before = Pt(10)
+        p.paragraph_format.space_after = Pt(14)
         p.add_run().add_picture(str(LOGO_PATH), width=Cm(width_cm))
 
 
@@ -106,32 +106,32 @@ def build_front_matter(doc, page_map: Dict[str, str]) -> None:
     configure_a4_margins(sec0)
     set_section_page_numbering(sec0, fmt=None)
 
-    # 1. COVER PAGE (Matches MIA-Project Template.docx page 3)
-    add_p(doc, "A project report on", size=12, italic=True, align=WD_ALIGN_PARAGRAPH.CENTER, line_spacing=1.15, space_before=8, space_after=8)
-    add_p(doc, REPORT_TITLE, size=16.5, bold=True, align=WD_ALIGN_PARAGRAPH.CENTER, line_spacing=1.2, space_before=4, space_after=14)
-    add_p(doc, "Submitted in partial fulfillment for the award of the degree of", size=14, italic=True, align=WD_ALIGN_PARAGRAPH.CENTER, line_spacing=1.2, space_before=4, space_after=10)
-    add_p(doc, "M.Tech. (Integrated) Computer Science and\nEngineering with Specialization in Business Analytics", size=20, bold=True, align=WD_ALIGN_PARAGRAPH.CENTER, line_spacing=1.2, space_before=4, space_after=14)
-    add_p(doc, "by", size=14, italic=True, align=WD_ALIGN_PARAGRAPH.CENTER, line_spacing=1.15, space_before=4, space_after=10)
-    add_p(doc, f"{CANDIDATE_NAME} ({CANDIDATE_REG})", size=16, bold=True, align=WD_ALIGN_PARAGRAPH.CENTER, line_spacing=1.2, space_before=2, space_after=16)
-    add_vit_logo(doc, width_cm=9.4)
-    add_p(doc, SCHOOL_NAME, size=16, bold=True, align=WD_ALIGN_PARAGRAPH.CENTER, line_spacing=1.2, space_before=12, space_after=8)
-    add_p(doc, SUBMISSION_MONTH_YEAR, size=12, bold=False, align=WD_ALIGN_PARAGRAPH.CENTER, line_spacing=1.15, space_before=2, space_after=0)
+    # 1. COVER PAGE (Matches MIA-Project Template.docx page 3 and friend report.pdf)
+    add_p(doc, "A project report on", size=12, italic=True, align=WD_ALIGN_PARAGRAPH.CENTER, line_spacing=1.15, space_before=14, space_after=14)
+    add_p(doc, REPORT_TITLE, size=19.5, bold=True, align=WD_ALIGN_PARAGRAPH.CENTER, line_spacing=1.25, space_before=8, space_after=22)
+    add_p(doc, "Submitted in partial fulfillment for the award of the degree of", size=14, italic=True, align=WD_ALIGN_PARAGRAPH.CENTER, line_spacing=1.2, space_before=10, space_after=14)
+    add_p(doc, "M.Tech. (Integrated) Computer Science and\nEngineering with Specialization in Business Analytics", size=22, bold=True, align=WD_ALIGN_PARAGRAPH.CENTER, line_spacing=1.25, space_before=8, space_after=22)
+    add_p(doc, "by", size=14, italic=True, align=WD_ALIGN_PARAGRAPH.CENTER, line_spacing=1.15, space_before=10, space_after=14)
+    add_p(doc, f"{CANDIDATE_NAME} ({CANDIDATE_REG})", size=17, bold=True, align=WD_ALIGN_PARAGRAPH.CENTER, line_spacing=1.2, space_before=6, space_after=22)
+    add_vit_logo(doc, width_cm=13.8)
+    add_p(doc, SCHOOL_NAME, size=17, bold=True, align=WD_ALIGN_PARAGRAPH.CENTER, line_spacing=1.2, space_before=18, space_after=12)
+    add_p(doc, SUBMISSION_MONTH_YEAR, size=13, bold=True, align=WD_ALIGN_PARAGRAPH.CENTER, line_spacing=1.15, space_before=6, space_after=0)
 
-    # 2. TITLE PAGE (Matches MIA-Project Template.docx page 4)
+    # 2. TITLE PAGE (Matches MIA-Project Template.docx page 4 and friend report.pdf)
     doc.add_page_break()
-    add_p(doc, REPORT_TITLE, size=16.5, bold=True, align=WD_ALIGN_PARAGRAPH.CENTER, line_spacing=1.2, space_before=18, space_after=16)
-    add_p(doc, "Submitted in partial fulfillment for the award of the degree of", size=14, italic=True, align=WD_ALIGN_PARAGRAPH.CENTER, line_spacing=1.2, space_before=6, space_after=12)
-    add_p(doc, "M.Tech. (Integrated) Computer Science and\nEngineering with Specialization in Business Analytics", size=20, bold=True, align=WD_ALIGN_PARAGRAPH.CENTER, line_spacing=1.2, space_before=4, space_after=16)
-    add_p(doc, "by", size=14, italic=True, align=WD_ALIGN_PARAGRAPH.CENTER, line_spacing=1.15, space_before=4, space_after=10)
-    add_p(doc, f"{CANDIDATE_NAME} ({CANDIDATE_REG})", size=16, bold=True, align=WD_ALIGN_PARAGRAPH.CENTER, line_spacing=1.2, space_before=2, space_after=18)
-    add_vit_logo(doc, width_cm=9.4)
-    add_p(doc, SCHOOL_NAME, size=16, bold=True, align=WD_ALIGN_PARAGRAPH.CENTER, line_spacing=1.2, space_before=14, space_after=8)
-    add_p(doc, SUBMISSION_MONTH_YEAR, size=12, bold=False, align=WD_ALIGN_PARAGRAPH.CENTER, line_spacing=1.15, space_before=2, space_after=0)
+    add_p(doc, REPORT_TITLE, size=19.5, bold=True, align=WD_ALIGN_PARAGRAPH.CENTER, line_spacing=1.25, space_before=24, space_after=22)
+    add_p(doc, "Submitted in partial fulfillment for the award of the degree of", size=14, italic=True, align=WD_ALIGN_PARAGRAPH.CENTER, line_spacing=1.2, space_before=10, space_after=14)
+    add_p(doc, "M.Tech. (Integrated) Computer Science and\nEngineering with Specialization in Business Analytics", size=22, bold=True, align=WD_ALIGN_PARAGRAPH.CENTER, line_spacing=1.25, space_before=8, space_after=22)
+    add_p(doc, "by", size=14, italic=True, align=WD_ALIGN_PARAGRAPH.CENTER, line_spacing=1.15, space_before=10, space_after=14)
+    add_p(doc, f"{CANDIDATE_NAME} ({CANDIDATE_REG})", size=17, bold=True, align=WD_ALIGN_PARAGRAPH.CENTER, line_spacing=1.2, space_before=6, space_after=22)
+    add_vit_logo(doc, width_cm=13.8)
+    add_p(doc, SCHOOL_NAME, size=17, bold=True, align=WD_ALIGN_PARAGRAPH.CENTER, line_spacing=1.2, space_before=18, space_after=12)
+    add_p(doc, SUBMISSION_MONTH_YEAR, size=13, bold=True, align=WD_ALIGN_PARAGRAPH.CENTER, line_spacing=1.15, space_before=6, space_after=0)
 
     # 3. DECLARATION BY THE CANDIDATE (Matches MIA-Project Template.docx page 5)
     doc.add_page_break()
-    add_vit_logo(doc, width_cm=9.0)
-    add_p(doc, "DECLARATION", size=14, bold=True, underline=True, align=WD_ALIGN_PARAGRAPH.CENTER, line_spacing=1.3, space_before=18, space_after=20)
+    add_vit_logo(doc, width_cm=13.0)
+    add_p(doc, "DECLARATION", size=14, bold=True, underline=True, align=WD_ALIGN_PARAGRAPH.CENTER, line_spacing=1.3, space_before=28, space_after=26)
     add_p(
         doc,
         f'I hereby declare that the thesis entitled "{REPORT_TITLE_MIXED}" submitted by me, for the award of the degree of '
@@ -139,8 +139,8 @@ def build_front_matter(doc, page_map: Dict[str, str]) -> None:
         size=12,
         align=WD_ALIGN_PARAGRAPH.JUSTIFY,
         line_spacing=1.5,
-        space_before=6,
-        space_after=14,
+        space_before=12,
+        space_after=20,
     )
     add_p(
         doc,
@@ -149,12 +149,13 @@ def build_front_matter(doc, page_map: Dict[str, str]) -> None:
         size=12,
         align=WD_ALIGN_PARAGRAPH.JUSTIFY,
         line_spacing=1.5,
-        space_before=6,
-        space_after=48,
+        space_before=12,
+        space_after=90,
     )
-    add_p(doc, "Place: Chennai", size=12, bold=True, align=WD_ALIGN_PARAGRAPH.LEFT, line_spacing=1.3, space_before=24, space_after=8)
+    add_p(doc, "Place: Chennai", size=12, bold=True, align=WD_ALIGN_PARAGRAPH.LEFT, line_spacing=1.3, space_before=60, space_after=16)
     p_sig = doc.add_paragraph()
     p_sig.paragraph_format.tab_stops.add_tab_stop(Cm(14.5), WD_TAB_ALIGNMENT.RIGHT)
+    p_sig.paragraph_format.space_before = Pt(24)
     r_d = p_sig.add_run("Date: [Date of Submission]\tSignature of the Candidate")
     r_d.font.name = "Times New Roman"
     r_d.font.size = Pt(12)
@@ -162,9 +163,9 @@ def build_front_matter(doc, page_map: Dict[str, str]) -> None:
 
     # 4. CERTIFICATE (Matches MIA-Project Template.docx page 6)
     doc.add_page_break()
-    add_vit_logo(doc, width_cm=9.0)
-    add_p(doc, "School of Computer Science and Engineering", size=12, bold=True, align=WD_ALIGN_PARAGRAPH.CENTER, line_spacing=1.2, space_before=8, space_after=8)
-    add_p(doc, "CERTIFICATE", size=14, bold=True, underline=True, align=WD_ALIGN_PARAGRAPH.CENTER, line_spacing=1.3, space_before=4, space_after=16)
+    add_vit_logo(doc, width_cm=13.0)
+    add_p(doc, "School of Computer Science and Engineering", size=13, bold=True, align=WD_ALIGN_PARAGRAPH.CENTER, line_spacing=1.2, space_before=8, space_after=8)
+    add_p(doc, "CERTIFICATE", size=14, bold=True, underline=True, align=WD_ALIGN_PARAGRAPH.CENTER, line_spacing=1.3, space_before=6, space_after=18)
     add_p(
         doc,
         f'This is to certify that the report entitled "{REPORT_TITLE_MIXED}" is prepared and submitted by '
@@ -174,11 +175,11 @@ def build_front_matter(doc, page_map: Dict[str, str]) -> None:
         "for the award of any other degree or diploma and the same is certified.",
         size=12,
         align=WD_ALIGN_PARAGRAPH.JUSTIFY,
-        line_spacing=1.5,
-        space_before=4,
+        line_spacing=1.45,
+        space_before=6,
         space_after=24,
     )
-    add_p(doc, "Signature of the Guide:", size=12, bold=True, align=WD_ALIGN_PARAGRAPH.LEFT, line_spacing=1.2, space_before=8, space_after=6)
+    add_p(doc, "Signature of the Guide:", size=12, bold=True, align=WD_ALIGN_PARAGRAPH.LEFT, line_spacing=1.2, space_before=10, space_after=6)
     add_p(doc, f"Name: {GUIDE_NAME}", size=12, bold=True, align=WD_ALIGN_PARAGRAPH.LEFT, line_spacing=1.2, space_before=2, space_after=6)
     add_p(doc, "Date: [Date]", size=12, bold=False, align=WD_ALIGN_PARAGRAPH.LEFT, line_spacing=1.2, space_before=2, space_after=24)
 
@@ -189,14 +190,14 @@ def build_front_matter(doc, page_map: Dict[str, str]) -> None:
     ]:
         pe = doc.add_paragraph()
         pe.paragraph_format.tab_stops.add_tab_stop(Cm(14.5), WD_TAB_ALIGNMENT.RIGHT)
-        pe.paragraph_format.space_before = Pt(3)
-        pe.paragraph_format.space_after = Pt(3)
+        pe.paragraph_format.space_before = Pt(8)
+        pe.paragraph_format.space_after = Pt(6)
         re_run = pe.add_run(f"{line_l}\t{line_r}")
         re_run.font.name = "Times New Roman"
         re_run.font.size = Pt(12)
         re_run.bold = "Signature" in line_l
 
-    add_p(doc, "Approved by the Head of Department\n[Name of HoD, SCOPE]", size=12, bold=True, align=WD_ALIGN_PARAGRAPH.RIGHT, line_spacing=1.25, space_before=30, space_after=0)
+    add_p(doc, "Approved by the Head of Department\n[Name of HoD, SCOPE]", size=12, bold=True, align=WD_ALIGN_PARAGRAPH.RIGHT, line_spacing=1.25, space_before=36, space_after=0)
 
     # Section 1: Roman Numeral Front Matter (5. Abstract, 6. Acknowledgement, 7. TOC, 8. LOF, 9. LOT, 10. Acronyms)
     sec_roman = doc.add_section(WD_SECTION.NEW_PAGE)

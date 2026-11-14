@@ -90,6 +90,19 @@ def configure_a4_margins(section) -> None:
     section.top_margin = Cm(2.54)
     section.bottom_margin = Cm(2.54)
 
+    # Full-page outer border box matching MIA template and friend report.pdf
+    sectPr = section._sectPr
+    if sectPr.find(qn("w:pgBorders")) is None:
+        xml_borders = (
+            f'<w:pgBorders {nsdecls("w")} w:offsetFrom="page">'
+            r'<w:top w:val="single" w:sz="6" w:space="24" w:color="auto"/>'
+            r'<w:left w:val="single" w:sz="6" w:space="24" w:color="auto"/>'
+            r'<w:bottom w:val="single" w:sz="6" w:space="24" w:color="auto"/>'
+            r'<w:right w:val="single" w:sz="6" w:space="24" w:color="auto"/>'
+            r'</w:pgBorders>'
+        )
+        sectPr.append(parse_xml(xml_borders))
+
 
 def set_section_page_numbering(section, fmt: Optional[str] = "decimal", start: Optional[int] = 1) -> None:
     """
@@ -177,7 +190,7 @@ def add_p(
     italic: bool = False,
     underline: bool = False,
     align=WD_ALIGN_PARAGRAPH.JUSTIFY,
-    line_spacing: float = 1.22,
+    line_spacing: float = 1.25,
     space_before: float = 0.0,
     space_after: float = 5.0,
     keep_with_next: bool = False,

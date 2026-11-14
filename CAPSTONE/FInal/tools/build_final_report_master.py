@@ -215,6 +215,9 @@ def assemble_docx(docx_path: Path, page_map: Dict[str, str]) -> None:
     build_appendices(doc)
     build_references_section(doc)
 
+    for sec in doc.sections:
+        configure_a4_margins(sec)
+
     docx_path.parent.mkdir(parents=True, exist_ok=True)
     doc.save(str(docx_path))
 
@@ -234,6 +237,24 @@ def export_docx_to_pdf_via_word(docx_path: Path, pdf_path: Path) -> None:
     )
     subprocess.run(["powershell", "-NoProfile", "-Command", ps_cmd], check=True)
     inject_hd_images_into_pdf(pdf_path)
+
+    # Verify and guarantee page border rectangle on every page in PDF
+    pdf_doc = fitz.open(str(pdf_path))
+    modified_pdf = False
+    for p in pdf_doc:
+        drawings = p.get_drawings()
+        has_border = any(d['rect'].y0 <= 25.0 and d['rect'].y1 <= 26.0 for d in drawings)
+        if not has_border:
+            r = fitz.Rect(24.0, 24.0, p.rect.width - 24.0, p.rect.height - 24.0)
+            p.draw_rect(r, color=(0, 0, 0), width=0.75)
+            modified_pdf = True
+    if modified_pdf:
+        tmp_fixed = pdf_path.with_name(pdf_path.stem + "_border_tmp.pdf")
+        pdf_doc.save(str(tmp_fixed), garbage=3, deflate=True)
+        pdf_doc.close()
+        tmp_fixed.replace(pdf_path)
+    else:
+        pdf_doc.close()
 
 
 def int_to_roman(n: int) -> str:
@@ -395,13 +416,37 @@ if __name__ == "__main__":
     page_map2, total_pdf_pages2, arabic_pages2 = extract_exact_page_map_from_pdf(tmp_pdf2)
     print(f"Pass 2 complete: Total PDF Pages = {total_pdf_pages2} (Front Matter = {total_pdf_pages2 - arabic_pages2}, Main Arabic Pages = {arabic_pages2}).")
 
-    for target_docx in [out_docx, CAPSTONE / "FINAL_REPORT.docx", ROOT / "FINAL_REPORT_NO_IMAGES.docx", ROOT / "FINAL_REPORT_OPTIMIZED.docx"]:
+    submission_dir = ROOT / "FINAL_SUBMISSION"
+    submission_dir.mkdir(parents=True, exist_ok=True)
+
+    target_docxs = [
+        out_docx,
+        CAPSTONE / "FINAL_REPORT.docx",
+        submission_dir / "FINAL_REPORT.docx",
+        submission_dir / "FINAL_REPORT_VERIFIED.docx",
+        ROOT / "FINAL_REPORT_VERIFIED.docx",
+        CAPSTONE / "FINAL_REPORT_VERIFIED.docx",
+        ROOT / "FINAL_REPORT_NO_IMAGES.docx",
+        ROOT / "FINAL_REPORT_OPTIMIZED.docx",
+    ]
+    for target_docx in target_docxs:
         try:
             shutil.copy2(tmp_docx2, target_docx)
             print(f"Saved: {target_docx}")
         except PermissionError:
             print(f"Note: {target_docx} is open in Word.")
-    for target_pdf in [out_pdf, CAPSTONE / "FINAL_REPORT.pdf", ROOT / "FINAL_REPORT_NO_IMAGES.pdf", ROOT / "FINAL_REPORT_OPTIMIZED.pdf"]:
+
+    target_pdfs = [
+        out_pdf,
+        CAPSTONE / "FINAL_REPORT.pdf",
+        submission_dir / "FINAL_REPORT.pdf",
+        submission_dir / "FINAL_REPORT_VERIFIED.pdf",
+        ROOT / "FINAL_REPORT_VERIFIED.pdf",
+        CAPSTONE / "FINAL_REPORT_VERIFIED.pdf",
+        ROOT / "FINAL_REPORT_NO_IMAGES.pdf",
+        ROOT / "FINAL_REPORT_OPTIMIZED.pdf",
+    ]
+    for target_pdf in target_pdfs:
         try:
             shutil.copy2(tmp_pdf2, target_pdf)
             print(f"Saved: {target_pdf}")
