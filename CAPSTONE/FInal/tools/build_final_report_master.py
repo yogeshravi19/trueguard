@@ -422,7 +422,6 @@ if __name__ == "__main__":
     target_docxs = [
         out_docx,
         CAPSTONE / "FINAL_REPORT.docx",
-        submission_dir / "FINAL_REPORT.docx",
         submission_dir / "FINAL_REPORT_VERIFIED.docx",
         ROOT / "FINAL_REPORT_VERIFIED.docx",
         CAPSTONE / "FINAL_REPORT_VERIFIED.docx",
@@ -439,7 +438,6 @@ if __name__ == "__main__":
     target_pdfs = [
         out_pdf,
         CAPSTONE / "FINAL_REPORT.pdf",
-        submission_dir / "FINAL_REPORT.pdf",
         submission_dir / "FINAL_REPORT_VERIFIED.pdf",
         ROOT / "FINAL_REPORT_VERIFIED.pdf",
         CAPSTONE / "FINAL_REPORT_VERIFIED.pdf",
