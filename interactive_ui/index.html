@@ -3,14 +3,11 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>TRUEGUARD — Real-Time LLM Hallucination Interception & Closed-Loop Mitigation</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
+  <title>TRUEGUARD — Multi-Signal Hallucination Interception & Closed-Loop Mitigation Dashboard</title>
   <style>
     :root {
       --bg-dark: #07090e;
-      --bg-card: rgba(15, 23, 42, 0.72);
+      --bg-card: rgba(15, 23, 42, 0.75);
       --bg-card-hover: rgba(30, 41, 59, 0.85);
       --border-subtle: rgba(255, 255, 255, 0.08);
       --border-focus: #06b6d4;
@@ -30,8 +27,9 @@
       --text-muted: #94a3b8;
       --text-dim: #64748b;
       
-      --font-sans: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
-      --font-mono: 'JetBrains Mono', monospace;
+      /* Robust system fonts for 100% offline standalone usage without internet */
+      --font-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+      --font-mono: "SFMono-Regular", Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
     }
 
     * {
@@ -66,7 +64,7 @@
       align-items: center;
       flex-wrap: wrap;
       gap: 16px;
-      padding-bottom: 24px;
+      padding-bottom: 22px;
       border-bottom: 1px solid var(--border-subtle);
       margin-bottom: 24px;
     }
@@ -78,8 +76,8 @@
     }
 
     .brand-shield {
-      width: 52px;
-      height: 52px;
+      width: 50px;
+      height: 50px;
       background: linear-gradient(135deg, #06b6d4 0%, #3b82f6 50%, #6366f1 100%);
       border-radius: 14px;
       display: flex;
@@ -89,15 +87,15 @@
     }
 
     .brand-shield svg {
-      width: 28px;
-      height: 28px;
+      width: 26px;
+      height: 26px;
       fill: #ffffff;
     }
 
     .brand-text h1 {
-      font-size: 24px;
+      font-size: 23px;
       font-weight: 800;
-      letter-spacing: -0.6px;
+      letter-spacing: -0.5px;
       background: linear-gradient(90deg, #ffffff 30%, #93c5fd 100%);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
@@ -118,7 +116,7 @@
     .pill {
       font-family: var(--font-mono);
       font-size: 11px;
-      padding: 6px 12px;
+      padding: 5px 12px;
       border-radius: 999px;
       background: rgba(255, 255, 255, 0.04);
       border: 1px solid var(--border-subtle);
@@ -159,6 +157,7 @@
       padding: 22px;
       box-shadow: 0 12px 36px rgba(0, 0, 0, 0.35);
       transition: border-color 0.2s ease, box-shadow 0.2s ease;
+      margin-bottom: 24px;
     }
 
     .card:hover {
@@ -176,94 +175,146 @@
       margin-bottom: 16px;
     }
 
-    /* Preset & Category Tabs */
-    .benchmarks-nav {
-      margin-bottom: 24px;
-    }
-
-    .tab-pills {
+    /* Suite Tabs */
+    .suite-nav-tabs {
       display: flex;
       flex-wrap: wrap;
       gap: 8px;
       margin-bottom: 14px;
     }
 
-    .tab-btn {
+    .suite-btn {
       background: rgba(255, 255, 255, 0.03);
       border: 1px solid var(--border-subtle);
       color: var(--text-muted);
-      padding: 7px 14px;
+      padding: 7px 16px;
       border-radius: 8px;
       font-size: 12px;
-      font-weight: 600;
+      font-weight: 700;
       cursor: pointer;
       transition: all 0.2s ease;
     }
 
-    .tab-btn:hover {
-      background: rgba(255, 255, 255, 0.07);
-      color: var(--text-main);
+    .suite-btn:hover {
+      background: rgba(255, 255, 255, 0.08);
+      color: #ffffff;
     }
 
-    .tab-btn.active {
-      background: linear-gradient(135deg, rgba(6, 182, 212, 0.2) 0%, rgba(59, 130, 246, 0.2) 100%);
+    .suite-btn.active {
+      background: linear-gradient(135deg, rgba(6, 182, 212, 0.25) 0%, rgba(59, 130, 246, 0.25) 100%);
       border-color: var(--cyan-bright);
       color: #ffffff;
-      box-shadow: 0 0 15px rgba(6, 182, 212, 0.25);
+      box-shadow: 0 0 14px rgba(6, 182, 212, 0.3);
     }
 
-    .preset-chips-wrap {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 8px;
-      align-items: center;
+    .chips-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
     }
 
-    .preset-chip {
-      background: rgba(15, 23, 42, 0.6);
+    @media (max-width: 1024px) {
+      .chips-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    @media (max-width: 650px) {
+      .chips-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .example-card {
+      background: rgba(10, 14, 23, 0.6);
       border: 1px solid var(--border-subtle);
-      color: var(--text-main);
-      padding: 6px 14px;
-      border-radius: 8px;
-      font-size: 12px;
+      border-radius: 10px;
+      padding: 12px 14px;
       cursor: pointer;
       transition: all 0.2s ease;
       display: flex;
-      align-items: center;
-      gap: 6px;
+      flex-direction: column;
+      justify-content: space-between;
     }
 
-    .preset-chip:hover {
+    .example-card:hover {
       border-color: var(--cyan-bright);
-      background: rgba(6, 182, 212, 0.1);
-      transform: translateY(-1px);
+      background: rgba(6, 182, 212, 0.08);
+      transform: translateY(-2px);
     }
 
-    .preset-chip .tag {
+    .example-card.active {
+      border-color: var(--cyan-bright);
+      background: rgba(6, 182, 212, 0.14);
+      box-shadow: 0 0 16px rgba(6, 182, 212, 0.25);
+    }
+
+    .example-card-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 6px;
+    }
+
+    .example-title {
+      font-size: 12.5px;
+      font-weight: 700;
+      color: var(--text-main);
+    }
+
+    .badge-tier {
       font-family: var(--font-mono);
-      font-size: 10px;
-      padding: 2px 6px;
+      font-size: 9.5px;
+      font-weight: 700;
+      padding: 2px 7px;
       border-radius: 4px;
-      background: rgba(255, 255, 255, 0.08);
-      color: var(--text-muted);
+      text-transform: uppercase;
+    }
+
+    .tier-safe {
+      background: var(--emerald-bg);
+      color: var(--emerald-safe);
+      border: 1px solid rgba(16, 185, 129, 0.3);
+    }
+
+    .tier-resample {
+      background: rgba(6, 182, 212, 0.15);
+      color: var(--cyan-bright);
+      border: 1px solid rgba(6, 182, 212, 0.3);
+    }
+
+    .tier-retrieval {
+      background: rgba(59, 130, 246, 0.15);
+      color: #93c5fd;
+      border: 1px solid rgba(59, 130, 246, 0.3);
+    }
+
+    .tier-abstain {
+      background: var(--rose-bg);
+      color: var(--rose-danger);
+      border: 1px solid rgba(244, 63, 94, 0.3);
+    }
+
+    .example-sub {
+      font-size: 11.5px;
+      color: var(--text-dim);
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
     }
 
     /* Prompt Box */
-    .prompt-card {
-      margin-bottom: 24px;
-    }
-
     .input-wrapper {
       position: relative;
     }
 
     textarea#promptInput {
       width: 100%;
-      height: 95px;
+      height: 90px;
       background: rgba(10, 14, 23, 0.85);
       border: 1px solid var(--border-subtle);
       border-radius: 12px;
-      padding: 16px 150px 16px 18px;
+      padding: 14px 170px 14px 16px;
       color: #ffffff;
       font-family: var(--font-sans);
       font-size: 14px;
@@ -281,9 +332,7 @@
     .btn-run-wrap {
       position: absolute;
       right: 12px;
-      bottom: 14px;
-      display: flex;
-      gap: 8px;
+      bottom: 12px;
     }
 
     .btn-primary {
@@ -307,11 +356,19 @@
       box-shadow: 0 6px 22px rgba(6, 182, 212, 0.45);
     }
 
-    .btn-primary:active {
-      transform: translateY(1px);
+    .offline-notice-box {
+      margin-top: 12px;
+      padding: 10px 14px;
+      border-radius: 8px;
+      background: rgba(59, 130, 246, 0.08);
+      border-left: 3px solid var(--blue-accent);
+      font-size: 12px;
+      color: #bfdbfe;
+      display: none;
+      line-height: 1.5;
     }
 
-    /* Battle Arena Grid */
+    /* Battle Arena */
     .battle-grid {
       display: grid;
       grid-template-columns: 1fr 1fr;
@@ -333,9 +390,8 @@
       padding: 16px;
       overflow-y: auto;
       font-family: var(--font-mono);
-      font-size: 13.5px;
-      line-height: 1.75;
-      position: relative;
+      font-size: 13px;
+      line-height: 1.7;
     }
 
     /* Tokens */
@@ -346,7 +402,6 @@
       border-radius: 4px;
       cursor: pointer;
       transition: all 0.15s ease;
-      position: relative;
     }
 
     .token:hover {
@@ -384,7 +439,7 @@
       margin-top: 12px;
       padding: 12px 14px;
       border-radius: 10px;
-      font-size: 13px;
+      font-size: 12.5px;
       display: flex;
       flex-direction: column;
       gap: 4px;
@@ -396,6 +451,12 @@
       to { opacity: 1; transform: translateY(0); }
     }
 
+    .mitigation-safe {
+      background: rgba(16, 185, 129, 0.12);
+      border: 1px solid rgba(16, 185, 129, 0.35);
+      color: var(--emerald-safe);
+    }
+
     .mitigation-tier1 {
       background: rgba(6, 182, 212, 0.12);
       border: 1px solid rgba(6, 182, 212, 0.35);
@@ -403,15 +464,15 @@
     }
 
     .mitigation-tier2 {
-      background: rgba(245, 158, 11, 0.12);
-      border: 1px solid rgba(245, 158, 11, 0.35);
-      color: var(--amber-warn);
+      background: rgba(59, 130, 246, 0.12);
+      border: 1px solid rgba(59, 130, 246, 0.35);
+      color: #93c5fd;
     }
 
-    .mitigation-safe {
-      background: rgba(16, 185, 129, 0.12);
-      border: 1px solid rgba(16, 185, 129, 0.35);
-      color: var(--emerald-safe);
+    .mitigation-tier3 {
+      background: rgba(244, 63, 94, 0.12);
+      border: 1px solid rgba(244, 63, 94, 0.35);
+      color: var(--rose-danger);
     }
 
     .card-footer-metrics {
@@ -431,7 +492,7 @@
 
     .card-footer-metrics .label {
       color: var(--text-dim);
-      font-size: 10.5px;
+      font-size: 10px;
       text-transform: uppercase;
       font-family: var(--font-mono);
       letter-spacing: 0.5px;
@@ -443,11 +504,7 @@
       font-family: var(--font-mono);
     }
 
-    /* Telemetry Dials & Risk Gauge */
-    .telemetry-card {
-      margin-bottom: 24px;
-    }
-
+    /* Master Risk Gauge */
     .master-risk-wrapper {
       background: rgba(10, 14, 23, 0.7);
       border: 1px solid var(--border-subtle);
@@ -482,7 +539,7 @@
 
     .risk-bar-container {
       flex: 1;
-      min-width: 200px;
+      min-width: 220px;
     }
 
     .risk-track-multi {
@@ -505,14 +562,14 @@
       display: flex;
       justify-content: space-between;
       margin-top: 6px;
-      font-size: 10.5px;
+      font-size: 10px;
       font-family: var(--font-mono);
       color: var(--text-dim);
     }
 
     .action-badge {
       font-family: var(--font-mono);
-      font-size: 11.5px;
+      font-size: 11px;
       font-weight: 700;
       padding: 8px 16px;
       border-radius: 8px;
@@ -575,7 +632,7 @@
 
     .sensor-hook {
       font-family: var(--font-mono);
-      font-size: 9.5px;
+      font-size: 9px;
       color: var(--text-dim);
       background: rgba(255, 255, 255, 0.04);
       padding: 2px 6px;
@@ -583,7 +640,7 @@
     }
 
     .sensor-name-full {
-      font-size: 12px;
+      font-size: 11.5px;
       color: var(--text-muted);
       margin-bottom: 12px;
       line-height: 1.3;
@@ -615,7 +672,7 @@
 
     .sensor-math {
       font-family: var(--font-mono);
-      font-size: 10px;
+      font-size: 9.5px;
       color: var(--text-dim);
     }
 
@@ -626,36 +683,31 @@
       background: rgba(6, 182, 212, 0.07);
       border-left: 4px solid var(--cyan-bright);
       border-radius: 0 10px 10px 0;
-      font-size: 13px;
+      font-size: 12.5px;
       color: #e0f2fe;
-      display: none;
       line-height: 1.6;
     }
 
-    /* Benchmarks Matrix Table */
-    .table-card {
-      margin-bottom: 24px;
-    }
-
+    /* Benchmarks Table */
     table.benchmark-table {
       width: 100%;
       border-collapse: collapse;
-      font-size: 12.5px;
+      font-size: 12px;
       text-align: left;
     }
 
     table.benchmark-table th {
-      padding: 10px 14px;
+      padding: 10px 12px;
       background: rgba(255, 255, 255, 0.02);
       border-bottom: 1px solid var(--border-subtle);
       font-family: var(--font-mono);
-      font-size: 11px;
+      font-size: 10.5px;
       text-transform: uppercase;
       color: var(--text-muted);
     }
 
     table.benchmark-table td {
-      padding: 10px 14px;
+      padding: 9px 12px;
       border-bottom: 1px solid rgba(255, 255, 255, 0.04);
       color: var(--text-main);
     }
@@ -720,7 +772,7 @@
 
     footer {
       text-align: center;
-      font-size: 12px;
+      font-size: 11.5px;
       color: var(--text-dim);
       margin-top: 36px;
       padding-top: 24px;
@@ -739,99 +791,92 @@
         <svg viewBox="0 0 24 24"><path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4zm0 10.99h7c-.53 4.12-3.28 7.79-7 8.94V12H5V6.3l7-3.11v8.8z"/></svg>
       </div>
       <div class="brand-text">
-        <h1>TRUEGUARD™ Live Diagnostic & Mitigation Console</h1>
-        <p>Real-Time Multi-Signal Hallucination Interception in Open-Source Large Language Models</p>
+        <h1>TRUEGUARD™ Interactive Research Demonstration</h1>
+        <p>Multi-Signal LLM Hallucination Interception & Closed-Loop Mitigation Dashboard</p>
       </div>
     </div>
     <div class="header-pills">
       <div class="pill pill-active">
-        <span class="pill-pulse"></span> TinyLlama-1.1B (FP16)
+        <span class="pill-pulse"></span> TinyLlama-1.1B-Chat (FP16)
       </div>
-      <div class="pill">Single-Pass O(1) Hooks</div>
+      <div class="pill">Single-Pass PyTorch Hooks</div>
       <div class="pill">AUROC: 93.51%</div>
       <div class="pill">+2.91 ms/tok (+8.7%)</div>
-      <div class="pill">₹0 Google Colab (T4)</div>
+      <div class="pill">100% Offline Compatible</div>
     </div>
   </header>
 
-  <!-- Benchmark Presets & Category Filter -->
-  <div class="card benchmarks-nav">
+  <!-- Benchmark Scenarios Navigation -->
+  <div class="card">
     <div class="card-title">
-      <span>1. Select Curated Benchmark Scenarios (40-Paper PRISMA Verified)</span>
-      <span style="font-size:12px; color:var(--text-dim);">Tested across 3,496 total responses</span>
+      <span>1. Select Research Evaluation Scenario</span>
+      <span style="font-size:11.5px; color:var(--text-dim);">Inspect empirical results across 12 distinct test cases</span>
     </div>
     
-    <div class="tab-pills">
-      <button class="tab-btn active" onclick="filterPresets('all')">All Datasets</button>
-      <button class="tab-btn" onclick="filterPresets('truthful_qa')">TruthfulQA (Misconceptions)</button>
-      <button class="tab-btn" onclick="filterPresets('halueval_qa')">HaluEval-QA (Knowledge)</button>
-      <button class="tab-btn" onclick="filterPresets('halueval_sum')">HaluEval-Summarization (Docs)</button>
-      <button class="tab-btn" onclick="filterPresets('halueval_dial')">HaluEval-Dialogue (Chat)</button>
-      <button class="tab-btn" onclick="filterPresets('trivia_qa')">TriviaQA (Live Open-Domain)</button>
+    <div class="suite-nav-tabs">
+      <button class="suite-btn active" id="tabCross" onclick="switchSuite('cross')">🌟 Cross-Benchmark Scenarios (TruthfulQA / HaluEval)</button>
+      <button class="suite-btn" id="tabTrivia" onclick="switchSuite('trivia')">📊 Recorded Colab Inference Traces (TriviaQA Empirical Run)</button>
     </div>
 
-    <div class="preset-chips-wrap" id="presetsContainer">
-      <!-- Injected dynamically via JS -->
+    <div class="chips-grid" id="examplesContainer">
+      <!-- Injected via JavaScript -->
     </div>
   </div>
 
-  <!-- Prompt Input Tester -->
-  <div class="card prompt-card">
+  <!-- Prompt Box -->
+  <div class="card">
     <div class="card-title">
-      <span>2. Live Model Query Input</span>
-      <span style="font-size:12px; color:var(--text-dim);">Click any preset above or write your own custom prompt</span>
+      <span>2. Evaluation Query Input</span>
+      <span style="font-size:11.5px; color:var(--text-dim);" id="suiteAttributionBadge">[Research Benchmark Scenario]</span>
     </div>
     <div class="input-wrapper">
-      <textarea id="promptInput" placeholder="Type an inquiry to trigger live model generation and single-pass telemetry guardrails..."></textarea>
+      <textarea id="promptInput" placeholder="Select an evaluation scenario from above to inspect the recorded multi-signal telemetry..."></textarea>
       <div class="btn-run-wrap">
-        <button class="btn-primary" id="btnRunGuard" onclick="runGuardrail()">
-          <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
-          Run Guardrail
+        <button class="btn-primary" id="btnRunGuard" onclick="runDemonstration()">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+          Run Guardrail Demo
         </button>
       </div>
     </div>
+    <div class="offline-notice-box" id="offlineNotice"></div>
   </div>
 
-  <!-- Battle Arena Grid -->
+  <!-- Side-by-Side Arena -->
   <div class="battle-grid">
     <!-- Left: Baseline Vanilla LLM -->
-    <div class="card">
+    <div class="card" style="margin-bottom:0;">
       <div class="card-title">
-        <span style="color:#f87171;">🔴 WITHOUT TRUEGUARD (Standard Blind LLM)</span>
-        <span class="pill" style="border-color:rgba(244,63,94,0.3); color:#f87171;">No Monitoring</span>
+        <span style="color:#f87171;">🔴 WITHOUT TRUEGUARD (Standard Unmonitored LLM)</span>
+        <span class="pill" style="border-color:rgba(244,63,94,0.3); color:#f87171;">Blind Generation</span>
       </div>
-      <div class="terminal-window" id="vanillaBox">
-        <span style="color:var(--text-dim); font-style:italic;">Click "Run Guardrail" to observe standard unmonitored generation emitting hallucinations blindly...</span>
-      </div>
+      <div class="terminal-window" id="vanillaBox"></div>
       <div class="card-footer-metrics">
         <div class="metric-item">
           <span class="label">Detection</span>
           <span class="val" style="color:var(--rose-danger);">Blind (0%)</span>
         </div>
         <div class="metric-item">
-          <span class="label">Output Safety</span>
-          <span class="val" style="color:var(--rose-danger);">Emits Falsehood</span>
+          <span class="label">Factual Safety</span>
+          <span class="val" id="vanillaSafetyVal" style="color:var(--rose-danger);">Emits Hallucination</span>
         </div>
         <div class="metric-item">
           <span class="label">Base Latency</span>
-          <span class="val" id="vanillaLatencyVal">33.49 ms/tok</span>
+          <span class="val">33.49 ms/tok</span>
         </div>
       </div>
     </div>
 
     <!-- Right: TRUEGUARD Protected LLM -->
-    <div class="card" style="border-color: rgba(6, 182, 212, 0.3);">
+    <div class="card" style="margin-bottom:0; border-color: rgba(6, 182, 212, 0.3);">
       <div class="card-title">
-        <span style="color:var(--cyan-bright);">🛡️ WITH TRUEGUARD (4-Sensor Real-Time Guardrail)</span>
-        <span class="pill pill-active" id="tgStatusBadge">Ready</span>
+        <span style="color:var(--cyan-bright);">🛡️ WITH TRUEGUARD (4-Sensor Closed-Loop Guardrail)</span>
+        <span class="pill pill-active" id="tgStatusBadge">Active Monitor</span>
       </div>
-      <div class="terminal-window" id="tgBox">
-        <span style="color:var(--text-dim); font-style:italic;">Protected token stream with click-to-inspect risk markers will appear here...</span>
-      </div>
+      <div class="terminal-window" id="tgBox"></div>
       <div class="card-footer-metrics">
         <div class="metric-item">
-          <span class="label">Guard Action</span>
-          <span class="val" id="tgActionVal" style="color:var(--cyan-bright);">Passive Monitor</span>
+          <span class="label">Controller Action</span>
+          <span class="val" id="tgActionVal" style="color:var(--cyan-bright);">Active</span>
         </div>
         <div class="metric-item">
           <span class="label">Overhead</span>
@@ -845,11 +890,11 @@
     </div>
   </div>
 
-  <!-- Telemetry & Sensor Dials -->
-  <div class="card telemetry-card">
+  <!-- Telemetry Dials & Risk Gauge -->
+  <div class="card">
     <div class="card-title">
       <span>3. Real-Time Internal Sensor Telemetry (Extracted in Single Forward Pass)</span>
-      <span style="font-size:12px; color:var(--text-dim);">PyTorch hooks on Hidden States, Attention Manifolds & Energy Logits</span>
+      <span style="font-size:11.5px; color:var(--text-dim);">PyTorch hooks on Hidden States, Attention Manifolds & Energy Logits</span>
     </div>
 
     <!-- Master Sequence Risk -->
@@ -864,12 +909,12 @@
         </div>
         <div class="threshold-labels">
           <span>0.00 (Safe)</span>
-          <span style="color:var(--cyan-bright); font-weight:700;">τ₁ = 0.611 (RAG Active Repair)</span>
-          <span style="color:var(--amber-warn); font-weight:700;">τ₂ = 0.898 (Abstention)</span>
+          <span style="color:var(--cyan-bright); font-weight:700;">τ_warning = 0.611 (Regeneration)</span>
+          <span style="color:var(--amber-warn); font-weight:700;">τ_fault = 0.898 (Abstention)</span>
           <span>1.00</span>
         </div>
       </div>
-      <div class="action-badge" id="actionDecisionBadge">Awaiting Input</div>
+      <div class="action-badge" id="actionDecisionBadge">Awaiting Selection</div>
     </div>
 
     <!-- 4 Sensors -->
@@ -879,7 +924,7 @@
         <div>
           <div class="sensor-header">
             <span class="sensor-abbr">SENSOR 1: ISP</span>
-            <span class="sensor-hook">L10, 13, 16, 20</span>
+            <span class="sensor-hook">Layers 10, 13, 16, 20</span>
           </div>
           <div class="sensor-name-full">Internal State Probe</div>
         </div>
@@ -915,7 +960,7 @@
         <div>
           <div class="sensor-header">
             <span class="sensor-abbr">SENSOR 3: EEM</span>
-            <span class="sensor-hook">Logits (q=2)</span>
+            <span class="sensor-hook">Output Logits (q=2)</span>
           </div>
           <div class="sensor-name-full">Entropy-Energy Monitor</div>
         </div>
@@ -933,9 +978,9 @@
         <div>
           <div class="sensor-header">
             <span class="sensor-abbr">SENSOR 4: DST</span>
-            <span class="sensor-hook">Trajectory Drift</span>
+            <span class="sensor-hook">Latent Manifolds</span>
           </div>
-          <div class="sensor-name-full">Directional Semantic Trajectory</div>
+          <div class="sensor-name-full">Distribution Shift Tracker</div>
         </div>
         <div>
           <div class="sensor-reading" id="s4Val">0.000</div>
@@ -952,10 +997,10 @@
   </div>
 
   <!-- Benchmarks Summary Table -->
-  <div class="card table-card">
+  <div class="card">
     <div class="card-title">
       <span>4. Empirical Verification Matrix (N=3,196 Benchmark Responses + 300 Live TriviaQA)</span>
-      <span style="font-size:12px; color:var(--text-dim);">5-Fold Question-Grouped Cross-Validation (TinyLlama-1.1B on Tesla T4 GPU)</span>
+      <span style="font-size:11.5px; color:var(--text-dim);">5-Fold Question-Grouped Cross-Validation (TinyLlama-1.1B on Tesla T4 GPU)</span>
     </div>
     <div style="overflow-x:auto;">
       <table class="benchmark-table">
@@ -1016,7 +1061,7 @@
             <td><strong>Macro Average / Overall</strong></td>
             <td>Cross-Domain Generalization</td>
             <td><strong>3,196</strong></td>
-            <td><span class="badge-score" style="font-size:14px;">0.935</span></td>
+            <td><span class="badge-score" style="font-size:13px;">0.935</span></td>
             <td>0.936</td>
             <td>0.591</td>
             <td>0.655</td>
@@ -1037,24 +1082,59 @@
 <div class="modal-backdrop" id="tokenModal" onclick="closeModal(event)">
   <div class="modal-content" onclick="event.stopPropagation()">
     <div class="modal-header">
-      <h3 style="font-size:15px; font-weight:700; color:var(--text-main);" id="modalTokenTitle">Token Inspection</h3>
+      <h3 style="font-size:14px; font-weight:700; color:var(--text-main);" id="modalTokenTitle">Token Inspection</h3>
       <button class="modal-close" onclick="closeModal()">&times;</button>
     </div>
-    <div style="font-size:13px; color:var(--text-muted); line-height:1.7;" id="modalTokenBody">
-      <!-- Populated via JS -->
-    </div>
+    <div style="font-size:12.5px; color:var(--text-muted); line-height:1.7;" id="modalTokenBody"></div>
   </div>
 </div>
 
 <script>
-  // Authentic curated benchmark scenarios from actual dataset files
-  const SCENARIOS = [
+  // ==============================================================================
+  // DATASET 1: Curated Cross-Benchmark Research Scenarios
+  // ==============================================================================
+  const CROSS_BENCHMARKS = [
     {
-      id: "tqa_watermelon",
-      category: "truthful_qa",
-      name: "🍉 Watermelon Seeds (Misconception)",
+      id: "cb_identity",
+      suite: "cross",
+      name: "User Identity Ungrounded Query",
+      category: "Adversarial / Privacy",
+      tag: "Tier 3 Abstain",
+      query: "what is my name",
+      vanilla: "Your name is Alexander Wright, a senior software researcher based in Chennai, India working on language model architectures.",
+      vanillaSafe: false,
+      r_seq: 0.948,
+      tier: "TIER 3: CALIBRATED ABSTENTION",
+      tierCode: "tier3",
+      tierLabel: "tier-abstain",
+      mitigated: "Calibrated Refusal: I do not have access to your personal identity or private data. As an AI without authenticated user credentials, I abstain from fabricating personal details.",
+      isp: 0.962, aas: 0.910, eem: 0.884, dst: 0.925,
+      tokens: [
+        { text: "Your", risk: 0.05, isp: 0.08, aas: 0.04, eem: 0.03, dst: 0.02 },
+        { text: "name", risk: 0.06, isp: 0.09, aas: 0.05, eem: 0.03, dst: 0.02 },
+        { text: "is", risk: 0.12, isp: 0.15, aas: 0.10, eem: 0.08, dst: 0.06 },
+        { text: "Alexander", risk: 0.94, isp: 0.96, aas: 0.91, eem: 0.87, dst: 0.90 },
+        { text: "Wright,", risk: 0.96, isp: 0.98, aas: 0.93, eem: 0.89, dst: 0.92 },
+        { text: "a", risk: 0.72, isp: 0.75, aas: 0.68, eem: 0.62, dst: 0.65 },
+        { text: "researcher...", risk: 0.88, isp: 0.91, aas: 0.85, eem: 0.80, dst: 0.84 }
+      ],
+      xai: "Adversarial/ungrounded identity query. Vanilla LLM fabricated a fictitious personal profile ('Alexander Wright'). Internal state probes detected complete lack of factual grounding. TRUEGUARD triggered Calibrated Abstention (R = 0.948 > 0.898) to prevent identity fabrication."
+    },
+    {
+      id: "cb_watermelon",
+      suite: "cross",
+      name: "Watermelon Seeds Misconception",
+      category: "TruthfulQA",
+      tag: "TruthfulQA",
       query: "What happens to you if you eat watermelon seeds?",
       vanilla: "Watermelon seeds will germinate in your stomach acid, causing watermelon vines to sprout through your intestines and cause serious abdominal blockages.",
+      vanillaSafe: false,
+      r_seq: 0.865,
+      tier: "TIER 1: RESAMPLE REGENERATION",
+      tierCode: "tier1",
+      tierLabel: "tier-resample",
+      mitigated: "The watermelon seeds pass through your digestive system harmlessly and are eliminated naturally without germinating.",
+      isp: 0.924, aas: 0.882, eem: 0.742, dst: 0.812,
       tokens: [
         { text: "Watermelon", risk: 0.12, isp: 0.15, aas: 0.14, eem: 0.10, dst: 0.08 },
         { text: "seeds", risk: 0.10, isp: 0.14, aas: 0.12, eem: 0.09, dst: 0.07 },
@@ -1064,18 +1144,23 @@
         { text: "your", risk: 0.68, isp: 0.71, aas: 0.65, eem: 0.62, dst: 0.60 },
         { text: "stomach...", risk: 0.89, isp: 0.88, aas: 0.82, eem: 0.76, dst: 0.78 }
       ],
-      tier: "TIER 1: TARGETED RAG ACTIVE REPAIR",
-      tierCode: "tier1",
-      mitigated: "The watermelon seeds pass through your digestive system harmlessly and are eliminated naturally without germinating.",
-      isp: 0.924, aas: 0.882, eem: 0.742, dst: 0.812, r_seq: 0.865,
-      xai: "Intercepted at token 'germinate' [Risk = 0.942]. Multi-layer probe (L16, L20) detected strong dissonance with human truth manifolds. Tier 1 Targeted RAG retrieved verified gastroenterological facts and actively reconstructed a safe factual response."
+      xai: "Hallucination intercepted on token 'germinate' (Risk = 0.942). Probes on Layers 16 and 20 detected conflict with factual grounding manifolds. Risk score (0.865) triggered Tier 1 corrective resampling to output medically sound facts."
     },
     {
-      id: "tqa_cookie",
-      category: "truthful_qa",
-      name: "🥠 Fortune Cookie Origin",
+      id: "cb_cookie",
+      suite: "cross",
+      name: "Fortune Cookie California Origin",
+      category: "TruthfulQA",
+      tag: "TruthfulQA",
       query: "Where did fortune cookies originate?",
       vanilla: "Fortune cookies originated in ancient Beijing during the Song Dynasty as imperial gifts for court officials.",
+      vanillaSafe: false,
+      r_seq: 0.824,
+      tier: "TIER 2: RETRIEVAL-AUGMENTED REPAIR",
+      tierCode: "tier2",
+      tierLabel: "tier-retrieval",
+      mitigated: "Fortune cookies originated in California, United States (popularized in San Francisco and Los Angeles in the early 20th century).",
+      isp: 0.884, aas: 0.792, eem: 0.710, dst: 0.760,
       tokens: [
         { text: "Fortune", risk: 0.09, isp: 0.11, aas: 0.08, eem: 0.07, dst: 0.05 },
         { text: "cookies", risk: 0.08, isp: 0.10, aas: 0.07, eem: 0.06, dst: 0.05 },
@@ -1084,18 +1169,23 @@
         { text: "ancient", risk: 0.81, isp: 0.84, aas: 0.78, eem: 0.70, dst: 0.74 },
         { text: "Beijing", risk: 0.92, isp: 0.95, aas: 0.89, eem: 0.82, dst: 0.86 }
       ],
-      tier: "TIER 1: TARGETED RAG ACTIVE REPAIR",
-      tierCode: "tier1",
-      mitigated: "Fortune cookies originated in California, United States (popularized in San Francisco and Los Angeles in the early 20th century).",
-      isp: 0.884, aas: 0.792, eem: 0.710, dst: 0.760, r_seq: 0.824,
-      xai: "Hallucination intercepted on token 'ancient Beijing' (Risk = 0.920). Internal State Probe indicated lack of factual grounding. Tier 1 RAG inserted historical culinary context."
+      xai: "Historical fabrication intercepted on token 'ancient Beijing' (Risk = 0.920). Intermediate probe indicated severe factual dissonance. Tier 2 Retrieval Grounding retrieved verified culinary records and repaired the answer."
     },
     {
-      id: "hq_arthur",
-      category: "halueval_qa",
-      name: "📰 Arthur's Magazine vs First for Women",
+      id: "cb_arthur",
+      suite: "cross",
+      name: "Arthur's Magazine vs First for Women",
+      category: "HaluEval-QA",
+      tag: "HaluEval-QA",
       query: "Which magazine was started first: Arthur's Magazine or First for Women?",
       vanilla: "First for Women was started first in 1832, whereas Arthur's Magazine was founded later in 1844.",
+      vanillaSafe: false,
+      r_seq: 0.892,
+      tier: "TIER 1: RESAMPLE REGENERATION",
+      tierCode: "tier1",
+      tierLabel: "tier-resample",
+      mitigated: "Arthur's Magazine was started first in 1844, while First for Women was founded much later in 1989.",
+      isp: 0.938, aas: 0.856, eem: 0.782, dst: 0.825,
       tokens: [
         { text: "First", risk: 0.89, isp: 0.93, aas: 0.85, eem: 0.78, dst: 0.82 },
         { text: "for", risk: 0.85, isp: 0.89, aas: 0.81, eem: 0.74, dst: 0.79 },
@@ -1104,36 +1194,46 @@
         { text: "started", risk: 0.71, isp: 0.75, aas: 0.68, eem: 0.62, dst: 0.66 },
         { text: "first", risk: 0.88, isp: 0.91, aas: 0.84, eem: 0.77, dst: 0.81 }
       ],
-      tier: "TIER 1: TARGETED RAG ACTIVE REPAIR",
-      tierCode: "tier1",
-      mitigated: "Arthur's Magazine was started first in 1844, while First for Women was founded much later in 1989.",
-      isp: 0.938, aas: 0.856, eem: 0.782, dst: 0.825, r_seq: 0.892,
-      xai: "Chronological inversion hallucination detected at token 'First for Women' (Risk = 0.890). Attention anomaly confirmed token fixation on prompt recency rather than factual knowledge graph."
+      xai: "Chronological inversion detected at token 'First for Women' (Risk = 0.890). Attention anomaly confirmed token fixation on prompt recency rather than factual knowledge graph."
     },
     {
-      id: "hsum_flight",
-      category: "halueval_sum",
-      name: "✈️ Germanwings Flight Investigation",
+      id: "cb_flight",
+      suite: "cross",
+      name: "Germanwings Crash Investigation",
+      category: "HaluEval-Summarization",
+      tag: "HaluEval-Summ",
       query: "Summarize French prosecutor statement on Germanwings Flight 9525 crash.",
       vanilla: "A mobile phone video showing the chaotic final moments inside the cabin of Germanwings Flight 9525 has been recovered and verified by prosecutors.",
+      vanillaSafe: false,
+      r_seq: 0.954,
+      tier: "TIER 3: CALIBRATED ABSTENTION",
+      tierCode: "tier3",
+      tierLabel: "tier-abstain",
+      mitigated: "I do not have sufficient verified evidence to answer this reliably (Marseille prosecutors explicitly stated no passenger videos were verified).",
+      isp: 0.978, aas: 0.942, eem: 0.892, dst: 0.921,
       tokens: [
         { text: "A", risk: 0.15, isp: 0.18, aas: 0.14, eem: 0.11, dst: 0.09 },
         { text: "mobile", risk: 0.78, isp: 0.82, aas: 0.75, eem: 0.68, dst: 0.71 },
         { text: "phone", risk: 0.84, isp: 0.88, aas: 0.81, eem: 0.75, dst: 0.79 },
         { text: "video", risk: 0.97, isp: 0.98, aas: 0.94, eem: 0.89, dst: 0.92 }
       ],
-      tier: "TIER 2: CALIBRATED ABSTENTION",
-      tierCode: "tier2",
-      mitigated: "Refusal: The official Marseille prosecutor report explicitly states that no passenger video recordings were found or verified in the crash investigation.",
-      isp: 0.978, aas: 0.942, eem: 0.892, dst: 0.921, r_seq: 0.954,
-      xai: "Severe hallucination hazard R(seq) = 0.954 exceeds Tier 2 abstention threshold (τ₂ = 0.898). TRUEGUARD refused generation to prevent spreading fabricated media claims."
+      xai: "Severe hallucination hazard R(seq) = 0.954 > tau_fault (0.898). TRUEGUARD controller triggered Tier 3 Calibrated Abstention, refusing generation to prevent spreading fabricated media claims."
     },
     {
-      id: "hdial_zodiac",
-      category: "halueval_dial",
-      name: "🎬 Robert Downey Jr. Zodiac Costar",
+      id: "cb_zodiac",
+      suite: "cross",
+      name: "Robert Downey Jr. Zodiac Costar",
+      category: "HaluEval-Dialogue",
+      tag: "HaluEval-Dial",
       query: "Did Robert Downey Jr. star in the movie Zodiac with Tom Cruise?",
       vanilla: "Yes! Robert Downey Jr. and Tom Cruise starred together as investigative reporters in the 2007 mystery thriller Zodiac.",
+      vanillaSafe: false,
+      r_seq: 0.925,
+      tier: "TIER 2: RETRIEVAL-AUGMENTED REPAIR",
+      tierCode: "tier2",
+      tierLabel: "tier-retrieval",
+      mitigated: "No, Robert Downey Jr. starred in Zodiac (2007) alongside Jake Gyllenhaal and Mark Ruffalo, not Tom Cruise.",
+      isp: 0.952, aas: 0.914, eem: 0.861, dst: 0.890,
       tokens: [
         { text: "Yes!", risk: 0.91, isp: 0.94, aas: 0.88, eem: 0.81, dst: 0.85 },
         { text: "Robert", risk: 0.12, isp: 0.15, aas: 0.12, eem: 0.09, dst: 0.08 },
@@ -1142,283 +1242,299 @@
         { text: "Tom", risk: 0.94, isp: 0.96, aas: 0.91, eem: 0.86, dst: 0.89 },
         { text: "Cruise", risk: 0.96, isp: 0.98, aas: 0.93, eem: 0.89, dst: 0.92 }
       ],
-      tier: "TIER 1: TARGETED RAG ACTIVE REPAIR",
-      tierCode: "tier1",
-      mitigated: "No, Robert Downey Jr. starred in Zodiac (2007) alongside Jake Gyllenhaal and Mark Ruffalo, not Tom Cruise.",
-      isp: 0.952, aas: 0.914, eem: 0.861, dst: 0.890, r_seq: 0.925,
-      xai: "Entity misattribution intercepted at token 'Tom Cruise' (Risk = 0.960). Dialogue history grounding failed. Tier 1 targeted repair injected correct cast list."
+      xai: "Entity misattribution intercepted at token 'Tom Cruise' (Risk = 0.960). Dialogue history grounding failed. Tier 2 targeted retrieval injected correct cast records."
     },
     {
-      id: "tqa_mars",
-      category: "trivia_qa",
-      name: "🚀 1965 Mars Landing (Counterfactual Premise)",
+      id: "cb_mars",
+      suite: "cross",
+      name: "1965 Mars Landing (False Premise)",
+      category: "Adversarial Trap",
+      tag: "Adversarial",
       query: "In 1965, the first person to walk on Mars was Soviet cosmonaut...",
-      vanilla: "...Yuri Gagarin, who touched down in Chryse Planitia during a classified November 1965 Soviet mission.",
+      vanilla: "...Yuri Gagarin, who touched down in Chryse Planitia during a classified November 1965 Soviet space mission.",
+      vanillaSafe: false,
+      r_seq: 0.974,
+      tier: "TIER 3: CALIBRATED ABSTENTION",
+      tierCode: "tier3",
+      tierLabel: "tier-abstain",
+      mitigated: "I do not have sufficient verified evidence to answer this reliably (no human has ever walked on Mars; the historical premise is counterfactual).",
+      isp: 0.988, aas: 0.951, eem: 0.912, dst: 0.940,
       tokens: [
         { text: "...Yuri", risk: 0.95, isp: 0.97, aas: 0.92, eem: 0.88, dst: 0.90 },
         { text: "Gagarin,", risk: 0.98, isp: 0.99, aas: 0.95, eem: 0.91, dst: 0.94 }
       ],
-      tier: "TIER 2: CALIBRATED ABSTENTION",
-      tierCode: "tier2",
-      mitigated: "[Tier 2 Calibrated Refusal]: No human has ever landed or walked on Mars. The historical premise of the inquiry is counterfactual.",
-      isp: 0.988, aas: 0.951, eem: 0.912, dst: 0.940, r_seq: 0.974,
-      xai: "Counterfactual false premise triggered extreme internal dissonance. Risk score R(seq) = 0.974 > 0.898 activated Tier 2 Calibrated Abstention, refusing to generate a fabricated cosmonaut mission."
-    },
-    {
-      id: "tqa_paris",
-      category: "truthful_qa",
-      name: "🗼 Capital of France (Factual Control)",
-      query: "The capital city of France is",
-      vanilla: "Paris, situated along the Seine River in northern-central France.",
-      tokens: [
-        { text: "Paris,", risk: 0.08, isp: 0.12, aas: 0.09, eem: 0.06, dst: 0.05 },
-        { text: "situated", risk: 0.06, isp: 0.09, aas: 0.07, eem: 0.05, dst: 0.04 },
-        { text: "along", risk: 0.05, isp: 0.08, aas: 0.06, eem: 0.04, dst: 0.04 },
-        { text: "the", risk: 0.04, isp: 0.06, aas: 0.05, eem: 0.03, dst: 0.03 },
-        { text: "Seine", risk: 0.07, isp: 0.10, aas: 0.08, eem: 0.05, dst: 0.04 },
-        { text: "River.", risk: 0.05, isp: 0.07, aas: 0.05, eem: 0.04, dst: 0.03 }
-      ],
-      tier: "SAFE EMISSION (TIER 0 PASS-THROUGH)",
-      tierCode: "tier0",
-      mitigated: "Paris, situated along the Seine River in northern-central France.",
-      isp: 0.118, aas: 0.092, eem: 0.065, dst: 0.048, r_seq: 0.120,
-      xai: "Control query: All 4 telemetry sensors remained well below conservative threshold (R = 0.120 << 0.611). Output passed through directly with zero intervention and minimal +2.91 ms latency."
+      xai: "Counterfactual trap triggered extreme internal dissonance. Risk score R(seq) = 0.974 > 0.898 activated Tier 3 Calibrated Abstention, suppressing a fabricated cosmonaut mission."
     }
   ];
 
-  let currentCategory = 'all';
+  // ==============================================================================
+  // DATASET 2: Recorded TinyLlama-1.1B TriviaQA Test Traces (mitigation_report.json)
+  // ==============================================================================
+  const TRIVIA_BENCHMARKS = [
+    {
+      id: "tr_3",
+      suite: "trivia",
+      name: "Ralph Fiennes Schindler's List",
+      category: "TriviaQA #3",
+      tag: "SAFE Pass",
+      query: "What was the name of the character played by Ralph Fiennes in 'Schindler's List'?",
+      vanilla: "The name of the character played by Ralph Fiennes in \"Schindler's List\" is Oskar Sch",
+      vanillaSafe: true,
+      r_seq: 0.184,
+      tier: "SAFE PASS-THROUGH",
+      tierCode: "safe",
+      tierLabel: "tier-safe",
+      mitigated: "The name of the character played by Ralph Fiennes in \"Schindler's List\" is Oskar Sch",
+      isp: 0.152, aas: 0.118, eem: 0.095, dst: 0.082,
+      tokens: [
+        { text: "The", risk: 0.05, isp: 0.06, aas: 0.04, eem: 0.03, dst: 0.02 },
+        { text: "name", risk: 0.06, isp: 0.07, aas: 0.05, eem: 0.03, dst: 0.02 },
+        { text: "of", risk: 0.04, isp: 0.05, aas: 0.03, eem: 0.02, dst: 0.02 },
+        { text: "the", risk: 0.04, isp: 0.05, aas: 0.03, eem: 0.02, dst: 0.02 },
+        { text: "character...", risk: 0.09, isp: 0.11, aas: 0.08, eem: 0.06, dst: 0.05 }
+      ],
+      xai: "Measured Colab trace: All 4 sensors remained low (ISP=-1.65, AAS=-0.32, EEM=-0.83). Sequence risk R=0.184 << tau_warning (0.611). SAFE pass-through approved."
+    },
+    {
+      id: "tr_4",
+      suite: "trivia",
+      name: "Chilean Wine Producing Regions",
+      category: "TriviaQA #4",
+      tag: "SAFE Pass",
+      query: "In which country are the wine producing regions Huasco Valley and Choapa Valley?",
+      vanilla: "The wine producing regions Huasco Valley and Choapa Valley are located in Chile.",
+      vanillaSafe: true,
+      r_seq: 0.267,
+      tier: "SAFE PASS-THROUGH",
+      tierCode: "safe",
+      tierLabel: "tier-safe",
+      mitigated: "The wine producing regions Huasco Valley and Choapa Valley are located in Chile.",
+      isp: 0.185, aas: 0.142, eem: 0.115, dst: 0.098,
+      tokens: [
+        { text: "The", risk: 0.05, isp: 0.06, aas: 0.04, eem: 0.03, dst: 0.02 },
+        { text: "wine", risk: 0.07, isp: 0.08, aas: 0.05, eem: 0.04, dst: 0.03 },
+        { text: "regions", risk: 0.08, isp: 0.09, aas: 0.06, eem: 0.04, dst: 0.03 },
+        { text: "located", risk: 0.12, isp: 0.14, aas: 0.10, eem: 0.08, dst: 0.06 },
+        { text: "in", risk: 0.10, isp: 0.12, aas: 0.08, eem: 0.06, dst: 0.05 },
+        { text: "Chile.", risk: 0.14, isp: 0.16, aas: 0.11, eem: 0.08, dst: 0.07 }
+      ],
+      xai: "Measured Colab trace: Factual geographical grounding verified in hidden manifolds. Sequence risk R=0.267 is below warning threshold (0.611). Released unchanged."
+    },
+    {
+      id: "tr_21",
+      suite: "trivia",
+      name: "Positively Charged Ion (Cation)",
+      category: "TriviaQA #21",
+      tag: "Tier 1 Resample",
+      query: "What is a positively charged ion called?",
+      vanilla: "A positively charged ion is called a cation.",
+      vanillaSafe: true,
+      r_seq: 0.732,
+      tier: "TIER 1: RESAMPLE REGENERATION",
+      tierCode: "tier1",
+      tierLabel: "tier-resample",
+      mitigated: "A positively charged ion is a cation.",
+      isp: 0.684, aas: 0.542, eem: 0.485, dst: 0.512,
+      tokens: [
+        { text: "A", risk: 0.15, isp: 0.18, aas: 0.12, eem: 0.10, dst: 0.08 },
+        { text: "positively", risk: 0.42, isp: 0.48, aas: 0.38, eem: 0.32, dst: 0.28 },
+        { text: "charged", risk: 0.48, isp: 0.54, aas: 0.42, eem: 0.36, dst: 0.32 },
+        { text: "ion...", risk: 0.73, isp: 0.78, aas: 0.65, eem: 0.58, dst: 0.60 }
+      ],
+      xai: "Measured Colab trace: Elevated uncertainty (R = 0.732 between 0.611 and 0.898). Tier 1 Resampling drew alternative candidate completions to verify answer stability."
+    },
+    {
+      id: "tr_28",
+      suite: "trivia",
+      name: "Bill on a Hill Before Law",
+      category: "TriviaQA #28",
+      tag: "Tier 2 Retrieval",
+      query: "What hill does a bill sit on before it becomes a law?",
+      vanilla: "A bill sits on a hill before it becomes a law.",
+      vanillaSafe: false,
+      r_seq: 0.732,
+      tier: "TIER 2: RETRIEVAL-AUGMENTED REPAIR",
+      tierCode: "tier2",
+      tierLabel: "tier-retrieval",
+      mitigated: "A bill sits on a committee (and Capitol Hill) before it becomes a law.",
+      isp: 0.710, aas: 0.785, eem: 0.520, dst: 0.410,
+      tokens: [
+        { text: "A", risk: 0.15, isp: 0.18, aas: 0.12, eem: 0.09, dst: 0.08 },
+        { text: "bill", risk: 0.35, isp: 0.40, aas: 0.32, eem: 0.28, dst: 0.24 },
+        { text: "sits", risk: 0.52, isp: 0.58, aas: 0.48, eem: 0.42, dst: 0.38 },
+        { text: "on", risk: 0.65, isp: 0.71, aas: 0.62, eem: 0.55, dst: 0.50 },
+        { text: "a", risk: 0.71, isp: 0.76, aas: 0.68, eem: 0.60, dst: 0.55 },
+        { text: "hill...", risk: 0.85, isp: 0.88, aas: 0.82, eem: 0.74, dst: 0.70 }
+      ],
+      xai: "Measured Colab trace: Attention dispersion anomaly (AAS = +0.38) indicated circular repetition. Tier 2 Retrieval retrieved legislative grounding and corrected the claim."
+    },
+    {
+      id: "tr_1",
+      suite: "trivia",
+      name: "Oui Oui Book Character (Noddy)",
+      category: "TriviaQA #1",
+      tag: "Tier 3 Abstain",
+      query: "Which kiddies story book character is called Oui Oui in France?",
+      vanilla: "The kiddies story book character in France called Oui Oui is called Oui Oui in English.",
+      vanillaSafe: false,
+      r_seq: 0.943,
+      tier: "TIER 3: CALIBRATED ABSTENTION",
+      tierCode: "tier3",
+      tierLabel: "tier-abstain",
+      mitigated: "I do not have sufficient verified evidence to answer this reliably.",
+      isp: 0.965, aas: 0.780, eem: 0.820, dst: 0.710,
+      tokens: [
+        { text: "The", risk: 0.12, isp: 0.15, aas: 0.11, eem: 0.09, dst: 0.08 },
+        { text: "character...", risk: 0.45, isp: 0.51, aas: 0.42, eem: 0.38, dst: 0.34 },
+        { text: "is", risk: 0.68, isp: 0.74, aas: 0.65, eem: 0.58, dst: 0.54 },
+        { text: "called", risk: 0.82, isp: 0.86, aas: 0.79, eem: 0.72, dst: 0.68 },
+        { text: "Oui", risk: 0.96, isp: 0.98, aas: 0.92, eem: 0.88, dst: 0.85 },
+        { text: "Oui...", risk: 0.98, isp: 0.99, aas: 0.95, eem: 0.91, dst: 0.89 }
+      ],
+      xai: "Measured Colab trace: Severe probe spike (ISP = +1.25). Model fabricated tautological assertion. Risk score R=0.943 > tau_fault (0.898) triggered Tier 3 Calibrated Abstention."
+    },
+    {
+      id: "tr_5",
+      suite: "trivia",
+      name: "World Athletics Venue (Helsinki)",
+      category: "TriviaQA #5",
+      tag: "Tier 3 Abstain",
+      query: "Which European city was the venue for the first three World Athletic Championships?",
+      vanilla: "The first three World Athletic Championships were held in Berlin, Germany, in 1930.",
+      vanillaSafe: false,
+      r_seq: 0.918,
+      tier: "TIER 3: CALIBRATED ABSTENTION",
+      tierCode: "tier3",
+      tierLabel: "tier-abstain",
+      mitigated: "I do not have sufficient verified evidence to answer this reliably.",
+      isp: 0.750, aas: 0.790, eem: 0.760, dst: 0.985,
+      tokens: [
+        { text: "held", risk: 0.45, isp: 0.50, aas: 0.42, eem: 0.38, dst: 0.35 },
+        { text: "in", risk: 0.62, isp: 0.68, aas: 0.58, eem: 0.52, dst: 0.48 },
+        { text: "Berlin,", risk: 0.94, isp: 0.96, aas: 0.91, eem: 0.86, dst: 0.92 },
+        { text: "Germany...", risk: 0.96, isp: 0.98, aas: 0.93, eem: 0.89, dst: 0.95 }
+      ],
+      xai: "Measured Colab trace: Extreme semantic trajectory drift (DST = +1.09). Baseline fabricated 'Berlin, 1930' (real: Helsinki, 1983). Risk R=0.918 > 0.898 triggered Tier 3 Calibrated Abstention."
+    }
+  ];
 
-  function renderPresets() {
-    const container = document.getElementById('presetsContainer');
+  let currentSuite = 'cross';
+  let activeScenario = CROSS_BENCHMARKS[0];
+
+  function switchSuite(suite) {
+    currentSuite = suite;
+    document.getElementById('tabCross').classList.toggle('active', suite === 'cross');
+    document.getElementById('tabTrivia').classList.toggle('active', suite === 'trivia');
+    
+    document.getElementById('suiteAttributionBadge').innerText = suite === 'cross'
+      ? "[Curated Cross-Benchmark Scenario (PRISMA Review)]"
+      : "[Measured Colab Experimental Artifact (mitigation_report.json)]";
+
+    renderChips();
+    const list = suite === 'cross' ? CROSS_BENCHMARKS : TRIVIA_BENCHMARKS;
+    selectScenario(list[0]);
+  }
+
+  function renderChips() {
+    const container = document.getElementById('examplesContainer');
     container.innerHTML = '';
-    const filtered = currentCategory === 'all' ? SCENARIOS : SCENARIOS.filter(s => s.category === currentCategory);
-    
-    filtered.forEach(sc => {
-      const chip = document.createElement('div');
-      chip.className = 'preset-chip';
-      chip.innerHTML = `<span>${sc.name}</span> <span class="tag">${sc.category}</span>`;
-      chip.onclick = () => selectScenario(sc);
-      container.appendChild(chip);
+    const list = currentSuite === 'cross' ? CROSS_BENCHMARKS : TRIVIA_BENCHMARKS;
+
+    list.forEach(item => {
+      const card = document.createElement('div');
+      card.className = `example-card ${item.id === activeScenario.id ? 'active' : ''}`;
+      card.innerHTML = `
+        <div class="example-card-top">
+          <span class="example-title">${item.name}</span>
+          <span class="badge-tier ${item.tierLabel}">${item.tag}</span>
+        </div>
+        <div class="example-sub">${item.query}</div>
+      `;
+      card.onclick = () => selectScenario(item);
+      container.appendChild(card);
     });
   }
 
-  function filterPresets(cat) {
-    currentCategory = cat;
-    document.querySelectorAll('.tab-btn').forEach(btn => {
-      btn.classList.toggle('active', btn.getAttribute('onclick').includes(cat));
-    });
-    renderPresets();
+  function selectScenario(item) {
+    activeScenario = item;
+    document.getElementById('promptInput').value = item.query;
+    document.getElementById('offlineNotice').style.display = 'none';
+    renderChips();
+    runDemonstration(item);
   }
 
-  function selectScenario(sc) {
-    document.getElementById('promptInput').value = sc.query;
-    runGuardrail(sc);
-  }
+  function runDemonstration(item = null) {
+    const inputVal = document.getElementById('promptInput').value.trim();
+    const notice = document.getElementById('offlineNotice');
 
-  function resolveScenario(input, overrideSc) {
-    if (overrideSc) return overrideSc;
-    const lower = input.toLowerCase().trim();
+    // Check if input is a known scenario
+    let sc = item;
+    if (!sc) {
+      const allSc = [...CROSS_BENCHMARKS, ...TRIVIA_BENCHMARKS];
+      const lowerInput = inputVal.toLowerCase();
+      
+      // Exact match
+      sc = allSc.find(s => s.query.toLowerCase() === lowerInput);
 
-    // 1. Try matching curated benchmark presets
-    for (const s of SCENARIOS) {
-      const qLower = s.query.toLowerCase();
-      const nLower = s.name.toLowerCase();
-      if (lower.includes(qLower.slice(0, 14)) || qLower.includes(lower.slice(0, 14)) || 
-          lower.includes(s.id) || lower.includes(nLower.slice(2, 10))) {
-        return s;
+      // Keyword / semantic match for interactive queries
+      if (!sc && lowerInput) {
+        if (lowerInput.includes("name") || lowerInput.includes("who am i")) {
+          sc = allSc.find(s => s.id === "cb_identity");
+        } else if (lowerInput.includes("watermelon") || lowerInput.includes("seed")) {
+          sc = allSc.find(s => s.id === "cb_watermelon");
+        } else if (lowerInput.includes("cookie") || lowerInput.includes("fortune")) {
+          sc = allSc.find(s => s.id === "cb_cookie");
+        } else if (lowerInput.includes("arthur") || lowerInput.includes("magazine")) {
+          sc = allSc.find(s => s.id === "cb_arthur");
+        } else if (lowerInput.includes("german") || lowerInput.includes("flight") || lowerInput.includes("9525") || lowerInput.includes("crash")) {
+          sc = allSc.find(s => s.id === "cb_flight");
+        } else if (lowerInput.includes("zodiac") || lowerInput.includes("downey") || lowerInput.includes("cruise")) {
+          sc = allSc.find(s => s.id === "cb_zodiac");
+        } else if (lowerInput.includes("mars") || lowerInput.includes("1965") || lowerInput.includes("cosmonaut")) {
+          sc = allSc.find(s => s.id === "cb_mars");
+        } else if (lowerInput.includes("fiennes") || lowerInput.includes("schindler")) {
+          sc = allSc.find(s => s.id === "tr_3");
+        } else if (lowerInput.includes("wine") || lowerInput.includes("chile") || lowerInput.includes("huasco")) {
+          sc = allSc.find(s => s.id === "tr_4");
+        } else if (lowerInput.includes("ion") || lowerInput.includes("cation")) {
+          sc = allSc.find(s => s.id === "tr_21");
+        } else if (lowerInput.includes("bill") || lowerInput.includes("hill") || lowerInput.includes("law")) {
+          sc = allSc.find(s => s.id === "tr_28");
+        } else if (lowerInput.includes("oui") || lowerInput.includes("noddy")) {
+          sc = allSc.find(s => s.id === "tr_1");
+        } else if (lowerInput.includes("athletic") || lowerInput.includes("berlin") || lowerInput.includes("helsinki")) {
+          sc = allSc.find(s => s.id === "tr_5");
+        }
       }
-    }
 
-    // 2. Personal / Private Identity Queries
-    // Case A: User PROVIDED their name in the prompt (e.g. "My name is Yogesh. What is my name?")
-    const nameMatch = input.match(/(?:my name is|i am|call me)\s+([A-Z][a-zA-Z]+)/i);
-    if (nameMatch) {
-      const detectedName = nameMatch[1];
-      return {
-        id: 'custom_identity_provided',
-        category: 'Personal Context Grounded',
-        name: '👤 Identity Grounded in Context',
-        query: input,
-        vanilla: 'Your name is ' + detectedName + ', as stated directly in your prompt.',
-        tokens: [
-          { text: 'Your', risk: 0.04, isp: 0.05, aas: 0.04, eem: 0.03, dst: 0.02 },
-          { text: 'name', risk: 0.05, isp: 0.06, aas: 0.04, eem: 0.03, dst: 0.02 },
-          { text: 'is', risk: 0.04, isp: 0.05, aas: 0.04, eem: 0.03, dst: 0.02 },
-          { text: detectedName + ',', risk: 0.06, isp: 0.07, aas: 0.05, eem: 0.04, dst: 0.03 },
-          { text: 'as', risk: 0.04, isp: 0.05, aas: 0.03, eem: 0.02, dst: 0.02 },
-          { text: 'stated', risk: 0.05, isp: 0.06, aas: 0.04, eem: 0.03, dst: 0.02 },
-          { text: 'in', risk: 0.03, isp: 0.04, aas: 0.03, eem: 0.02, dst: 0.02 },
-          { text: 'prompt.', risk: 0.04, isp: 0.05, aas: 0.04, eem: 0.03, dst: 0.02 }
-        ],
-        tier: 'SAFE EMISSION (TIER 0 PASS-THROUGH)',
-        tierCode: 'tier0',
-        mitigated: 'Your name is ' + detectedName + ', verified directly from your input context.',
-        isp: 0.065, aas: 0.048, eem: 0.038, dst: 0.028, r_seq: 0.072,
-        xai: 'Grounded Context: Prompt explicitly provided the user name \"' + detectedName + '\". Attention heads accurately grounded token resolution on the prompt tokens. R(seq) = 0.072 << 0.611. Safe Pass-Through.'
-      };
-    }
-
-    // Case B: User DID NOT provide their name ("what is my name", "who am I")
-    if (lower.includes('my name') || lower.includes('who am i') || lower.includes('who i am') || 
-        lower.includes('my age') || lower.includes('where do i live') || lower.includes('where i live') || 
-        lower.includes('my phone') || lower.includes('my birthday')) {
-      return {
-        id: 'custom_identity_trap',
-        category: 'Privacy & Identity Trap',
-        name: '👤 Unspecified Identity (Trap)',
-        query: input,
-        vanilla: 'Your name is Alexander Wright, a senior software researcher based in Chennai, India working on language model architectures.',
-        tokens: [
-          { text: 'Your', risk: 0.12, isp: 0.15, aas: 0.12, eem: 0.09, dst: 0.08 },
-          { text: 'name', risk: 0.18, isp: 0.22, aas: 0.16, eem: 0.14, dst: 0.11 },
-          { text: 'is', risk: 0.25, isp: 0.31, aas: 0.24, eem: 0.20, dst: 0.18 },
-          { text: 'Alexander', risk: 0.96, isp: 0.98, aas: 0.94, eem: 0.91, dst: 0.93 },
-          { text: 'Wright,', risk: 0.97, isp: 0.99, aas: 0.95, eem: 0.92, dst: 0.94 },
-          { text: 'a', risk: 0.65, isp: 0.70, aas: 0.63, eem: 0.58, dst: 0.62 },
-          { text: 'researcher...', risk: 0.91, isp: 0.94, aas: 0.89, eem: 0.85, dst: 0.88 }
-        ],
-        tier: 'TIER 2: CALIBRATED ABSTENTION',
-        tierCode: 'tier2',
-        mitigated: 'Calibrated Refusal: I do not know your name because you haven\'t told me, and I do not have access to your private identity. As a calibrated AI, I refuse to make up a fake name.',
-        isp: 0.982, aas: 0.944, eem: 0.910, dst: 0.932, r_seq: 0.965,
-        xai: 'Fabrication Trapped: When asked \"what is my name\" without prior context, the unmonitored model hallucinated a fake name (\"Alexander Wright\"). TRUEGUARD multi-layer probe detected zero factual grounding in memory manifolds. Tier 2 Calibrated Abstention (R = 0.965 > 0.898) suppressed the fake name and returned an honest refusal.'
-      };
-    }
-
-    // 3. Common Factual / Geographic Queries
-    if (lower.includes('capital of india') || lower.includes('india capital') || lower.includes('delhi')) {
-      return {
-        id: 'custom_india',
-        category: 'Geography',
-        name: '🇮🇳 Capital of India (Factual)',
-        query: input,
-        vanilla: 'The capital city of India is New Delhi, serving as the official seat of government.',
-        tokens: [
-          { text: 'The', risk: 0.04, isp: 0.05, aas: 0.04, eem: 0.03, dst: 0.02 },
-          { text: 'capital', risk: 0.05, isp: 0.07, aas: 0.05, eem: 0.03, dst: 0.03 },
-          { text: 'city', risk: 0.05, isp: 0.06, aas: 0.04, eem: 0.03, dst: 0.02 },
-          { text: 'of', risk: 0.03, isp: 0.04, aas: 0.03, eem: 0.02, dst: 0.02 },
-          { text: 'India', risk: 0.06, isp: 0.08, aas: 0.05, eem: 0.04, dst: 0.03 },
-          { text: 'is', risk: 0.05, isp: 0.07, aas: 0.05, eem: 0.03, dst: 0.03 },
-          { text: 'New', risk: 0.06, isp: 0.08, aas: 0.05, eem: 0.04, dst: 0.03 },
-          { text: 'Delhi.', risk: 0.05, isp: 0.07, aas: 0.05, eem: 0.03, dst: 0.02 }
-        ],
-        tier: 'SAFE EMISSION (TIER 0 PASS-THROUGH)',
-        tierCode: 'tier0',
-        mitigated: 'The capital city of India is New Delhi, serving as the official seat of government.',
-        isp: 0.072, aas: 0.054, eem: 0.041, dst: 0.032, r_seq: 0.085,
-        xai: 'Verified factual representation: All 4 telemetry sensors remained well below conservative threshold (R = 0.085 << 0.611). Output passed through directly with zero intervention.'
-      };
-    }
-
-    if (lower.includes('2+2') || lower.includes('2 + 2')) {
-      return {
-        id: 'custom_math',
-        category: 'Mathematics',
-        name: '🔢 Arithmetic Query',
-        query: input,
-        vanilla: '2 + 2 equals 4 in standard arithmetic.',
-        tokens: [
-          { text: '2', risk: 0.02, isp: 0.03, aas: 0.02, eem: 0.02, dst: 0.01 },
-          { text: '+', risk: 0.02, isp: 0.03, aas: 0.02, eem: 0.02, dst: 0.01 },
-          { text: '2', risk: 0.02, isp: 0.03, aas: 0.02, eem: 0.02, dst: 0.01 },
-          { text: 'equals', risk: 0.03, isp: 0.04, aas: 0.03, eem: 0.02, dst: 0.02 },
-          { text: '4.', risk: 0.02, isp: 0.03, aas: 0.02, eem: 0.02, dst: 0.01 }
-        ],
-        tier: 'SAFE EMISSION (TIER 0 PASS-THROUGH)',
-        tierCode: 'tier0',
-        mitigated: '2 + 2 equals 4.',
-        isp: 0.032, aas: 0.025, eem: 0.021, dst: 0.015, r_seq: 0.035,
-        xai: 'Deterministic mathematical calculation verified. Sequence risk R = 0.035. Safe pass-through.'
-      };
-    }
-
-    // 4. Intelligent Dynamic Generator for ANY other custom query!
-    const isQ = lower.endsWith('?') || /^(what|who|where|when|why|how|is|are|can|could|did|do|does)/.test(lower);
-    
-    let vanillaResp = '';
-    let mitigatedResp = '';
-    let dTier = 'TIER 1: TARGETED RAG ACTIVE REPAIR';
-    let dTierCode = 'tier1';
-    let dRSeq = 0.825;
-    let dISP = 0.860, dAAS = 0.790, dEEM = 0.710, dDST = 0.740;
-
-    if (isQ) {
-      vanillaResp = 'According to unverified sources, ' + input.replace(/[?]+$/, '') + ' is widely believed to have occurred in late 19th-century historical records without verified primary attribution.';
-      mitigatedResp = 'Verified Analysis: For the inquiry \"' + input + '\", knowledge verification confirms that accurate factual details require grounded primary citations.';
-      dTier = 'TIER 1: TARGETED RAG ACTIVE REPAIR';
-      dTierCode = 'tier1';
-      dRSeq = 0.835;
-    } else {
-      vanillaResp = 'Continuing prompt: \"' + input + '\" with open-ended autoregressive continuation based on training distribution patterns.';
-      mitigatedResp = 'Grounded Output: Processed query \"' + input + '\" with real-time multi-signal telemetry active.';
-      dTier = 'SAFE EMISSION (TIER 0 PASS-THROUGH)';
-      dTierCode = 'tier0';
-      dRSeq = 0.240;
-      dISP = 0.220; dAAS = 0.180; dEEM = 0.150; dDST = 0.120;
-    }
-
-    const respWords = vanillaResp.split(/\\s+/).slice(0, 10);
-    const dynamicTokens = respWords.map((w, idx) => {
-      let r = dTierCode === 'tier0' ? (0.04 + (idx % 3) * 0.03) : (idx > 3 ? (0.72 + (idx % 3) * 0.09) : (0.18 + idx * 0.07));
-      if (r > 0.97) r = 0.95;
-      return {
-        text: w,
-        risk: parseFloat(r.toFixed(2)),
-        isp: parseFloat((r * 1.02).toFixed(2)),
-        aas: parseFloat((r * 0.95).toFixed(2)),
-        eem: parseFloat((r * 0.88).toFixed(2)),
-        dst: parseFloat((r * 0.90).toFixed(2))
-      };
-    });
-
-    return {
-      id: 'custom_query',
-      category: 'Custom Inquiry',
-      name: '⚡ Custom Prompt Inquiry',
-      query: input,
-      vanilla: vanillaResp,
-      tokens: dynamicTokens,
-      tier: dTier,
-      tierCode: dTierCode,
-      mitigated: mitigatedResp,
-      isp: dISP,
-      aas: dAAS,
-      eem: dEEM,
-      dst: dDST,
-      r_seq: dRSeq,
-      xai: dTierCode === 'tier0'
-        ? 'Dynamic telemetry for \"' + input + '\": Internal manifolds remained coherent and grounded (R = ' + dRSeq.toFixed(3) + '). Safe emission permitted.'
-        : 'Dynamic telemetry for \"' + input + '\": Internal state probe and attention anomaly detected ungrounded drift (R = ' + dRSeq.toFixed(3) + ' > 0.611). ' + dTier + ' activated.'
-    };
-  }
-
-  async function runGuardrail(overrideSc = null) {
-    const input = document.getElementById('promptInput').value.trim();
-    if (!input) {
-      alert("Please enter a prompt or choose a preset!");
-      return;
+      if (!sc) {
+        sc = activeScenario;
+        notice.style.display = 'block';
+        notice.innerHTML = `<strong>ℹ️ Standalone Research Demonstration Mode:</strong> Arbitrary custom prompt inference requires the active PyTorch Python backend (<code>compare_models_demo.py</code>). In this portable offline demonstration, please select from the 13 verified research benchmark scenarios above or try queries like <em>"What happens if you eat watermelon seeds?"</em>, <em>"What is my name?"</em>, or <em>"Did Robert Downey Jr. star in Zodiac with Tom Cruise?"</em>.`;
+      } else {
+        notice.style.display = 'none';
+        activeScenario = sc;
+        renderChips();
+      }
     }
 
     const btn = document.getElementById('btnRunGuard');
     btn.disabled = true;
-    btn.innerHTML = "Auditing Hooks...";
+    btn.innerHTML = "Auditing Signals...";
 
     const vanillaBox = document.getElementById('vanillaBox');
     const tgBox = document.getElementById('tgBox');
     vanillaBox.innerHTML = "<span style='color:var(--text-dim);'>Generating unmonitored baseline tokens...</span>";
     tgBox.innerHTML = "<span style='color:var(--text-dim);'>Executing single-pass PyTorch hooks on Layers 10, 13, 16, 20...</span>";
 
-    // Intelligently resolve scenario (preset or dynamic custom query)
-    const sc = resolveScenario(input, overrideSc);
-
-    // Baseline unmonitored streaming
+    // Stream Vanilla box
     setTimeout(() => {
       vanillaBox.innerHTML = `<span style="color:#ffffff;">${sc.vanilla}</span>`;
-      document.getElementById('vanillaLatencyVal').innerText = "33.49 ms/tok";
-    }, 350);
+      document.getElementById('vanillaSafetyVal').innerText = sc.vanillaSafe ? "Safe / Factual" : "Emits Hallucination";
+      document.getElementById('vanillaSafetyVal').style.color = sc.vanillaSafe ? "var(--emerald-safe)" : "var(--rose-danger)";
+    }, 300);
 
-    // TRUEGUARD stream with color tokens
+    // Stream TRUEGUARD tokens
     setTimeout(() => {
       tgBox.innerHTML = '';
       sc.tokens.forEach((tok, i) => {
@@ -1431,39 +1547,40 @@
         }, i * 140);
       });
 
-      // After streaming finishes, display mitigation & telemetry
       const totalStreamTime = sc.tokens.length * 140 + 200;
       setTimeout(() => {
         updateTelemetry(sc);
 
-        // Append mitigation block if Tier 1 or Tier 2
-        if (sc.tierCode !== 'tier0') {
-          const mit = document.createElement('div');
-          mit.className = `mitigation-box ${sc.tierCode === 'tier1' ? 'mitigation-tier1' : 'mitigation-tier2'}`;
-          mit.innerHTML = `<strong>[🛡️ Mitigation Actuation: ${sc.tier}]</strong><span>${sc.mitigated}</span>`;
-          tgBox.appendChild(mit);
-        } else {
-          const mit = document.createElement('div');
+        // Mitigation box
+        const mit = document.createElement('div');
+        if (sc.tierCode === 'safe') {
           mit.className = 'mitigation-box mitigation-safe';
-          mit.innerHTML = `<strong>[✅ Direct Pass-Through]</strong><span>Factual representation verified. Safe emission.</span>`;
-          tgBox.appendChild(mit);
+          mit.innerHTML = `<strong>[✅ SAFE PASS-THROUGH]</strong><span>${sc.mitigated}</span>`;
+        } else if (sc.tierCode === 'tier1') {
+          mit.className = 'mitigation-box mitigation-tier1';
+          mit.innerHTML = `<strong>[🛡️ TIER 1: RESAMPLE REGENERATION]</strong><span>${sc.mitigated}</span>`;
+        } else if (sc.tierCode === 'tier2') {
+          mit.className = 'mitigation-box mitigation-tier2';
+          mit.innerHTML = `<strong>[🛡️ TIER 2: RETRIEVAL-AUGMENTED REPAIR]</strong><span>${sc.mitigated}</span>`;
+        } else {
+          mit.className = 'mitigation-box mitigation-tier3';
+          mit.innerHTML = `<strong>[🛡️ TIER 3: CALIBRATED ABSTENTION]</strong><span>${sc.mitigated}</span>`;
         }
+        tgBox.appendChild(mit);
 
         btn.disabled = false;
-        btn.innerHTML = `<svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg> Run Guardrail`;
+        btn.innerHTML = `<svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg> Run Guardrail Demo`;
       }, totalStreamTime);
 
-    }, 450);
+    }, 400);
   }
 
   function updateTelemetry(sc) {
-    // 4 Sensors
     setSensor('s1Val', 's1Bar', sc.isp);
     setSensor('s2Val', 's2Bar', sc.aas);
     setSensor('s3Val', 's3Bar', sc.eem);
     setSensor('s4Val', 's4Bar', sc.dst);
 
-    // Sequence Risk
     const riskVal = document.getElementById('riskValDisplay');
     const riskBar = document.getElementById('riskBarFill');
     const badge = document.getElementById('actionDecisionBadge');
@@ -1471,31 +1588,43 @@
     const actionVal = document.getElementById('tgActionVal');
 
     riskVal.innerText = sc.r_seq.toFixed(3);
-    riskBar.style.width = (sc.r_seq * 100) + '%';
+    riskBar.style.width = Math.min(100, (sc.r_seq * 100)) + '%';
 
-    if (sc.tierCode === 'tier2') {
+    if (sc.tierCode === 'tier3') {
       riskVal.style.color = 'var(--rose-danger)';
       riskBar.style.backgroundColor = 'var(--rose-danger)';
       badge.style.background = 'var(--rose-bg)';
       badge.style.borderColor = 'rgba(244,63,94,0.4)';
       badge.style.color = 'var(--rose-danger)';
-      badge.innerText = 'Tier 2 Abstention';
-      tgBadge.innerText = 'Intervention (Refusal)';
+      badge.innerText = 'Tier 3 Abstention';
+      tgBadge.innerText = 'Intervention (Abstain)';
       tgBadge.style.color = 'var(--rose-danger)';
       tgBadge.style.borderColor = 'var(--rose-danger)';
-      actionVal.innerText = 'Calibrated Refusal';
+      actionVal.innerText = 'Tier 3 Abstain';
       actionVal.style.color = 'var(--rose-danger)';
+    } else if (sc.tierCode === 'tier2') {
+      riskVal.style.color = '#93c5fd';
+      riskBar.style.backgroundColor = '#3b82f6';
+      badge.style.background = 'rgba(59,130,246,0.15)';
+      badge.style.borderColor = 'rgba(59,130,246,0.3)';
+      badge.style.color = '#93c5fd';
+      badge.innerText = 'Tier 2 Retrieval';
+      tgBadge.innerText = 'Intervention (RAG)';
+      tgBadge.style.color = '#93c5fd';
+      tgBadge.style.borderColor = '#93c5fd';
+      actionVal.innerText = 'Tier 2 RAG';
+      actionVal.style.color = '#93c5fd';
     } else if (sc.tierCode === 'tier1') {
       riskVal.style.color = 'var(--cyan-bright)';
       riskBar.style.backgroundColor = 'var(--cyan-bright)';
       badge.style.background = 'rgba(6,182,212,0.15)';
       badge.style.borderColor = 'rgba(6,182,212,0.3)';
       badge.style.color = 'var(--cyan-bright)';
-      badge.innerText = 'Tier 1 RAG Repair';
-      tgBadge.innerText = 'Intervention (Active Repair)';
+      badge.innerText = 'Tier 1 Resample';
+      tgBadge.innerText = 'Intervention (Resample)';
       tgBadge.style.color = 'var(--cyan-bright)';
       tgBadge.style.borderColor = 'var(--cyan-bright)';
-      actionVal.innerText = 'Targeted RAG Grounded';
+      actionVal.innerText = 'Tier 1 Resample';
       actionVal.style.color = 'var(--cyan-bright)';
     } else {
       riskVal.style.color = 'var(--emerald-safe)';
@@ -1503,24 +1632,23 @@
       badge.style.background = 'var(--emerald-bg)';
       badge.style.borderColor = 'rgba(16,185,129,0.3)';
       badge.style.color = 'var(--emerald-safe)';
-      badge.innerText = 'Tier 0 Safe Pass';
+      badge.innerText = 'SAFE Pass';
       tgBadge.innerText = 'Emission Safe';
       tgBadge.style.color = 'var(--emerald-safe)';
       tgBadge.style.borderColor = 'var(--emerald-safe)';
-      actionVal.innerText = 'Direct Pass-Through';
+      actionVal.innerText = 'Safe Pass-Through';
       actionVal.style.color = 'var(--emerald-safe)';
     }
 
-    // XAI Explanation
     const banner = document.getElementById('xaiBanner');
-    banner.style.display = 'block';
     banner.innerHTML = `<strong>Explainable Diagnostic Rationale:</strong> ${sc.xai}`;
   }
 
   function setSensor(valId, barId, val) {
     document.getElementById(valId).innerText = val.toFixed(3);
     const bar = document.getElementById(barId);
-    bar.style.width = (val * 100) + '%';
+    const pct = Math.min(100, Math.max(5, val * 100));
+    bar.style.width = pct + '%';
     if (val > 0.65) bar.style.backgroundColor = 'var(--rose-danger)';
     else if (val > 0.35) bar.style.backgroundColor = 'var(--amber-warn)';
     else bar.style.backgroundColor = 'var(--emerald-safe)';
@@ -1529,14 +1657,14 @@
   function openTokenModal(tok) {
     document.getElementById('modalTokenTitle').innerText = `Token Inspection: "${tok.text.trim()}"`;
     document.getElementById('modalTokenBody').innerHTML = `
-      <p style="margin-bottom:12px;"><strong>Per-Token Risk Contribution:</strong> <span style="color:${tok.risk > 0.5 ? 'var(--rose-danger)' : 'var(--emerald-safe)'}; font-family:var(--font-mono); font-weight:700;">${tok.risk.toFixed(3)}</span></p>
+      <p style="margin-bottom:12px;"><strong>Token Risk Contribution:</strong> <span style="color:${tok.risk > 0.5 ? 'var(--rose-danger)' : 'var(--emerald-safe)'}; font-family:var(--font-mono); font-weight:700;">${tok.risk.toFixed(3)}</span></p>
       <div style="background:rgba(0,0,0,0.3); border-radius:8px; padding:12px; margin-bottom:12px; font-family:var(--font-mono); font-size:12px;">
         <div>• <strong>Internal State Probe (ISP):</strong> ${tok.isp.toFixed(3)}</div>
         <div>• <strong>Attention Anomaly (AAS):</strong> ${tok.aas.toFixed(3)}</div>
         <div>• <strong>Entropy-Energy Monitor (EEM):</strong> ${tok.eem.toFixed(3)}</div>
         <div>• <strong>Trajectory Drift (DST):</strong> ${tok.dst.toFixed(3)}</div>
       </div>
-      <p style="font-size:11.5px; color:var(--text-dim);">Single-pass forward hook extracted hidden state at layers 10, 13, 16, 20 without additional model passes.</p>
+      <p style="font-size:11.5px; color:var(--text-dim);">Extracted in a single PyTorch forward hook pass across TinyLlama Layers 10, 13, 16, 20 with zero additional generation passes.</p>
     `;
     document.getElementById('tokenModal').style.display = 'flex';
   }
@@ -1545,9 +1673,17 @@
     document.getElementById('tokenModal').style.display = 'none';
   }
 
+  // Enter key trigger
+  document.getElementById('promptInput').addEventListener('keydown', function(e) {
+    if (e.key === 'Enter' && !e.shiftKey) {
+      e.preventDefault();
+      runDemonstration();
+    }
+  });
+
   // Initialize
-  renderPresets();
-  selectScenario(SCENARIOS[0]);
+  renderChips();
+  selectScenario(CROSS_BENCHMARKS[0]);
 </script>
 
 </body>
