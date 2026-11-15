@@ -144,3 +144,4 @@ In contrast, 5-sample SelfCheckGPT takes **167.45 ms/token** ($5\times$ slower).
 1. **Multimodal Extension:** Applying internal state probing to vision-language models (e.g., LLaVA) to detect visual hallucinations.
 2. **Reinforcement Learning from Internal Feedback (RLIF):** Using TRUEGUARD risk signals directly as reward penalties during alignment tuning.
 3. **Hardware Kernel Fusion:** Fusing probe matrix multiplications directly into FlashAttention CUDA kernels to reduce overhead from +8.7% down to < 2%.
+

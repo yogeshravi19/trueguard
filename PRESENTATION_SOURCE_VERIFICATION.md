@@ -80,3 +80,4 @@ This document provides a strict, verifiable mapping of every numerical claim, be
 ## 5. Verification Conclusion
 
 Every metric, figure, table, and citation in `FINAL_TRUEGUARD_PRESENTATION.pptx` and `FINAL_TRUEGUARD_PRESENTATION.pdf` matches the underlying verified research code and JSON reports. Zero synthetic or simulated numbers were inserted. The presentation is 100% reproducible and defensible.
+

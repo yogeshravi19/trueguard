@@ -176,3 +176,4 @@ def add_table_grid(slide, left: float, top: float, width: float, height: float,
     return table_shape
 
 print("Helper modules compiled successfully.")
+
