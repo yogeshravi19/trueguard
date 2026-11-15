@@ -1,0 +1,8 @@
+{
+  "name": "trueguard-live-guardrail-demo",
+  "version": "1.0.0",
+  "description": "TRUEGUARD Live Hallucination Guardrail Demo",
+  "scripts": {
+    "start": "serve ."
+  }
+}
