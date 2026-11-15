@@ -41,7 +41,7 @@ def build_chapter_7(doc) -> None:
             ("Macro Average (All 4)", "1,598 (3,196)", "0.935 [0.920, 0.950]", "0.936", "0.591", "0.655", "0.675", "ENT_mean = 0.592", "0.882", "0.031"),
         ],
         [3.1, 1.5, 2.7, 1.1, 1.1, 1.1, 1.1, 1.8, 0.95, 0.95],
-        font_size=8.8,
+        font_size=8.0,
     )
     add_styled_table(
         doc,
@@ -54,7 +54,7 @@ def build_chapter_7(doc) -> None:
             ("Macro Average (GPT-2)", "160 (320)", "0.852 [0.793, 0.906]", "0.862", "0.486", "0.620", "0.692", "0.709", "0.839", "0.091"),
         ],
         [3.1, 1.5, 2.7, 1.1, 1.1, 1.1, 1.1, 1.6, 0.95, 0.95],
-        font_size=8.8,
+        font_size=8.0,
     )
     add_p(doc, "As shown in Table 7.1 and Figure 7.1, TRUEGUARD achieves a macro-average AUROC of 0.935 across the 3,196 answers on TinyLlama-1.1B—reaching 0.986 on HaluEval-Summarization, 0.975 on HaluEval-QA, 0.903 on HaluEval-Dialogue, and 0.876 on TruthfulQA—alongside low Expected Calibration Error (ECE = 0.024 to 0.042, macro 0.031). On the much smaller 124M-parameter GPT-2 backbone (Table 7.2), TRUEGUARD attains 0.960 AUROC on HaluEval-QA (+0.003 above ISP alone) and 0.744 AUROC on TruthfulQA, confirming that the four-sensor formulation generalizes across distinct transformer families and model scales.")
     add_figure_with_caption(doc, FIG_DIR / "fig_cross_backbone_comparison.png", "7.1", "Multi-Benchmark Hallucination Detection AUROC Comparison on TinyLlama-1.1B (N = 3,196)", width_cm=14.0)
@@ -79,7 +79,7 @@ def build_chapter_7(doc) -> None:
             ("Macro Average", "0.935", "0.751 (-0.184*)", "0.935 (+0.000)", "0.936 (+0.000)", "0.936 (+0.000)", "0.788", "0.826"),
         ],
         [3.1, 1.6, 2.0, 1.6, 1.6, 1.6, 1.55, 1.55],
-        font_size=8.8,
+        font_size=8.0,
     )
     add_figure_with_caption(doc, FIG_DIR / "ablation_truthful_qa.png", "7.4", "Single-Sensor and Leave-One-Out Ablation AUROC on TruthfulQA (TinyLlama-1.1B)", width_cm=10.0)
     add_figure_with_caption(doc, FIG_DIR / "ablation_halueval_qa.png", "7.5", "Single-Sensor and Leave-One-Out Ablation AUROC on HaluEval-QA (TinyLlama-1.1B)", width_cm=10.0)
@@ -109,12 +109,20 @@ def build_chapter_7(doc) -> None:
     add_figure_with_caption(doc, FIG_DIR / "fig_cross_dataset_heatmap_clean.png", "7.8", "Cross-Benchmark AUROC Transfer Matrix on TinyLlama-1.1B (Diagonal = 5-Fold Grouped CV)", width_cm=8.8)
 
     panels = ensure_composite_panels()
+    # Color Page 1: Architecture & Detection AUROC + Transfer Matrix
     add_stacked_figure_page(
         doc,
         [
             ("7.1", panels["7.1"], "TRUEGUARD Closed-Loop Architecture (Left) and Multi-Benchmark Detection AUROC Comparison (Right)"),
-            ("7.2", panels["7.2"], "Out-of-Fold ROC Curves on TruthfulQA (Left) and HaluEval-Summarization (Right) on TinyLlama-1.1B"),
-            ("7.3", panels["7.3"], "Leave-One-Sensor-Out Ablation on TruthfulQA (Left) and 4x4 Cross-Benchmark Transfer Matrix (Right)"),
+            ("7.2", panels["7.2"], "Multi-Benchmark In-Distribution AUROC (Left) and 4x4 Cross-Benchmark Zero-Shot Transfer Matrix (Right)"),
+        ],
+    )
+    # Color Page 2: Sensor Ablation + Out-of-Fold ROC Curves
+    add_stacked_figure_page(
+        doc,
+        [
+            ("7.3", panels["7.3"], "Single-Sensor and Leave-One-Sensor-Out Ablation AUROC on TruthfulQA (Left) and HaluEval-QA (Right)"),
+            ("7.4", panels["7.4"], "Out-of-Fold Receiver Operating Characteristic (ROC) Curves on TruthfulQA (Left) and HaluEval-Summarization (Right)"),
         ],
     )
 
@@ -179,7 +187,7 @@ def build_chapter_8(doc) -> None:
             ("Local CPU (GPT-2 124M)", "5-Sample SelfCheck Consistency", "1361.49 ms/tok", "+1201.61 ms/tok", "+751.6%", "1.00x (Baseline)"),
         ],
         [3.3, 3.2, 1.9, 2.0, 1.9, 2.3],
-        font_size=8.8,
+        font_size=8.0,
     )
     add_figure_with_caption(doc, FIG_DIR / "fig_dual_hardware_latency.png", "8.3", "Per-Token Inference Latency Comparison on NVIDIA Tesla T4 GPU (TinyLlama-1.1B) and Local CPU (GPT-2)", width_cm=14.2)
 
@@ -191,12 +199,12 @@ def build_chapter_8(doc) -> None:
     add_p(doc, "4. Real-World Practical Utility: Despite these boundaries, TRUEGUARD provides immediate practical viability: it eliminates multi-sample compute costs by 76%, operates with zero external subscription licensing fees, and runs comfortably on standard commodity hardware (single T4 GPU or multi-core CPU) without requiring multi-GPU server infrastructure.")
 
     panels = ensure_composite_panels()
+    # Color Page 3: 3-Tier Mitigation Routing & Selective Prediction / Latency
     add_stacked_figure_page(
         doc,
         [
-            ("8.1", panels["8.1"], "Three-Tier Controller Routing Breakdown and Hallucination Reduction on Live TriviaQA (n = 150)"),
-            ("8.2", panels["8.2"], "Selective Prediction Factual Accuracy and Risk–Coverage (AURC) Curves on Live TriviaQA"),
-            ("8.3", panels["8.3"], "Per-Token Inference Latency Comparison on NVIDIA Tesla T4 GPU (TinyLlama-1.1B) and Local CPU (GPT-2)"),
+            ("8.1", panels["8.1"], "Three-Tier Controller Routing Breakdown (Left) and Hallucination Reduction on Live TriviaQA (Right)"),
+            ("8.2", panels["8.2"], "Selective Prediction Factual Accuracy (Left) and Risk–Coverage (AURC) Curves on Live TriviaQA (Right)"),
         ],
     )
 
@@ -231,7 +239,7 @@ def build_appendices(doc) -> None:
             ("trivia_qa", "datasets/trivia_qa.jsonl", "17,944", "id, dataset, question, gold_answers (normalized alias list)", "Live 3-Tier Closed-Loop Mitigation (n_cal=150, n_test=150)"),
         ],
         [2.6, 3.1, 1.5, 4.1, 3.3],
-        font_size=8.8,
+        font_size=8.0,
     )
 
     add_section_heading(doc, "APPENDIX 2 — VERIFIED HYPERPARAMETERS, CALIBRATED THRESHOLDS AND EQUIVALENCE LOG")
@@ -253,7 +261,7 @@ def build_appendices(doc) -> None:
             ("Teacher-Forced vs. Online Equivalence", "max |Delta F|, |Delta H|", "max |Delta F| = 3.49e-6 (< 1e-4), max |Delta H_ent| = 1.53e-5 (< 1e-4)", "outputs/logs/test_equivalence_run.log ([PASS])"),
         ],
         [3.4, 2.2, 4.8, 4.2],
-        font_size=8.8,
+        font_size=8.0,
     )
 
     add_section_heading(doc, "APPENDIX 3 — REPRODUCIBLE CLI OPERATING PROCEDURE AND REPRESENTATIVE TRACES")
@@ -269,5 +277,5 @@ def build_appendices(doc) -> None:
             ("Q: 'Who was the first person to reach the South Pole?'\nGold: ['roald amundsen', 'amundsen']", "Greedy: 'Robert Falcon Scott was the first explorer to reach the South Pole.'\nr_0 = 0.784 (Warning regime)", "ISP: +0.71, AAS: +0.11, EEM: +0.24, DST: +0.08 (Moderate epistemic warning)", "TIER1_RESAMPLE: Annealed re-sampling (T=0.35) generates 'Roald Amundsen reached the South Pole first in 1911' with r_new = 0.418 < tau_fault (Repaired)"),
         ],
         [3.3, 3.5, 3.8, 4.0],
-        font_size=8.6,
+        font_size=8.0,
     )

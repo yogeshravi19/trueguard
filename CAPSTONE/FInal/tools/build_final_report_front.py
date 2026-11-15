@@ -175,7 +175,7 @@ def build_front_matter(doc, page_map: Dict[str, str]) -> None:
         "for the award of any other degree or diploma and the same is certified.",
         size=12,
         align=WD_ALIGN_PARAGRAPH.JUSTIFY,
-        line_spacing=1.45,
+        line_spacing=1.5,
         space_before=6,
         space_after=24,
     )
@@ -209,17 +209,17 @@ def build_front_matter(doc, page_map: Dict[str, str]) -> None:
     add_p(
         doc,
         "Large Language Models (LLMs) routinely produce fluent, high-confidence statements that are factually incorrect or unfaithful to source context—a phenomenon known as hallucination. Existing mitigation paradigms face a severe latency–accuracy trade-off: black-box multi-sample consistency methods (such as SelfCheckGPT and semantic entropy) require generating 5 to 20 auxiliary completions per prompt, multiplying decoding latency by 5x to 20x, whereas single-pass scalar heuristics (surface token entropy, negative log-likelihood, and logit energy) fail when models state memorized human misconceptions or invert their polarity under benchmark answer-length asymmetries. Moreover, white-box internal probing and runtime mitigation have historically operated as disconnected silos.",
-        size=11.0, align=WD_ALIGN_PARAGRAPH.JUSTIFY, line_spacing=1.22, space_before=1, space_after=4,
+        size=11.0, align=WD_ALIGN_PARAGRAPH.JUSTIFY, line_spacing=1.5, space_before=1, space_after=4,
     )
     add_p(
         doc,
         "Grounded in a PRISMA 2020 systematic literature review of 40 peer-reviewed studies (2020–2025) organized across Six Research Pillars, this project presents TRUEGUARD, a closed-loop feedback control framework for single-pass white-box hallucination detection and graded three-tier runtime mitigation. During a single forward pass of a frozen autoregressive Transformer, TRUEGUARD extracts four complementary internal signals: (1) an Internal State Probe (ISP) averaging L2-regularized logistic probes across four fractional residual-stream depths {0.45, 0.60, 0.75, 0.90}L trained via leakage-free inner grouped out-of-fold (OOF) stacking; (2) a final-quartile Attention Anomaly Score (AAS) measuring normalized causal attention Shannon entropy; (3) a scale-invariant Energy and Entropy Monitor (EEM) combining normalized Shannon entropy (0.6) and quadratic Renyi-2 entropy (0.4); and (4) a Directional Semantic Trajectory (DST) sensor tracking consecutive-token hidden-state cosine drift. The pooled 4-sensor vector is mapped by a standardized L2 logistic combiner into a calibrated risk score r(x,y) in [0, 1] with exact per-sensor log-odds attributions.",
-        size=11.0, align=WD_ALIGN_PARAGRAPH.JUSTIFY, line_spacing=1.22, space_before=1, space_after=4,
+        size=11.0, align=WD_ALIGN_PARAGRAPH.JUSTIFY, line_spacing=1.5, space_before=1, space_after=4,
     )
     add_p(
         doc,
         "Evaluated on an NVIDIA Tesla T4 GPU with TinyLlama-1.1B-Chat-v1.0 across 3,196 real responses spanning four standard benchmarks (5-fold question-grouped cross-validation) and verified on local CPU with GPT-2 (124M), TRUEGUARD achieves a macro-average AUROC of 0.935 (0.986 on HaluEval-Summarization, 0.975 on HaluEval-QA, 0.903 on HaluEval-Dialogue, and 0.876 on TruthfulQA), macro F1 of 0.882, and Expected Calibration Error of 0.031, outperforming single-pass entropy baselines by +30.6 AUROC points. On live open-domain TriviaQA generations (n_cal = 150, n_test = 150), our two-threshold Three-Tier Controller (tau_warning = 0.611, tau_fault = 0.898; SAFE pass-through, Tier 1 annealed re-sampling, Tier 2 Wikipedia retrieval grounding, and Tier 3 calibrated abstention) reduces the hallucination rate among answered queries by 35.5% relative (62.0% -> 40.0%, raising accuracy from 38.0% to 60.0%) and cuts system-wide emitted hallucinations by 72.0% relative (62.0% -> 17.3%) with an AURC of 0.412, while adding only +2.91 ms/token (+8.7% overhead; 4.65x faster than 5-sample consistency).",
-        size=11.0, align=WD_ALIGN_PARAGRAPH.JUSTIFY, line_spacing=1.22, space_before=1, space_after=4,
+        size=11.0, align=WD_ALIGN_PARAGRAPH.JUSTIFY, line_spacing=1.5, space_before=1, space_after=4,
     )
     add_p(
         doc,

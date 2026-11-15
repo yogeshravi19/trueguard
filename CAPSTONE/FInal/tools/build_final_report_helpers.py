@@ -190,9 +190,9 @@ def add_p(
     italic: bool = False,
     underline: bool = False,
     align=WD_ALIGN_PARAGRAPH.JUSTIFY,
-    line_spacing: float = 1.25,
+    line_spacing: float = 1.5,
     space_before: float = 0.0,
-    space_after: float = 5.0,
+    space_after: float = 2.0,
     keep_with_next: bool = False,
     keep_together: bool = False,
 ):
@@ -364,11 +364,13 @@ TABLE_SUPPLEMENT_CAPTIONS: Dict[str, Tuple[str, str]] = {
 
 def add_figure_with_caption(doc, img_path: Path, fig_id: str, caption_text: str, width_cm: float = 13.0) -> None:
     """
-    Preserves all quantitative/architectural details in-place as a structured analytical table
-    so that redundant single-figure pages are eliminated while 100% of the data is retained.
-    The 6 essential visual figures (Figures 7.1-7.3 and Figures 8.1-8.3) are rendered 3-per-page
-    on 2 dedicated visual pages via `add_stacked_figure_page`.
+    Preserves quantitative/architectural details in-place as a structured analytical table
+    only for supplemental figures not already presented on the 3 dedicated color figure pages.
+    The 6 primary visual figures (7.1, 7.2, 7.3, 7.4, 8.1, 8.2) are rendered across 3 dedicated
+    color pages via `add_stacked_figure_page`.
     """
+    if fig_id in ["7.1", "7.2", "7.3", "7.4", "8.1", "8.2"]:
+        return  # Beautifully rendered on the 3 dedicated color pages!
     if fig_id in FIG_REPLACEMENT_TABLES:
         headers, rows, col_widths_cm, font_size = FIG_REPLACEMENT_TABLES[fig_id]
         sup_id, sup_cap = TABLE_SUPPLEMENT_CAPTIONS.get(fig_id, (None, None))
@@ -469,7 +471,7 @@ def add_styled_table(
         set_cell_margins(cell, 75, 75, 95, 95)
         p = cell.paragraphs[0]
         p.alignment = WD_ALIGN_PARAGRAPH.LEFT
-        p.paragraph_format.line_spacing = 1.12
+        p.paragraph_format.line_spacing = 1.04
         p.paragraph_format.space_before = Pt(2)
         p.paragraph_format.space_after = Pt(2)
         r = p.add_run(h_text)
@@ -487,12 +489,12 @@ def add_styled_table(
             set_cell_borders(cell, color="404040", sz="4")
             if i % 2 == 0:
                 set_cell_shading(cell, "F8F9FA")
-            set_cell_margins(cell, 55, 55, 85, 85)
+            set_cell_margins(cell, 35, 35, 75, 75)
             p = cell.paragraphs[0]
             p.alignment = WD_ALIGN_PARAGRAPH.LEFT
-            p.paragraph_format.line_spacing = 1.12
-            p.paragraph_format.space_before = Pt(1.5)
-            p.paragraph_format.space_after = Pt(1.5)
+            p.paragraph_format.line_spacing = 1.04
+            p.paragraph_format.space_before = Pt(0.5)
+            p.paragraph_format.space_after = Pt(0.5)
             r = p.add_run(str(val))
             r.font.name = "Times New Roman"
             r.font.size = Pt(font_size)
@@ -555,9 +557,9 @@ def add_hyperlink(paragraph, url: str, text: str) -> None:
     rPr.append(rFonts)
 
     sz = OxmlElement("w:sz")
-    sz.set(qn("w:val"), "24")  # 12 pt
+    sz.set(qn("w:val"), "22")  # 12 pt
     szCs = OxmlElement("w:szCs")
-    szCs.set(qn("w:val"), "24")
+    szCs.set(qn("w:val"), "22")
     rPr.append(sz)
     rPr.append(szCs)
 
@@ -585,9 +587,9 @@ def add_apa_reference_paragraph(doc, ref_str: str) -> None:
     p = doc.add_paragraph()
     p.alignment = WD_ALIGN_PARAGRAPH.JUSTIFY
     pf = p.paragraph_format
-    pf.line_spacing = 1.15
+    pf.line_spacing = 1.05
     pf.space_before = Pt(0)
-    pf.space_after = Pt(6.0)
+    pf.space_after = Pt(1.5)
     pf.left_indent = Cm(0.8)
     pf.first_line_indent = Cm(-0.8)
     pf.widow_control = True
@@ -618,25 +620,25 @@ def add_apa_reference_paragraph(doc, ref_str: str) -> None:
 
             r1 = p.add_run(prefix_and_title)
             r1.font.name = "Times New Roman"
-            r1.font.size = Pt(12)
+            r1.font.size = Pt(11)
 
             r2 = p.add_run(venue_ital)
             r2.font.name = "Times New Roman"
-            r2.font.size = Pt(12)
+            r2.font.size = Pt(11)
             r2.italic = True
 
             if venue_tail:
                 r3 = p.add_run(venue_tail)
                 r3.font.name = "Times New Roman"
-                r3.font.size = Pt(12)
+                r3.font.size = Pt(11)
         else:
             r1 = p.add_run(body_part)
             r1.font.name = "Times New Roman"
-            r1.font.size = Pt(12)
+            r1.font.size = Pt(11)
     else:
         r1 = p.add_run(body_part)
         r1.font.name = "Times New Roman"
-        r1.font.size = Pt(12)
+        r1.font.size = Pt(11)
 
     if url:
         add_hyperlink(p, url, url)

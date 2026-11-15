@@ -128,7 +128,7 @@ def build_chapter_3(doc) -> None:
             ["Paper Title", "Author(s) & ID", "Year", "Method / Framework", "Key Contribution", "Gap Identified"],
             rows,
             [3.0, 1.8, 0.9, 2.3, 3.3, 3.3],
-            font_size=8.5,
+            font_size=8.0,
         )
 
     add_section_heading(doc, "3.8 CROSS-PILLAR GAP SYNTHESIS AND TRUEGUARD MAPPING")
@@ -140,7 +140,7 @@ def build_chapter_3(doc) -> None:
         ["Research Pillar & IDs", "Core Literature Finding", "Cross-Corpus Gap Identified", "TRUEGUARD v2 Architectural Module", "Verified Tesla T4 GPU Outcome"],
         CROSS_PILLAR_SYNTHESIS_ROWS,
         [2.5, 2.7, 2.9, 3.2, 3.3],
-        font_size=8.5,
+        font_size=8.0,
     )
 
 
@@ -161,7 +161,7 @@ def build_chapter_4(doc) -> None:
         ["Req. ID", "Functional Requirement Title", "Detailed Technical Specification"],
         FUNCTIONAL_REQUIREMENTS_TABLE,
         [1.8, 4.0, 8.8],
-        font_size=9.2,
+        font_size=8.6,
     )
 
     add_section_heading(doc, "4.5 NON-FUNCTIONAL REQUIREMENTS SPECIFICATION")
@@ -173,7 +173,7 @@ def build_chapter_4(doc) -> None:
         ["Req. ID", "Non-Functional Requirement", "Verification Criterion & Measured Compliance"],
         NON_FUNCTIONAL_REQUIREMENTS_TABLE,
         [1.8, 4.0, 8.8],
-        font_size=9.2,
+        font_size=8.6,
     )
 
     add_section_heading(doc, "4.6 HARDWARE AND SOFTWARE TECHNOLOGY STACK")
@@ -186,7 +186,7 @@ def build_chapter_4(doc) -> None:
         ["Layer / Category", "Technology / Component", "Operational Role in TRUEGUARD v2"],
         TECH_STACK_TABLE,
         [3.2, 4.4, 7.0],
-        font_size=9.2,
+        font_size=8.6,
     )
 
 
@@ -224,18 +224,21 @@ def assemble_docx(docx_path: Path, page_map: Dict[str, str]) -> None:
 
 def export_docx_to_pdf_via_word(docx_path: Path, pdf_path: Path) -> None:
     from generate_hd_stacked_figures import inject_hd_images_into_pdf
-    ps_cmd = (
-        f"$w = New-Object -ComObject Word.Application; "
-        f"$w.Visible = $false; "
-        f"$d = $w.Documents.Open('{docx_path}'); "
-        f"$d.Repaginate(); "
-        f"foreach ($f in $d.Fields) {{ $f.Update() | Out-Null }}; "
-        f"$d.Save(); "
-        f"$d.SaveAs([ref]'{pdf_path}', [ref]17); "
-        f"$d.Close(); "
-        f"$w.Quit()"
-    )
-    subprocess.run(["powershell", "-NoProfile", "-Command", ps_cmd], check=True)
+    ps1_code = f"""$w = New-Object -ComObject Word.Application
+$w.Visible = $false
+$d = $w.Documents.Open('{docx_path}')
+$d.Repaginate()
+foreach ($f in $d.Fields) {{ $f.Update() | Out-Null }}
+$d.Save()
+$d.SaveAs([ref]'{pdf_path}', [ref]17)
+$d.Close()
+$w.Quit()
+"""
+    ps1_path = docx_path.with_name(docx_path.stem + "_export.ps1")
+    ps1_path.write_text(ps1_code, encoding="utf-8")
+    subprocess.run(["powershell", "-NoProfile", "-ExecutionPolicy", "Bypass", "-File", str(ps1_path)], check=True)
+    if ps1_path.exists():
+        ps1_path.unlink()
     inject_hd_images_into_pdf(pdf_path)
 
     # Verify and guarantee page border rectangle on every page in PDF
@@ -363,7 +366,7 @@ def extract_exact_page_map_from_pdf(pdf_path: Path) -> Tuple[Dict[str, str], int
     for s in sec_prefixes:
         search_targets.append((s, s))
 
-    fig_ids = ["7.1", "7.2", "7.3", "8.1", "8.2", "8.3"]
+    fig_ids = ["7.1", "7.2", "7.3", "7.4", "8.1", "8.2"]
     for fid in fig_ids:
         search_targets.append((f"FIGURE {fid}", f"FIGURE {fid}:"))
 
