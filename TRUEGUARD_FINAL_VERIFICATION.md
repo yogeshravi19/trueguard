@@ -90,3 +90,4 @@ This document provides a line-by-line verification record mapping the university
   - TRUEGUARD Online real-time telemetry: **39.30 ms/token** (+5.81 ms, **+17.3%** overhead)
   - 5-Sample Consistency baseline: **169.31 ms/token** (+135.82 ms, **4.3x to 4.7x slower**, +405% overhead)
   - Area Under the Risk-Coverage Curve (AURC): **0.412**
+

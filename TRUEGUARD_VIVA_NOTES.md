@@ -292,3 +292,4 @@ This document contains the complete, slide-by-slide speaker notes, mathematical 
   > By tapping into the model's internal physical state during generation, we achieve 0.935 Macro AUROC and reduce emitted hallucinations by 72% with under 18% latency overhead.
   > I express my sincere gratitude to my guide, Dr. Pradeep Kumar T S, and the respected panel members.
   > Thank you. I am now ready for Viva Voce questions."
+
