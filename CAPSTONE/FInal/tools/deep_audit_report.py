@@ -30,3 +30,4 @@ for i, p in enumerate(doc.paragraphs):
     text = p.text.strip()
     if any(k in text for k in ['\\frac', '\\sum', '\\sigma', '\\tau', '$$', '', 'TODO', 'TBD', 'XXX']):
         print(f"P{i:3d} has math/symbol artifact: {text[:100]}")
+

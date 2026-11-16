@@ -19,3 +19,4 @@ for i in range(136, 175):
     p = doc.paragraphs[i]
     if p.text.strip():
         print(f"P{i:3d}: {p.text.strip()}")
+

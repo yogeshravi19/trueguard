@@ -34,3 +34,4 @@ print("\n=== Main Chapters (from PDF page 14 onwards) ===")
 for p in page_map[13:]:
     if p['headings']:
         print(f"PDF P{p['pdf_page']:2d} (footer: '{p['last_line']}'): headings={p['headings']}")
+

@@ -17,3 +17,4 @@ for s in tmpl.styles:
         font_size = s.font.size.pt if s.font and s.font.size else None
         if s.name in ['Normal', 'Heading 1', 'Heading 2', 'Heading 3', 'Title', 'Subtitle', 'Body Text']:
             print(f'Style: {s.name}, Font: {font_name}, Size: {font_size}')
+

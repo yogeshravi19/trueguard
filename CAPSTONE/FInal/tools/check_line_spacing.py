@@ -8,3 +8,4 @@ for p in doc.paragraphs:
         spacings.add(sp)
 
 print("Unique line spacings in paragraphs:", spacings)
+

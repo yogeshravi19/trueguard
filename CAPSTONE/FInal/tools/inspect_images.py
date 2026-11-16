@@ -15,3 +15,4 @@ for i, p in enumerate(doc.paragraphs):
             img_count += 1
 
 print(f"Total embedded images found: {img_count}")
+

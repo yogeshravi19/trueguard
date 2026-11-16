@@ -44,3 +44,4 @@ for t_idx in [0, 2, 4, 11, 15, 37, 45, 47]:
                     fonts.add(r.font.name)
                     sizes.add(r.font.size.pt if r.font.size else None)
     print(f"Table {t_idx:2d}: fonts={fonts}, sizes={sizes}")
+

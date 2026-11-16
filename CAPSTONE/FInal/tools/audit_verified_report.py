@@ -42,3 +42,4 @@ for t_idx, table in enumerate(doc.tables):
             suspicious = [m for m in matches if any(k in m.lower() for k in ['name', 'todo', 'tbd', 'xxx', 'insert', 'placeholder'])]
             if suspicious:
                 print(f"Table {t_idx} (R{r_idx}C{c_idx}): Suspicious {suspicious} in: {text[:80]}")
+

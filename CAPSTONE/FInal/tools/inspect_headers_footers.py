@@ -16,3 +16,4 @@ for i, s in enumerate(doc.sections):
     start_type = s.start_type
     diff_first = s.different_first_page_header_footer
     print(f"Section {i:2d}: start={start_type}, diff_first={diff_first}, header='{header_text}', footer='{footer_text}'")
+

@@ -6,3 +6,4 @@ for i in range(140, 220):
         p = tmpl.paragraphs[i]
         if p.text.strip():
             print(f"T{i:3d}: [{p.style.name}] {p.text.strip()[:100]}")
+

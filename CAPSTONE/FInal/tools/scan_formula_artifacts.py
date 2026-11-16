@@ -17,3 +17,4 @@ for t_idx, table in enumerate(doc.tables):
             for pat in patterns:
                 if pat in cell.text and any(sym in cell.text for sym in ['=', '∑', '∈', 'h_', 'α_', 'H_', 'F_']):
                     print(f"Table {t_idx} (R{r_idx}C{c_idx}): Found '{pat}' in: {cell.text[:120]}")
+

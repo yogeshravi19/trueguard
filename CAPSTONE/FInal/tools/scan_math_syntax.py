@@ -27,3 +27,4 @@ for t_idx, table in enumerate(doc.tables):
             if matches:
                 print(f"Table {t_idx} (R{r_idx}C{c_idx}): Found {matches} in: {text[:80]}")
                 t_found += 1
+

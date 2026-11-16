@@ -8,3 +8,4 @@ for idx in eq_table_indices:
     c0 = table.rows[0].cells[0].text.strip().replace('\n', ' ')
     c1 = table.rows[0].cells[1].text.strip().replace('\n', ' ') if len(table.rows[0].cells) > 1 else ""
     print(f"Table {idx:2d}: [{c1}] {c0}")
+

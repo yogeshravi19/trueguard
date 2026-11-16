@@ -16,3 +16,4 @@ print(f"Total reference paragraphs found: {len(ref_paragraphs)}")
 for i, text in ref_paragraphs:
     if any(text.startswith(f"[{k}]") for k in [1, 2, 3, 4, 5, 8, 9, 10, 37, 38, 39, 40]):
         print(f"P{i:3d}: {text}")
+

@@ -6,3 +6,4 @@ for idx in indices:
     print(f"=== P{idx} ===")
     print(doc.paragraphs[idx].text)
     print()
+
