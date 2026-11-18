@@ -1,0 +1,12 @@
+{
+  "name": "FaithDial",
+  "domain": "Human-Annotated Faithful Dialogue",
+  "source_repo": "McGill-NLP/FaithDial",
+  "official_url": "https://huggingface.co/datasets/McGill-NLP/FaithDial",
+  "paper": "Dziri et al., TACL 2022",
+  "total_raw_rows": 3539,
+  "usable_eval_rows": 800,
+  "true_count": 400,
+  "false_count": 400,
+  "status": "Existing Preprocessed"
+}

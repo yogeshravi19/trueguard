@@ -1,0 +1,12 @@
+{
+  "name": "WikiBio-GPT3 (SelfCheckGPT Benchmark)",
+  "domain": "Hallucination in Wikipedia Concept Generation",
+  "source_repo": "potsawee/wiki_bio_gpt3_hallucination",
+  "official_url": "https://huggingface.co/datasets/potsawee/wiki_bio_gpt3_hallucination",
+  "paper": "Manakul, Liusie, Gales, EMNLP 2023",
+  "total_raw_rows": 238,
+  "usable_eval_rows": 800,
+  "true_count": 400,
+  "false_count": 400,
+  "status": "NEW (SelfCheckGPT Official Benchmark)"
+}

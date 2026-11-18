@@ -1,0 +1,12 @@
+{
+  "name": "HaluEval-General",
+  "domain": "Open-Domain User Instructions",
+  "source_repo": "pminervini/HaluEval (general)",
+  "official_url": "https://huggingface.co/datasets/pminervini/HaluEval",
+  "paper": "Li et al., EMNLP 2023",
+  "total_raw_rows": 4507,
+  "usable_eval_rows": 800,
+  "true_count": 400,
+  "false_count": 400,
+  "status": "Existing Preprocessed"
+}

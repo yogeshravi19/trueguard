@@ -1,0 +1,11 @@
+{
+  "name": "TruthfulQA",
+  "domain": "Adversarial Human False Beliefs",
+  "source_repo": "truthfulqa/truthful_qa (generation)",
+  "official_url": "https://huggingface.co/datasets/truthfulqa/truthful_qa",
+  "paper": "Lin et al., ACL 2022",
+  "total_raw_rows": 817,
+  "usable_eval_rows": 796,
+  "pairs_count": 398,
+  "status": "Existing Verified"
+}

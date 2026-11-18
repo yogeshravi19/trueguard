@@ -1,0 +1,12 @@
+{
+  "name": "TriviaQA",
+  "domain": "Closed-Book Fact Retrieval & Mitigation",
+  "source_repo": "mandarjoshi/trivia_qa (rc.nocontext)",
+  "official_url": "https://huggingface.co/datasets/mandarjoshi/trivia_qa",
+  "paper": "Joshi et al., ACL 2017",
+  "total_raw_rows": 17944,
+  "usable_eval_rows": 300,
+  "calibration_rows": 150,
+  "testing_rows": 150,
+  "status": "Existing Verified"
+}

@@ -1,0 +1,11 @@
+{
+  "name": "HaluEval-Dialogue",
+  "domain": "Conversational Dialogue",
+  "source_repo": "pminervini/HaluEval (dialogue)",
+  "official_url": "https://huggingface.co/datasets/pminervini/HaluEval",
+  "paper": "Li et al., EMNLP 2023",
+  "total_raw_rows": 10000,
+  "usable_eval_rows": 800,
+  "pairs_count": 400,
+  "status": "Existing Verified"
+}
