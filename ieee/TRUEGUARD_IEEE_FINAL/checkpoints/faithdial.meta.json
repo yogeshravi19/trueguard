@@ -1,0 +1,11 @@
+{
+  "dataset": "faithdial",
+  "model": "TinyLlama/TinyLlama-1.1B-Chat-v1.0",
+  "pipeline_version": "TRUEGUARD_v2_IEEE_FINAL_2026_11",
+  "rows_sha256": "8de810484d8d03b9",
+  "n_input_rows": 3507,
+  "valid_rows": 3507,
+  "skipped_empty": 0,
+  "extraction_sec": 181.46,
+  "throughput_seq_per_min": 1159.6
+}

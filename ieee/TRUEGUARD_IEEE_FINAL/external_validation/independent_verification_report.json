@@ -1,0 +1,348 @@
+{
+  "verification_mode": "INDEPENDENT_READ_ONLY_ZERO_TRUEGUARD_IMPORTS",
+  "provenance_sha256": {
+    "results/dataset_manifest.json": {
+      "bytes": 7094,
+      "sha256": "8b69fda444b58f48"
+    },
+    "results/final_experiment_report.json": {
+      "bytes": 110526,
+      "sha256": "b0862fb13be4e14b"
+    },
+    "results/mitigation_report.json": {
+      "bytes": 24140,
+      "sha256": "be03795b2602e57f"
+    },
+    "results/real_latency.json": {
+      "bytes": 672,
+      "sha256": "598bce6259caa77a"
+    },
+    "predictions/in_domain_oof_halueval_dialogue.npz": {
+      "bytes": 155003,
+      "sha256": "2c73228203cc731a"
+    },
+    "predictions/in_domain_oof_halueval_general.npz": {
+      "bytes": 178663,
+      "sha256": "e83a18915e38ae9e"
+    },
+    "predictions/in_domain_oof_halueval_qa.npz": {
+      "bytes": 152085,
+      "sha256": "a55da376fef24559"
+    },
+    "predictions/in_domain_oof_halueval_summarization.npz": {
+      "bytes": 150918,
+      "sha256": "821904d72873b107"
+    },
+    "predictions/in_domain_oof_truthful_qa.npz": {
+      "bytes": 63560,
+      "sha256": "aa96b488f535c048"
+    },
+    "predictions/triviaqa_test_predictions.npz": {
+      "bytes": 5154,
+      "sha256": "a70a16901e9ac379"
+    },
+    "predictions/unseen_zeroshot_faithdial.npz": {
+      "bytes": 82955,
+      "sha256": "f4c9574d8a686547"
+    },
+    "predictions/unseen_zeroshot_fever.npz": {
+      "bytes": 162862,
+      "sha256": "d818a520e2f00e40"
+    },
+    "predictions/unseen_zeroshot_wikibio_gpt3.npz": {
+      "bytes": 45510,
+      "sha256": "737994e4ed06c23c"
+    },
+    "predictions/unseen_zeroshot_xsum_factuality.npz": {
+      "bytes": 48373,
+      "sha256": "3f725e3634f51ee8"
+    },
+    "models/trueguard_pooled_in_domain.joblib": {
+      "bytes": 2012724,
+      "sha256": "d070cb7f9c52d596"
+    },
+    "models/trueguard_triviaqa_mitigation.joblib": {
+      "bytes": 270681,
+      "sha256": "bc08301a1f078922"
+    }
+  },
+  "in_domain_verification": {
+    "halueval_dialogue": {
+      "recomputed": {
+        "auroc": 0.92184825,
+        "auprc": 0.9304826785364303,
+        "f1": 0.8351421188630492,
+        "precision": 0.8641711229946524,
+        "recall": 0.808,
+        "accuracy": 0.8405,
+        "ece": 0.022046824999921548,
+        "brier": 0.11172255805159068,
+        "cm": [
+          1746,
+          254,
+          384,
+          1616
+        ],
+        "single_sensors": {
+          "ISP": 0.9220630000000001,
+          "AAS": 0.6441380000000001,
+          "EEM": 0.67042025,
+          "DST": 0.6152880000000001
+        }
+      },
+      "max_abs_diff": 1.1102230246251565e-16,
+      "cm_exact_match": true,
+      "verified": true
+    },
+    "halueval_qa": {
+      "recomputed": {
+        "auroc": 0.9880137500000001,
+        "auprc": 0.9913591537321451,
+        "f1": 0.9678735339112697,
+        "precision": 0.9875130072840791,
+        "recall": 0.949,
+        "accuracy": 0.9685,
+        "ece": 0.00953633898401659,
+        "brier": 0.026495628648462513,
+        "cm": [
+          1976,
+          24,
+          102,
+          1898
+        ],
+        "single_sensors": {
+          "ISP": 0.9879610000000001,
+          "AAS": 0.52431375,
+          "EEM": 0.8541974999999999,
+          "DST": 0.8568201249999999
+        }
+      },
+      "max_abs_diff": 0.0,
+      "cm_exact_match": true,
+      "verified": true
+    },
+    "halueval_summarization": {
+      "recomputed": {
+        "auroc": 0.9935775000000001,
+        "auprc": 0.9937775035207297,
+        "f1": 0.962353527798554,
+        "precision": 0.9597215315763302,
+        "recall": 0.965,
+        "accuracy": 0.96225,
+        "ece": 0.009890715953782929,
+        "brier": 0.029293171328049344,
+        "cm": [
+          1919,
+          81,
+          70,
+          1930
+        ],
+        "single_sensors": {
+          "ISP": 0.99356625,
+          "AAS": 0.6048135,
+          "EEM": 0.58591525,
+          "DST": 0.6601725
+        }
+      },
+      "max_abs_diff": 0.0,
+      "cm_exact_match": true,
+      "verified": true
+    },
+    "truthful_qa": {
+      "recomputed": {
+        "auroc": 0.8772856181899626,
+        "auprc": 0.8575498185313211,
+        "f1": 0.8023529411764706,
+        "precision": 0.7723669309173273,
+        "recall": 0.8347613219094248,
+        "accuracy": 0.7943696450428397,
+        "ece": 0.02508431117504474,
+        "brier": 0.14041547941328963,
+        "cm": [
+          616,
+          201,
+          135,
+          682
+        ],
+        "single_sensors": {
+          "ISP": 0.8771972272202239,
+          "AAS": 0.5909588023173415,
+          "EEM": 0.5313458349126352,
+          "DST": 0.5284334273673424
+        }
+      },
+      "max_abs_diff": 0.0,
+      "cm_exact_match": true,
+      "verified": true
+    },
+    "halueval_general": {
+      "recomputed": {
+        "auroc": 0.7203976098212682,
+        "auprc": 0.38681234455403735,
+        "f1": 0.425476603119584,
+        "precision": 0.32886805090421967,
+        "recall": 0.6024539877300613,
+        "accuracy": 0.705790991790548,
+        "ece": 0.005462986703058022,
+        "brier": 0.13191487233261082,
+        "cm": [
+          2690,
+          1002,
+          324,
+          491
+        ],
+        "single_sensors": {
+          "ISP": 0.7225272351428059,
+          "AAS": 0.619361045935832,
+          "EEM": 0.5403834521997488,
+          "DST": 0.5364641838762637
+        }
+      },
+      "max_abs_diff": 5.551115123125783e-17,
+      "cm_exact_match": true,
+      "verified": true
+    }
+  },
+  "unseen_zeroshot_verification": {
+    "faithdial": {
+      "recomputed": {
+        "auroc": 0.493979872093436,
+        "auprc": 0.7178988231956884,
+        "f1_tw": 0.10797282803003218,
+        "ece": 0.6018963255439006,
+        "brier": 0.5871177437695845,
+        "isp_auroc": 0.486511363739554,
+        "scalar_auroc": 0.3344702163613744
+      },
+      "max_abs_diff": 0.0,
+      "verified": true
+    },
+    "wikibio_gpt3": {
+      "recomputed": {
+        "auroc": 0.5038007885592088,
+        "auprc": 0.7222792739196404,
+        "f1_tw": 0.6220930232558141,
+        "ece": 0.300216704202877,
+        "brier": 0.3212647003951087,
+        "isp_auroc": 0.5029557048026374,
+        "scalar_auroc": 0.48405200258397935
+      },
+      "max_abs_diff": 1.1102230246251565e-16,
+      "verified": true
+    },
+    "fever": {
+      "recomputed": {
+        "auroc": 0.5184520702295252,
+        "auprc": 0.5191281804414505,
+        "f1_tw": 0.5629491615650786,
+        "ece": 0.20655468762149082,
+        "brier": 0.30582139109537815,
+        "isp_auroc": 0.5158403779171796,
+        "scalar_auroc": 0.48650702153923764
+      },
+      "max_abs_diff": 0.0,
+      "verified": true
+    },
+    "xsum_factuality": {
+      "recomputed": {
+        "auroc": 0.44784570666923607,
+        "auprc": 0.8843691262362299,
+        "f1_tw": 0.5786516853932585,
+        "ece": 0.5039929135576388,
+        "brier": 0.42939598747079616,
+        "isp_auroc": 0.44452795041030335,
+        "scalar_auroc": 0.44499365675836255
+      },
+      "max_abs_diff": 1.1102230246251565e-16,
+      "verified": true
+    }
+  },
+  "fewshot_split_verification": {
+    "faithdial": {
+      "n_pool": 2111,
+      "n_test": 1396,
+      "group_overlap": 0,
+      "unadapted_auroc_40pct": 0.492855,
+      "raw_eem_auroc_40pct": 0.747312,
+      "max_abs_diff": 0.0047762334622916125,
+      "verified": false
+    },
+    "wikibio_gpt3": {
+      "n_pool": 1174,
+      "n_test": 734,
+      "group_overlap": 0,
+      "unadapted_auroc_40pct": 0.48831,
+      "raw_eem_auroc_40pct": 0.522332,
+      "max_abs_diff": 0.0014920948616601315,
+      "verified": false
+    },
+    "fever": {
+      "n_pool": 3999,
+      "n_test": 2667,
+      "group_overlap": 0,
+      "unadapted_auroc_40pct": 0.520466,
+      "raw_eem_auroc_40pct": 0.543947,
+      "max_abs_diff": 0.0004667772685095217,
+      "verified": false
+    },
+    "xsum_factuality": {
+      "n_pool": 1116,
+      "n_test": 752,
+      "group_overlap": 0,
+      "unadapted_auroc_40pct": 0.459721,
+      "raw_eem_auroc_40pct": 0.635241,
+      "max_abs_diff": 0.008049710492868345,
+      "verified": false
+    }
+  },
+  "triviaqa_mitigation_verification": {
+    "recomputed": {
+      "auroc_tg": 0.7875935828877005,
+      "aurc_tg": 0.4360129500446704,
+      "aurc_ent": 0.5309132068968656,
+      "aurc_nll": 0.6843148683217034,
+      "acc46_tg": 0.5565217391304348,
+      "acc46_ent": 0.45217391304347826,
+      "acc46_nll": 0.3130434782608696,
+      "ctrl_coverage": 0.46,
+      "ctrl_acc_answered": 0.5478260869565217,
+      "ctrl_system_halluc": 0.208,
+      "tp_abstentions": 112,
+      "fp_abstentions": 23
+    },
+    "max_abs_diff": 1.4868321703387366e-05,
+    "verified": true
+  },
+  "latency_verification": {
+    "recomputed": {
+      "online_rel_overhead": 0.27076455789931597,
+      "postpass_rel_overhead": 0.15928974758208178,
+      "speedup_online_vs_5x": 4.195977350344383,
+      "speedup_postpass_vs_5x": 4.599453513400792
+    },
+    "max_abs_diff": 0.0,
+    "verified": true
+  },
+  "discrepancies": [
+    "Few-shot split/baseline mismatch on faithdial: overlap=0, d_unad=0.0047762334622916125, d_eem=0.0",
+    "Few-shot split/baseline mismatch on wikibio_gpt3: overlap=0, d_unad=0.0014920948616601315, d_eem=0.0",
+    "Few-shot split/baseline mismatch on fever: overlap=0, d_unad=0.0004667772685095217, d_eem=0.0",
+    "Few-shot split/baseline mismatch on xsum_factuality: overlap=0, d_unad=0.008049710492868345, d_eem=0.0"
+  ],
+  "reproduced_vs_requires_rerun": {
+    "independently_reproduced_from_saved_artifacts": [
+      "All 5 in-domain 5-fold OOF metrics (AUROC, AUPRC, F1, Precision, Recall, Accuracy, Confusion Matrix, ECE, Brier) and ISP/AAS/EEM/DST single-sensor OOF AUROCs.",
+      "All 4 strictly unseen zero-shot metrics (AUROC, AUPRC, F1@tau_warn, ECE, Brier) and ISP-only / scalar-only transfer AUROCs.",
+      "Group-disjoint 60/40 few-shot split integrity (0 group overlap across all 4 target datasets) and exact zero-shot baseline AUROCs on those 40% test sets.",
+      "TriviaQA test detection AUROC, selective prediction risk-coverage curve, AURC, matched 46% accuracy, paired bootstrap p-values vs Entropy & NLL, and abstention TP/FP decomposition.",
+      "CUDA latency overhead and speedup arithmetic from raw ms/token measurements."
+    ],
+    "requires_full_gpu_rerun_to_independently_reproduce": [
+      "Frozen TinyLlama-1.1B forward-pass feature extraction (32,590 sequences -> .npz checkpoints).",
+      "TriviaQA live greedy generation and ThreeTierController Tier-1 resample / Tier-2 Wikipedia retrieval generations.",
+      "Raw wall-clock CUDA per-token decoding benchmarks.",
+      "External multi-sample baselines (SelfCheckGPT-NLI and Semantic Entropy requiring 10 stochastic generations + DeBERTa-NLI)."
+    ]
+  },
+  "all_independent_checks_passed": false
+}

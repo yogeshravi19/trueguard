@@ -1,0 +1,11 @@
+# Table II — In-Domain 5-Fold Group-Preserving CV with Dataset-Artifact Controls (Control A)
+
+| Dataset | Rows | Groups | TRUEGUARD AUROC [95% CI] | ISP-Only AUROC | AUPRC | F1 | ECE | LEN CV AUROC | Answer TF-IDF AUROC | Delta (TG - TF-IDF) | Shuffled Label AUROC | Length-Matched (|dL|<=2) n (%) | LM: TG AUROC | LM: LEN AUROC |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| halueval_dialogue | 4000 | 2000 | 0.9218 [0.915, 0.929] | 0.9221 | 0.9305 | 0.8351 | 0.0220 | 0.7087 | 0.8618 | +0.0600 | 0.5072 | 1352 (33.8%) | 0.7996 | 0.5052 |
+| halueval_qa | 4000 | 2000 | 0.9880 [0.984, 0.991] | 0.9880 | 0.9914 | 0.9679 | 0.0095 | 0.9572 | 0.9661 | +0.0219 | 0.4894 | 256 (6.4%) | 0.7901 | 0.5516 |
+| halueval_summarization | 4000 | 2000 | 0.9936 [0.992, 0.995] | 0.9936 | 0.9938 | 0.9624 | 0.0099 | 0.4902 | 0.9539 | +0.0397 | 0.4971 | 3546 (88.6%) | 0.9939 | 0.5053 |
+| truthful_qa | 1634 | 817 | 0.8773 [0.861, 0.894] | 0.8772 | 0.8575 | 0.8024 | 0.0251 | 0.5510 | 0.8064 | +0.0709 | 0.4928 | 714 (43.7%) | 0.8106 | 0.4909 |
+| halueval_general | 4507 | 4507 | 0.7204 [0.702, 0.740] | 0.7225 | 0.3868 | 0.4255 | 0.0055 | 0.5089 | 0.6944 | +0.0260 | 0.5123 | N/A (unpaired) | N/A | N/A |
+
+*Sources: `results/final_experiment_report.json` and `reviewer_response/reviewer_controls_results.json`. Artifact Qualification: HaluEval-QA (LEN CV = 0.9572, TF-IDF = 0.9661) and HaluEval-Summarization (TF-IDF = 0.9539) contain strong length and surface-style dataset artifacts; high raw AUROCs (0.9880–0.9936) therefore do NOT alone establish generalizable factual hallucination understanding. TRUEGUARD nonetheless outperforms answer-text TF-IDF on all 5 benchmarks (+0.0219 to +0.0709), passes shuffled-label leakage checks (0.4894–0.5123), and retains 0.7901–0.8106 (0.9939 Summ) AUROC under strict length matching (|dL| <= 2 tokens, where LEN ≈ 0.50).*

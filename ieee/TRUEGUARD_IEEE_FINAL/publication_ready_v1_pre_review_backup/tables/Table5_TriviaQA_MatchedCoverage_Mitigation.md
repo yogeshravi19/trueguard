@@ -1,0 +1,9 @@
+# Table V — TriviaQA Closed-Book Matched-Coverage Risk-Coverage & Selective Prediction
+
+| Method (TriviaQA n_test=250) | AUROC | AUPRC | AURC [95% CI] | Acc@100% | Acc@80% | Acc@60% | Acc@50% | Acc@46% (Matched) | Sel. Risk@46% | dAURC vs TG (p) |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| TRUEGUARD 4-Sensor (Calibrated) | 0.7876 | 0.8460 | 0.4360 [0.360, 0.523] | 34.0% | 38.5% | 48.0% | 54.4% | 55.6% | 44.4% | — |
+| ISP Only (Calibrated) | 0.7706 | 0.8476 | 0.4473 [0.369, 0.532] | 34.0% | 38.5% | 44.0% | 52.0% | 53.9% | 46.1% | -0.0113 (p=0.2250) |
+| Scalars Only (AAS+EEM+DST) | 0.7130 | 0.7987 | 0.4891 [0.404, 0.577] | 34.0% | 38.5% | 43.3% | 48.0% | 49.6% | 50.4% | -0.0531 (p=0.0000) |
+| Entropy Baseline (ENT_mean) | 0.6583 | 0.7471 | 0.5309 [0.448, 0.617] | 34.0% | 36.0% | 43.3% | 46.4% | 45.2% | 54.8% | -0.0949 (p=0.0000) |
+| NLL Baseline (NLL_mean) | 0.4678 | 0.6453 | 0.6843 [0.603, 0.760] | 34.0% | 33.5% | 32.7% | 32.8% | 31.3% | 68.7% | -0.2483 (p=0.0000) |

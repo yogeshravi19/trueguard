@@ -1,0 +1,91 @@
+{
+  "manifest_version": "3.0_post_review_reconciled",
+  "package_updated_at": "2026-11-19",
+  "prior_version_backup": "E:\\trueguard\\ieee\\TRUEGUARD_IEEE_FINAL\\publication_ready_v1_pre_review_backup",
+  "foundation_model": "TinyLlama/TinyLlama-1.1B-Chat-v1.0",
+  "model_weights_frozen": true,
+  "attention_implementation": "eager",
+  "random_seed": 42,
+  "original_artifacts_preserved_unchanged": true,
+  "colab_main_notebook": "E:\\trueguard\\ieee\\colab\\TRUEGUARD_IEEE_Experiments_FINAL.ipynb",
+  "colab_external_baselines_notebook": "E:\\trueguard\\ieee\\TRUEGUARD_IEEE_FINAL\\external_validation\\TRUEGUARD_External_Baselines_Colab.ipynb",
+  "independent_audit_script": "E:\\trueguard\\ieee\\TRUEGUARD_IEEE_FINAL\\external_validation\\independent_reproducibility_audit.py",
+  "embedded_source_sha256": {
+    "tg_pipeline.py": "a9c08ea0df69c145",
+    "tg_controller.py": "c094c8cbbe632b3b",
+    "tg_eval.py": "b65ac0291b8b111b"
+  },
+  "total_extracted_sequences": 32590,
+  "zero_nans_verified": true,
+  "fewshot_group_overlap_zero": true,
+  "exact_40pct_zeroshot_auroc_from_colab_npz": {
+    "faithdial": 0.4929,
+    "wikibio_gpt3": 0.4883,
+    "fever": 0.5205,
+    "xsum_factuality": 0.4597
+  },
+  "reviewer_control_sources": {
+    "validation_report": "E:\\trueguard\\ieee\\TRUEGUARD_IEEE_FINAL\\reviewer_response\\CLAUDE_REVIEW_VALIDATION_REPORT.md",
+    "controls_A_B_C_json": "E:\\trueguard\\ieee\\TRUEGUARD_IEEE_FINAL\\reviewer_response\\reviewer_controls_results.json",
+    "controls_4B_4C_json": "E:\\trueguard\\ieee\\TRUEGUARD_IEEE_FINAL\\reviewer_response\\cosine_and_eem_controls.json"
+  },
+  "evidence_links": {
+    "Table1": "results\\final_experiment_report.json",
+    "Table2": [
+      "results\\final_experiment_report.json",
+      "reviewer_response\\reviewer_controls_results.json"
+    ],
+    "Table3": [
+      "predictions\\unseen_zeroshot_*.npz",
+      "research_improvements\\phase3_fewshot_adaptation_results.json",
+      "reviewer_response\\reviewer_controls_results.json"
+    ],
+    "Table4": "results\\final_experiment_report.json",
+    "Table5": [
+      "results\\mitigation_report.json",
+      "research_improvements\\phase5_mitigation_deep_analysis.json",
+      "reviewer_response\\reviewer_controls_results.json"
+    ],
+    "Table6": "results\\real_latency.json",
+    "Table7": "external_validation\\external_validation\\external_baselines_report.json",
+    "Table8": [
+      "research_improvements\\phase2_cross_domain_diagnostics.json",
+      "reviewer_response\\cosine_and_eem_controls.json"
+    ]
+  },
+  "tables_included": [
+    "Table1_Dataset_Methodology_and_Splits.csv",
+    "Table1_Dataset_Methodology_and_Splits.md",
+    "Table2_InDomain_5Fold_GroupCV.csv",
+    "Table2_InDomain_5Fold_GroupCV.md",
+    "Table3_TargetDomain_FewShot_Refitting.csv",
+    "Table3_TargetDomain_FewShot_Refitting.md",
+    "Table4_FourSensor_Ablation_and_Complementarity.csv",
+    "Table4_FourSensor_Ablation_and_Complementarity.md",
+    "Table5_TriviaQA_SelectiveAbstention_and_Mitigation.csv",
+    "Table5_TriviaQA_SelectiveAbstention_and_Mitigation.md",
+    "Table6_Inference_Latency_Profiling.csv",
+    "Table6_Inference_Latency_Profiling.md",
+    "Table7_External_Baselines_TriviaQA.csv",
+    "Table7_External_Baselines_TriviaQA.md",
+    "Table8_CrossDomain_Diagnostics_Cosine_and_LengthControlled_EEM.csv",
+    "Table8_CrossDomain_Diagnostics_Cosine_and_LengthControlled_EEM.md"
+  ],
+  "figures_included": [
+    "Fig1_Sensor_Sign_Inversion_9Datasets.png",
+    "Fig2_TargetDomain_FewShot_Refitting_vs_Baselines.png",
+    "Fig3_TriviaQA_Matched_Coverage_RiskCurve.png",
+    "Fig4_InDomain_5x5_Transfer_Matrix.png",
+    "Fig5a_ROC_HaluEval_QA.png",
+    "Fig5b_ROC_TruthfulQA.png",
+    "Fig5c_ROC_HaluEval_General.png",
+    "Fig6_Ablation_HaluEval_General.png",
+    "Fig7_External_Baselines_RiskCurve.png",
+    "Fig8_CrossDomain_Diagnostics_Cosine_and_LengthControlled_EEM.png"
+  ],
+  "finite_sample_bootstrap_p_bound": "p = (1 + 2*min(n<=0, n>=0)) / (B + 1), B=1000",
+  "latency_protocol_non_equivalence_disclosed": true,
+  "dataset_artifact_controls_included": true,
+  "target_only_refitting_terminology_reconciled": true,
+  "abstain_only_vs_controller_ablation_included": true
+}

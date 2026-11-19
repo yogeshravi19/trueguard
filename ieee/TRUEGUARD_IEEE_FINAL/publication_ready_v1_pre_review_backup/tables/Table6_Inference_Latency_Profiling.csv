@@ -1,0 +1,5 @@
+"Decoding Mode (TinyLlama-1.1B, CUDA T4, 25x24 tok)",Latency (ms/tok),Abs. Overhead (ms/tok),Rel. Overhead (%),Speedup vs 5x Sampling
+Vanilla KV-Cached Decode,29.78,0.00,0.0%,5.33x
+TRUEGUARD Post-Pass (1x Forward),34.52,+4.74,+15.9%,4.60x
+TRUEGUARD Online (Per-Token; math=4.93ms),37.84,+8.06,+27.1%,4.20x
+5x Multi-Sample Baseline (SelfCheck/SE cost),158.77,+129.00,+433.2%,1.00x

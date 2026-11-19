@@ -1,0 +1,18 @@
+# Table III — Target-Domain Few-Shot Refitting (Target-Only Probe Training) vs. Source Recalibration and Simple Baselines
+
+| Target Dataset (40% Group-Disjoint Test) | Task Type | Test Rows (Groups) | Zero-Shot Unrefit (Exact Colab .npz) | K | Target-Only TG AUROC (10 seeds) | Source Risk Recalibrated | 1D EEM Calibrated | 1D LEN | Answer TF-IDF (Zero LLM) | Target-Only ISP (K=250) | K=250 ECE (vs Zero-Shot ECE) |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| faithdial | HALLUCINATION_TARGET_REFIT | 1396 (317) | 0.4929 | K=50 | 0.6987 +/- 0.0881 | 0.4957 +/- 0.0060 | 0.7473 +/- 0.0000 | 0.6721 +/- 0.0000 | 0.5818 +/- 0.0406 | — | — |
+| faithdial | HALLUCINATION_TARGET_REFIT | 1396 (317) | 0.4929 | K=100 | 0.7899 +/- 0.0313 | 0.5029 +/- 0.0069 | 0.7473 +/- 0.0000 | 0.6721 +/- 0.0000 | 0.6145 +/- 0.0249 | — | — |
+| faithdial | HALLUCINATION_TARGET_REFIT | 1396 (317) | 0.4929 | K=250 | 0.8231 +/- 0.0121 | 0.5043 +/- 0.0060 | 0.7473 +/- 0.0000 | 0.6721 +/- 0.0000 | 0.6615 +/- 0.0187 | 0.8320 +/- 0.0097 | 0.0443 (0.6574) |
+| wikibio_gpt3 | HALLUCINATION_TARGET_REFIT | 734 (96) | 0.4883 | K=50 | 0.5088 +/- 0.0562 | 0.4977 +/- 0.0121 | 0.5000 +/- 0.0235 | 0.4909 +/- 0.0470 | 0.5321 +/- 0.0274 | — | — |
+| wikibio_gpt3 | HALLUCINATION_TARGET_REFIT | 734 (96) | 0.4883 | K=100 | 0.4939 +/- 0.0840 | 0.4977 +/- 0.0121 | 0.5045 +/- 0.0231 | 0.4727 +/- 0.0384 | 0.5785 +/- 0.0395 | — | — |
+| wikibio_gpt3 | HALLUCINATION_TARGET_REFIT | 734 (96) | 0.4883 | K=250 | 0.6698 +/- 0.0381 | 0.5023 +/- 0.0121 | 0.4955 +/- 0.0231 | 0.4909 +/- 0.0470 | 0.6103 +/- 0.0290 | 0.6842 +/- 0.0305 | 0.0737 (0.4336) |
+| xsum_factuality | HALLUCINATION_TARGET_REFIT | 752 (200) | 0.4597 | K=50 | 0.5401 +/- 0.0686 | 0.5000 +/- 0.0425 | 0.6082 +/- 0.0855 | 0.5867 +/- 0.1218 | 0.5329 +/- 0.0457 | — | — |
+| xsum_factuality | HALLUCINATION_TARGET_REFIT | 752 (200) | 0.4597 | K=100 | 0.6058 +/- 0.0430 | 0.5242 +/- 0.0340 | 0.6352 +/- 0.0000 | 0.6445 +/- 0.0000 | 0.5331 +/- 0.0370 | — | — |
+| xsum_factuality | HALLUCINATION_TARGET_REFIT | 752 (200) | 0.4597 | K=250 | 0.6456 +/- 0.0410 | 0.5161 +/- 0.0389 | 0.6352 +/- 0.0000 | 0.6445 +/- 0.0000 | 0.5456 +/- 0.0323 | 0.6175 +/- 0.1034 | 0.0383 (0.5629) |
+| fever | CLAIM_VERIFICATION_REFIT | 2667 (2667) | 0.5205 | K=50 | 0.5394 +/- 0.0482 | 0.5123 +/- 0.0173 | 0.5176 +/- 0.0425 | 0.4977 +/- 0.0117 | 0.5699 +/- 0.0183 | — | — |
+| fever | CLAIM_VERIFICATION_REFIT | 2667 (2667) | 0.5205 | K=100 | 0.6195 +/- 0.0395 | 0.5000 +/- 0.0216 | 0.5264 +/- 0.0371 | 0.4955 +/- 0.0110 | 0.5966 +/- 0.0224 | — | — |
+| fever | CLAIM_VERIFICATION_REFIT | 2667 (2667) | 0.5205 | K=250 | 0.7325 +/- 0.0136 | 0.5000 +/- 0.0216 | 0.5264 +/- 0.0371 | 0.5045 +/- 0.0110 | 0.6315 +/- 0.0104 | 0.7437 +/- 0.0118 | 0.0430 (0.3419) |
+
+*Sources: `predictions/unseen_zeroshot_*.npz` (exact Colab zero-shot AUROC, corrected for local sklearn 1.3.2 unpickling drift), `research_improvements/phase3_fewshot_adaptation_results.json`, and `reviewer_response/reviewer_controls_results.json`. Terminology Disclosure: Phase 3 fits fresh target-domain probes from scratch using zero source-trained probe weights (target-only few-shot refitting, NOT source-to-target transfer learning). Recalibrating source risk scores yields chance performance (0.4957–0.5242). Simple baselines outperform TRUEGUARD at K=50 (1D EEM on FaithDial/XSum; TF-IDF on WikiBio/FEVER). At K=250, gains are task-dependent: TRUEGUARD clearly outperforms all simple baselines on FaithDial (0.8231), FEVER (0.7325), and WikiBio (0.6698), whereas on XSum-Factuality it approximately matches the 1D length baseline (0.6456 vs. 0.6445).*

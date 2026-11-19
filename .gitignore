@@ -12,3 +12,16 @@ __pycache__/
 env/
 venv/
 *.log
+
+# LaTeX intermediate build artifacts
+*.aux
+*.bbl
+*.blg
+*.out
+*.toc
+*.fls
+*.fdb_latexmk
+*.synctex.gz
+
+# Large binary feature checkpoints (479 MB total; up to 98 MB/file)
+ieee/TRUEGUARD_IEEE_FINAL/checkpoints/*.npz

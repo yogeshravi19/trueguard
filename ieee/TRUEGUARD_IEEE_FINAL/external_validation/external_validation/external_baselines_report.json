@@ -1,0 +1,270 @@
+{
+  "n_cal": 250,
+  "n_test": 250,
+  "M_samples": 10,
+  "deviations_documented": [
+    "TriviaQA answers are single short phrases/sentences (max_new_tokens=24), so SelfCheckGPT-NLI evaluates the full answer as one sentence (identical to sentence-level Manakul et al.).",
+    "Semantic Entropy uses greedy bidirectional entailment clustering with microsoft/deberta-large-mnli (Kuhn et al. Algorithm 1) over M=10 samples; both length-normalized log-likelihood SE and discrete SE are reported.",
+    "Thresholds for F1 were calibrated strictly on the 250-question calibration split using Youden's J (zero test-label access)."
+  ],
+  "metrics": {
+    "TRUEGUARD_4sensor": {
+      "threshold_from_cal": 0.5973,
+      "auroc": 0.7876,
+      "auroc_ci95": [
+        0.7204,
+        0.8522
+      ],
+      "auprc": 0.846,
+      "f1_at_cal_thr": 0.8084,
+      "aurc": 0.436,
+      "aurc_ci95": [
+        0.3596,
+        0.5235
+      ],
+      "acc_at_46pct": 0.5565,
+      "acc_at_50pct": 0.544,
+      "risk_coverage": {
+        "100%": 0.34,
+        "90%": 0.36,
+        "80%": 0.385,
+        "70%": 0.4343,
+        "60%": 0.48,
+        "50%": 0.544,
+        "46%": 0.5565
+      }
+    },
+    "TRUEGUARD_ISP_only": {
+      "threshold_from_cal": 0.6624,
+      "auroc": 0.7706,
+      "auroc_ci95": [
+        0.701,
+        0.8338
+      ],
+      "auprc": 0.8476,
+      "f1_at_cal_thr": 0.8062,
+      "aurc": 0.4473,
+      "aurc_ci95": [
+        0.3691,
+        0.5321
+      ],
+      "acc_at_46pct": 0.5391,
+      "acc_at_50pct": 0.52,
+      "risk_coverage": {
+        "100%": 0.34,
+        "90%": 0.3733,
+        "80%": 0.385,
+        "70%": 0.4286,
+        "60%": 0.44,
+        "50%": 0.52,
+        "46%": 0.5391
+      }
+    },
+    "SelfCheckGPT_NLI": {
+      "threshold_from_cal": 0.5991,
+      "auroc": 0.7477,
+      "auroc_ci95": [
+        0.6807,
+        0.8123
+      ],
+      "auprc": 0.8537,
+      "f1_at_cal_thr": 0.592,
+      "aurc": 0.4659,
+      "aurc_ci95": [
+        0.385,
+        0.5589
+      ],
+      "acc_at_46pct": 0.5043,
+      "acc_at_50pct": 0.496,
+      "risk_coverage": {
+        "100%": 0.34,
+        "90%": 0.3733,
+        "80%": 0.405,
+        "70%": 0.4343,
+        "60%": 0.46,
+        "50%": 0.496,
+        "46%": 0.5043
+      }
+    },
+    "Semantic_Entropy_LN": {
+      "threshold_from_cal": 1.1647,
+      "auroc": 0.6859,
+      "auroc_ci95": [
+        0.6207,
+        0.7556
+      ],
+      "auprc": 0.8059,
+      "f1_at_cal_thr": 0.6377,
+      "aurc": 0.5411,
+      "aurc_ci95": [
+        0.4496,
+        0.6273
+      ],
+      "acc_at_46pct": 0.4957,
+      "acc_at_50pct": 0.48,
+      "risk_coverage": {
+        "100%": 0.34,
+        "90%": 0.3689,
+        "80%": 0.39,
+        "70%": 0.4057,
+        "60%": 0.42,
+        "50%": 0.48,
+        "46%": 0.4957
+      }
+    },
+    "Semantic_Entropy_Disc": {
+      "threshold_from_cal": 1.2206,
+      "auroc": 0.6856,
+      "auroc_ci95": [
+        0.6201,
+        0.7529
+      ],
+      "auprc": 0.8025,
+      "f1_at_cal_thr": 0.6403,
+      "aurc": 0.5414,
+      "aurc_ci95": [
+        0.4516,
+        0.6293
+      ],
+      "acc_at_46pct": 0.487,
+      "acc_at_50pct": 0.48,
+      "risk_coverage": {
+        "100%": 0.34,
+        "90%": 0.3733,
+        "80%": 0.39,
+        "70%": 0.4057,
+        "60%": 0.4267,
+        "50%": 0.48,
+        "46%": 0.487
+      }
+    },
+    "Predictive_Entropy": {
+      "threshold_from_cal": 0.0768,
+      "auroc": 0.6583,
+      "auroc_ci95": [
+        0.5873,
+        0.7296
+      ],
+      "auprc": 0.7471,
+      "f1_at_cal_thr": 0.5985,
+      "aurc": 0.5309,
+      "aurc_ci95": [
+        0.4479,
+        0.6174
+      ],
+      "acc_at_46pct": 0.4522,
+      "acc_at_50pct": 0.464,
+      "risk_coverage": {
+        "100%": 0.34,
+        "90%": 0.3511,
+        "80%": 0.36,
+        "70%": 0.4,
+        "60%": 0.4333,
+        "50%": 0.464,
+        "46%": 0.4522
+      }
+    },
+    "NLL": {
+      "threshold_from_cal": 0.7584,
+      "auroc": 0.4678,
+      "auroc_ci95": [
+        0.3955,
+        0.5425
+      ],
+      "auprc": 0.6453,
+      "f1_at_cal_thr": 0.5423,
+      "aurc": 0.6843,
+      "aurc_ci95": [
+        0.6034,
+        0.7601
+      ],
+      "acc_at_46pct": 0.313,
+      "acc_at_50pct": 0.328,
+      "risk_coverage": {
+        "100%": 0.34,
+        "90%": 0.3333,
+        "80%": 0.335,
+        "70%": 0.3143,
+        "60%": 0.3267,
+        "50%": 0.328,
+        "46%": 0.313
+      }
+    }
+  },
+  "paired_bootstrap_tests": {
+    "TG_vs_TRUEGUARD_ISP_only": {
+      "delta_auroc": 0.017,
+      "p_auroc_2sided": 0.446,
+      "delta_aurc": -0.0113,
+      "p_aurc_2sided": 0.45,
+      "p_aurc_holm": 0.45
+    },
+    "TG_vs_SelfCheckGPT_NLI": {
+      "delta_auroc": 0.0399,
+      "p_auroc_2sided": 0.238,
+      "delta_aurc": -0.0299,
+      "p_aurc_2sided": 0.18,
+      "p_aurc_holm": 0.36
+    },
+    "TG_vs_Semantic_Entropy_LN": {
+      "delta_auroc": 0.1017,
+      "p_auroc_2sided": 0.002,
+      "delta_aurc": -0.1051,
+      "p_aurc_2sided": 0.0,
+      "p_aurc_holm": 0.0
+    },
+    "TG_vs_Semantic_Entropy_Disc": {
+      "delta_auroc": 0.102,
+      "p_auroc_2sided": 0.002,
+      "delta_aurc": -0.1054,
+      "p_aurc_2sided": 0.0,
+      "p_aurc_holm": 0.0
+    },
+    "TG_vs_Predictive_Entropy": {
+      "delta_auroc": 0.1293,
+      "p_auroc_2sided": 0.0,
+      "delta_aurc": -0.0949,
+      "p_aurc_2sided": 0.0,
+      "p_aurc_holm": 0.0
+    },
+    "TG_vs_NLL": {
+      "delta_auroc": 0.3198,
+      "p_auroc_2sided": 0.0,
+      "delta_aurc": -0.2483,
+      "p_aurc_2sided": 0.0,
+      "p_aurc_holm": 0.0
+    }
+  },
+  "end_to_end_cost": {
+    "TRUEGUARD_postpass": {
+      "generations_per_q": 1,
+      "extra_models": 0,
+      "sec_per_q": 0.8285,
+      "speedup_vs_selfcheck": 0.85,
+      "speedup_vs_se": 2.01
+    },
+    "TRUEGUARD_online": {
+      "generations_per_q": 1,
+      "extra_models": 0,
+      "sec_per_q": 0.9082,
+      "speedup_vs_selfcheck": 0.78,
+      "speedup_vs_se": 1.83
+    },
+    "SelfCheckGPT_NLI": {
+      "generations_per_q": 11,
+      "extra_models": "potsawee/deberta-v3-large-mnli (435M)",
+      "sampling_sec_per_q": 0.6545,
+      "nli_sec_per_q": 0.0523,
+      "total_sec_per_q": 0.7068,
+      "nli_peak_vram_gb": 1.004
+    },
+    "Semantic_Entropy": {
+      "generations_per_q": 10,
+      "extra_models": "microsoft/deberta-large-mnli (435M)",
+      "sampling_sec_per_q": 0.6545,
+      "nli_sec_per_q": 1.0078,
+      "total_sec_per_q": 1.6622,
+      "nli_peak_vram_gb": 2.474
+    }
+  }
+}

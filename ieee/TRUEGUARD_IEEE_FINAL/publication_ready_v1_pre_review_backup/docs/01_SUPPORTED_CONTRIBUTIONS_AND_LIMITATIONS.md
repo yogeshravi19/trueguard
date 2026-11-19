@@ -1,0 +1,16 @@
+# Supported Research Contributions, Limitations, and Mandatory Disclosures
+
+## Three Strongest Evidence-Backed Contributions
+1. **Single-Pass, Frozen-Model White-Box Hallucination Detection with Calibrated Risk Estimation:**
+   TRUEGUARD extracts four intrinsic signals (ISP, AAS, EEM, DST) in one forward pass from frozen `TinyLlama-1.1B-Chat-v1.0` (`0` trainable LLM weights), achieving `0.877–0.994` AUROC (`ECE <= 0.025`) across four paired benchmarks and `0.720` AUROC (`2.1x` random AUPRC, `ECE = 0.0055`) under natural 18.1% prevalence on HaluEval-General, at `4.20x–4.60x` lower latency than 5x multi-sampling.
+2. **Empirical Diagnosis of Cross-Domain Transfer Failure & Lightweight Few-Shot Recovery:**
+   We prove *why* supervised white-box probes fail under strict zero-shot shift (`0.448–0.521` AUROC): (i) frozen hidden states retain strong target-domain separability (`0.679–0.893` oracle 5-fold ISP AUROC), but linear hyperplanes rotate nearly orthogonally (`cos in [-0.031, +0.051]`); (ii) pooled fusion assigns >96% weight to ISP (`+2.935`); and (iii) uncertainty sensors invert direction between synthetic (HaluEval) and natural (FaithDial/XSum) hallucinations. Re-fitting only the lightweight linear probes and fusion gate on `K = 250` target examples (`<2s` CPU) recovers `+0.178` to `+0.335` AUROC and reduces ECE by `82–93%` across all four target benchmarks (including FEVER claim-verification transfer).
+3. **Risk-Controlled Selective Prediction & Three-Tier Mitigation with Explicit Coverage Trade-Offs:**
+   On closed-book TriviaQA generations (`n_cal=250`, `n_test=250`), calibrated TRUEGUARD achieves `0.788` AUROC and `0.436` AURC—significantly outperforming Entropy (`0.531`, `p < 0.0001`) and NLL (`0.684`, `p < 0.0001`) at matched coverage—reducing system-wide hallucinations by `68.5%` (`66.0% -> 20.8%`) at `46.0%` answer coverage (`54.8%` answered accuracy).
+
+## Methodological Limitations & Mandatory Disclosures
+- **Prior Inspection Disclosure:** The 4 held-out benchmarks (FaithDial, WikiBio-GPT3, FEVER, XSum) were examined during zero-shot failure diagnosis prior to designing few-shot adaptation; the 40% group-disjoint test splits validate few-shot adaptation on unseen target groups, **not** as an unexamined external confirmation benchmark.
+- **Adaptation Requires Target Labels:** All `K in {50, 100, 250}` results are explicitly few-shot target-domain adaptation, never zero-shot.
+- **ISP Dominance vs. 4-Sensor Fusion:** ISP alone matches or slightly edges 4-sensor fusion in-domain and at `K = 250` on balanced/moderate targets; AAS/EEM/DST are justified by zero-shot fallback (EEM reaches `0.747` on FaithDial and `0.635` on XSum), low-`K`/severe-imbalance stabilization (`+0.071` to `+0.106` over ISP on XSum `K=50/100`), low-FPR unique catches (`+18.1%` union recall on HaluEval-General), and per-sensor explainability.
+- **Mitigation Driven Primarily by Abstention:** On TriviaQA, abstention accounts for `112/165` blocked hallucinations (`83.0%` precision) while active Tier 1/2 regeneration/retrieval repaired `4/165` (`2.4%`), with `23/85` (`27.1%`) originally correct answers abstained.
+- **Single-Model Scope:** Expanded 10-dataset evaluation uses frozen TinyLlama-1.1B; scaling to 7B–70B models is future work.

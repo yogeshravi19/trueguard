@@ -1,0 +1,11 @@
+{
+  "dataset": "wikibio_gpt3",
+  "model": "TinyLlama/TinyLlama-1.1B-Chat-v1.0",
+  "pipeline_version": "TRUEGUARD_v2_IEEE_FINAL_2026_11",
+  "rows_sha256": "483b371f6411ade6",
+  "n_input_rows": 1908,
+  "valid_rows": 1908,
+  "skipped_empty": 0,
+  "extraction_sec": 92.85,
+  "throughput_seq_per_min": 1232.95
+}

@@ -1,0 +1,11 @@
+{
+  "dataset": "xsum_factuality",
+  "model": "TinyLlama/TinyLlama-1.1B-Chat-v1.0",
+  "pipeline_version": "TRUEGUARD_v2_IEEE_FINAL_2026_11",
+  "rows_sha256": "4604538b4f4d655b",
+  "n_input_rows": 1868,
+  "valid_rows": 1868,
+  "skipped_empty": 0,
+  "extraction_sec": 129.66,
+  "throughput_seq_per_min": 864.41
+}

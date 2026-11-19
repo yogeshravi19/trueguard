@@ -1,0 +1,16 @@
+{
+  "model": "TinyLlama/TinyLlama-1.1B-Chat-v1.0",
+  "device": "cuda",
+  "n_prompts": 25,
+  "tokens_per_prompt": 24,
+  "vanilla_ms_per_token": 29.777066291665808,
+  "trueguard_online_ms_per_token": 37.839640481667324,
+  "trueguard_sensor_math_only_ms_per_token": 4.931972431671359,
+  "trueguard_online_overhead_ms_per_token": 8.062574190001516,
+  "trueguard_online_relative_overhead": 0.27076455789931597,
+  "trueguard_postpass_ms_per_token": 34.52024766500017,
+  "trueguard_postpass_overhead_ms_per_token": 4.743181373334362,
+  "multi_sample_5x_ms_per_token": 158.7742744062505,
+  "speedup_online_vs_5x": 4.195977350344383,
+  "speedup_postpass_vs_5x": 4.599453513400792
+}

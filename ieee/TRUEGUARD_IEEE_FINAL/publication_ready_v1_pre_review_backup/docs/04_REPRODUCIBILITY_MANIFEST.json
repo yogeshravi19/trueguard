@@ -1,0 +1,42 @@
+{
+  "package_created_at": "2026-11-19",
+  "foundation_model": "TinyLlama/TinyLlama-1.1B-Chat-v1.0",
+  "model_weights_frozen": true,
+  "attention_implementation": "eager",
+  "random_seed": 42,
+  "colab_pipeline_notebook": "E:\\trueguard\\ieee\\colab\\TRUEGUARD_IEEE_Experiments_FINAL.ipynb",
+  "embedded_source_sha256": {
+    "tg_pipeline.py": "a9c08ea0df69c145",
+    "tg_controller.py": "c094c8cbbe632b3b",
+    "tg_eval.py": "b65ac0291b8b111b"
+  },
+  "source_fidelity_verified": true,
+  "total_extracted_sequences": 32590,
+  "zero_nans_verified": true,
+  "fewshot_group_overlap_zero": true,
+  "tables_generated": [
+    "Table1_Dataset_Methodology_and_Splits.csv",
+    "Table1_Dataset_Methodology_and_Splits.md",
+    "Table2_InDomain_5Fold_GroupCV.csv",
+    "Table2_InDomain_5Fold_GroupCV.md",
+    "Table3_Original_vs_FewShot_Adapted.csv",
+    "Table3_Original_vs_FewShot_Adapted.md",
+    "Table4_FourSensor_Ablation_and_Complementarity.csv",
+    "Table4_FourSensor_Ablation_and_Complementarity.md",
+    "Table5_TriviaQA_MatchedCoverage_Mitigation.csv",
+    "Table5_TriviaQA_MatchedCoverage_Mitigation.md",
+    "Table6_Inference_Latency_Profiling.csv",
+    "Table6_Inference_Latency_Profiling.md"
+  ],
+  "figures_included": [
+    "Fig1_Sensor_Sign_Inversion_9Datasets.png",
+    "Fig2_FewShot_Target_Adaptation_Curves.png",
+    "Fig3_TriviaQA_Matched_Coverage_RiskCurve.png",
+    "Fig4_InDomain_5x5_Transfer_Matrix.png",
+    "Fig5a_ROC_HaluEval_QA.png",
+    "Fig5b_ROC_TruthfulQA.png",
+    "Fig5c_ROC_HaluEval_General.png",
+    "Fig6_Ablation_HaluEval_General.png"
+  ],
+  "original_artifacts_preserved": true
+}

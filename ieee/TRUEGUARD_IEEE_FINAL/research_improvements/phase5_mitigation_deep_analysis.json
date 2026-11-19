@@ -1,0 +1,230 @@
+{
+  "matched_coverage_methods": {
+    "TRUEGUARD_4sensor": {
+      "auroc": 0.7876,
+      "auprc": 0.846,
+      "aurc": 0.436,
+      "aurc_ci95": [
+        0.3596,
+        0.5235
+      ],
+      "acc_at_46pct_matched": 0.5565,
+      "acc_at_46pct_ci95": [
+        0.4696,
+        0.6609
+      ],
+      "selective_risk_at_46pct": 0.4435,
+      "acc_at_50pct": 0.544,
+      "acc_at_50pct_ci95": [
+        0.448,
+        0.632
+      ],
+      "risk_coverage_curve": {
+        "100%": 0.34,
+        "90%": 0.36,
+        "80%": 0.385,
+        "70%": 0.4343,
+        "60%": 0.48,
+        "50%": 0.544,
+        "46%": 0.5565,
+        "AURC": 0.436
+      }
+    },
+    "ISP_only": {
+      "auroc": 0.7706,
+      "auprc": 0.8476,
+      "aurc": 0.4473,
+      "aurc_ci95": [
+        0.3691,
+        0.5321
+      ],
+      "acc_at_46pct_matched": 0.5391,
+      "acc_at_46pct_ci95": [
+        0.4435,
+        0.6435
+      ],
+      "selective_risk_at_46pct": 0.4609,
+      "acc_at_50pct": 0.52,
+      "acc_at_50pct_ci95": [
+        0.416,
+        0.608
+      ],
+      "risk_coverage_curve": {
+        "100%": 0.34,
+        "90%": 0.3733,
+        "80%": 0.385,
+        "70%": 0.4286,
+        "60%": 0.44,
+        "50%": 0.52,
+        "46%": 0.5391,
+        "AURC": 0.4473
+      }
+    },
+    "Scalars_only": {
+      "auroc": 0.713,
+      "auprc": 0.7987,
+      "aurc": 0.4891,
+      "aurc_ci95": [
+        0.4041,
+        0.5769
+      ],
+      "acc_at_46pct_matched": 0.4957,
+      "acc_at_46pct_ci95": [
+        0.4087,
+        0.6
+      ],
+      "selective_risk_at_46pct": 0.5043,
+      "acc_at_50pct": 0.48,
+      "acc_at_50pct_ci95": [
+        0.384,
+        0.576
+      ],
+      "risk_coverage_curve": {
+        "100%": 0.34,
+        "90%": 0.3556,
+        "80%": 0.385,
+        "70%": 0.4057,
+        "60%": 0.4333,
+        "50%": 0.48,
+        "46%": 0.4957,
+        "AURC": 0.4891
+      }
+    },
+    "Entropy_baseline": {
+      "auroc": 0.6583,
+      "auprc": 0.7471,
+      "aurc": 0.5309,
+      "aurc_ci95": [
+        0.4479,
+        0.6174
+      ],
+      "acc_at_46pct_matched": 0.4522,
+      "acc_at_46pct_ci95": [
+        0.3739,
+        0.5565
+      ],
+      "selective_risk_at_46pct": 0.5478,
+      "acc_at_50pct": 0.464,
+      "acc_at_50pct_ci95": [
+        0.376,
+        0.552
+      ],
+      "risk_coverage_curve": {
+        "100%": 0.34,
+        "90%": 0.3511,
+        "80%": 0.36,
+        "70%": 0.4,
+        "60%": 0.4333,
+        "50%": 0.464,
+        "46%": 0.4522,
+        "AURC": 0.5309
+      }
+    },
+    "NLL_baseline": {
+      "auroc": 0.4678,
+      "auprc": 0.6453,
+      "aurc": 0.6843,
+      "aurc_ci95": [
+        0.6034,
+        0.7601
+      ],
+      "acc_at_46pct_matched": 0.313,
+      "acc_at_46pct_ci95": [
+        0.2435,
+        0.4174
+      ],
+      "selective_risk_at_46pct": 0.687,
+      "acc_at_50pct": 0.328,
+      "acc_at_50pct_ci95": [
+        0.248,
+        0.408
+      ],
+      "risk_coverage_curve": {
+        "100%": 0.34,
+        "90%": 0.3333,
+        "80%": 0.335,
+        "70%": 0.3143,
+        "60%": 0.3267,
+        "50%": 0.328,
+        "46%": 0.313,
+        "AURC": 0.6843
+      }
+    }
+  },
+  "paired_bootstrap_tests": {
+    "TRUEGUARD_vs_ISP_only": {
+      "delta_aurc": -0.0113,
+      "delta_aurc_ci95": [
+        -0.0434,
+        0.0192
+      ],
+      "p_aurc_not_better": 0.225,
+      "delta_acc46": 0.0174,
+      "p_acc46_not_better": 0.313
+    },
+    "TRUEGUARD_vs_Scalars_only": {
+      "delta_aurc": -0.0531,
+      "delta_aurc_ci95": [
+        -0.0833,
+        -0.0238
+      ],
+      "p_aurc_not_better": 0.0,
+      "delta_acc46": 0.0608,
+      "p_acc46_not_better": 0.012
+    },
+    "TRUEGUARD_vs_Entropy_baseline": {
+      "delta_aurc": -0.0949,
+      "delta_aurc_ci95": [
+        -0.1465,
+        -0.04
+      ],
+      "p_aurc_not_better": 0.0,
+      "delta_acc46": 0.1043,
+      "p_acc46_not_better": 0.001
+    },
+    "TRUEGUARD_vs_NLL_baseline": {
+      "delta_aurc": -0.2483,
+      "delta_aurc_ci95": [
+        -0.3204,
+        -0.1691
+      ],
+      "p_aurc_not_better": 0.0,
+      "delta_acc46": 0.2435,
+      "p_acc46_not_better": 0.0
+    }
+  },
+  "controller_action_audit": {
+    "n_test": 250,
+    "greedy_correct": 85,
+    "greedy_hallucinations": 165,
+    "tier_counts": {
+      "SAFE": 81,
+      "TIER1_RESAMPLE": 23,
+      "TIER2_RETRIEVAL": 11,
+      "TIER3_ABSTAIN": 135
+    },
+    "abstention_breakdown": {
+      "total_abstained": 135,
+      "true_positive_abstentions_hallucinations_blocked": 112,
+      "false_positive_abstentions_correct_answers_dropped": 23,
+      "fraction_of_hallucinations_blocked": 0.6788,
+      "fraction_of_correct_answers_dropped": 0.2706,
+      "abstention_precision": 0.8296
+    },
+    "correction_effectiveness": {
+      "tier1_triggered": 23,
+      "tier1_hallucinations_corrected": 2,
+      "tier2_triggered": 11,
+      "tier2_hallucinations_corrected": 2,
+      "total_hallucinations_corrected": 4,
+      "share_of_greedy_hallucinations_corrected": 0.0242
+    },
+    "controller_vs_pure_abstention_at_46pct_coverage": {
+      "three_tier_controller_accuracy": 0.5478,
+      "pure_abstention_trueguard_accuracy": 0.5565,
+      "difference": -0.0087,
+      "interpretation": "Abstention accounts for the vast majority of system-wide hallucination reduction (112/165 hallucinations blocked vs 4/165 actively corrected by Tier 1/2). Pure selective abstention at matched 46% coverage achieves nearly identical answered accuracy."
+    },
+    "missing_evidence_note": "Comparing full Tier-1/Tier-2 regenerative interventions driven by Entropy or NLL thresholds would require new GPU generations; matched-coverage selective prediction (abstention) is compared cleanly on the exact same 250 test questions with zero extra GPU cost."
+  }
+}

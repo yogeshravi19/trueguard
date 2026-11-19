@@ -1,0 +1,294 @@
+{
+  "task1_implementation_audit": {
+    "selfcheckgpt_nli": {
+      "model": "potsawee/deberta-v3-large-mnli",
+      "M": 10,
+      "label_map_verified": "0=entailment, 1=contradiction (official potsawee/deberta-v3-large-mnli 2-class head)",
+      "deviations_from_published": [
+        "TriviaQA short-phrase answers (mean 10-14 tokens) are scored as a single sentence (no multi-sentence splitting needed).",
+        "DeBERTa-v3-large NLI ran in float16 on T4 GPU."
+      ]
+    },
+    "semantic_entropy": {
+      "model": "microsoft/deberta-large-mnli",
+      "M": 10,
+      "label_map_verified": "0=contradiction, 1=neutral, 2=entailment (official microsoft/deberta-large-mnli)",
+      "clustering_rule": "Bidirectional entailment: equivalent iff neither direction predicts contradiction AND at least one predicts entailment (matches Farquhar et al., Nature 2024 relaxed bidirectional equivalence; slightly less strict than Kuhn et al. ICLR 2023 requiring entailment in both directions).",
+      "logprob_weighting": "Length-normalized sequence log-probabilities from unwarped model logits (matching Kuhn et al. Eq. 5); discrete SE (Farquhar et al.) also computed and matches within 0.0003 AUROC.",
+      "duplicate_handling": "Exact case-insensitive string equality fast-path before NLI."
+    },
+    "sample_diagnostics": {
+      "total_test_samples": 2500,
+      "empty_samples": 0,
+      "mean_sample_words": 13.98,
+      "mean_unique_strings_per_10": 7.92,
+      "mean_greedy_answer_tokens": 20.74
+    }
+  },
+  "task2_latency_non_equivalence_audit": {
+    "verdict": "NON-EQUIVALENT TIMING PROTOCOLS \u2014 DO NOT CLAIM DIRECT SPEEDUP OVER SELFCHECKGPT FROM THESE TWO SEPARATE MEASUREMENTS",
+    "exact_causes_of_discrepancy": [
+      "1. Attention kernel mismatch: TRUEGUARD latency (real_latency.json) used attn_implementation='eager' (required for attention weights), whereas Step 3 M=10 sampling used PyTorch's fast 'sdpa' kernel.",
+      "2. Forced token length mismatch: real_latency.json forced min_new_tokens=24 (always decoding all 24 tokens), whereas Step 3 M=10 sampling allowed early EOS stopping (actual mean answer length ~8-12 words).",
+      "3. Batch size mismatch: real_latency.json ran sequential batch_size=1 (simulating high-concurrency/streaming serving), whereas Step 3 batched all M=10 samples in parallel (batch_size=10) on an otherwise idle T4 GPU.",
+      "4. Missing initial greedy generation in SelfCheckGPT total: external_baselines_report.json logged 0.7068 s/q for 10 extra samples + NLI without adding the initial greedy generation (~0.715 s/q vanilla under forced-24 eager decode).",
+      "5. Scope boundary: TRUEGUARD monitoring-only latency excludes Tier 1 resampling and Tier 2 Wikipedia retrieval mitigation actions."
+    ],
+    "fair_claim_supported": "TRUEGUARD achieves 4.20x-4.60x speedup over sequential 5-sample decoding under identical conditions (real_latency.json: same model, eager kernel, batch_size=1, 24 forced tokens), and requires 1 LLM generation and 0 external NLI models (vs. 10-11 generations + a 435M DeBERTa-large model requiring 1.00-2.47 GB extra VRAM for SelfCheckGPT-NLI and Semantic Entropy)."
+  },
+  "task3_independently_verified_metrics": {
+    "TRUEGUARD_4sensor": {
+      "auroc": 0.7876,
+      "auroc_ci95": [
+        0.7204,
+        0.8522
+      ],
+      "auprc": 0.846,
+      "threshold_cal": 0.5973,
+      "precision": 0.7988,
+      "recall": 0.8182,
+      "f1": 0.8084,
+      "aurc": 0.436,
+      "aurc_ci95": [
+        0.3596,
+        0.5235
+      ],
+      "acc_at_46pct": 0.5565,
+      "acc_at_50pct": 0.544,
+      "unique_score_values": 250,
+      "risk_coverage": {
+        "100%": 0.34,
+        "90%": 0.36,
+        "80%": 0.385,
+        "70%": 0.4343,
+        "60%": 0.48,
+        "50%": 0.544,
+        "46%": 0.5565
+      }
+    },
+    "TRUEGUARD_ISP_only": {
+      "auroc": 0.7706,
+      "auroc_ci95": [
+        0.701,
+        0.8338
+      ],
+      "auprc": 0.8476,
+      "threshold_cal": 0.6624,
+      "precision": 0.8187,
+      "recall": 0.7939,
+      "f1": 0.8062,
+      "aurc": 0.4473,
+      "aurc_ci95": [
+        0.3691,
+        0.5321
+      ],
+      "acc_at_46pct": 0.5391,
+      "acc_at_50pct": 0.52,
+      "unique_score_values": 250,
+      "risk_coverage": {
+        "100%": 0.34,
+        "90%": 0.3733,
+        "80%": 0.385,
+        "70%": 0.4286,
+        "60%": 0.44,
+        "50%": 0.52,
+        "46%": 0.5391
+      }
+    },
+    "SelfCheckGPT_NLI": {
+      "auroc": 0.7477,
+      "auroc_ci95": [
+        0.6807,
+        0.8123
+      ],
+      "auprc": 0.8537,
+      "threshold_cal": 0.5991,
+      "precision": 0.8706,
+      "recall": 0.4485,
+      "f1": 0.592,
+      "aurc": 0.4659,
+      "aurc_ci95": [
+        0.385,
+        0.5589
+      ],
+      "acc_at_46pct": 0.5043,
+      "acc_at_50pct": 0.496,
+      "unique_score_values": 250,
+      "risk_coverage": {
+        "100%": 0.34,
+        "90%": 0.3733,
+        "80%": 0.405,
+        "70%": 0.4343,
+        "60%": 0.46,
+        "50%": 0.496,
+        "46%": 0.5043
+      }
+    },
+    "Semantic_Entropy_LN": {
+      "auroc": 0.6859,
+      "auroc_ci95": [
+        0.6207,
+        0.7556
+      ],
+      "auprc": 0.8059,
+      "threshold_cal": 1.1647,
+      "precision": 0.7928,
+      "recall": 0.5333,
+      "f1": 0.6377,
+      "aurc": 0.5411,
+      "aurc_ci95": [
+        0.4496,
+        0.6273
+      ],
+      "acc_at_46pct": 0.4957,
+      "acc_at_50pct": 0.48,
+      "unique_score_values": 186,
+      "risk_coverage": {
+        "100%": 0.34,
+        "90%": 0.3689,
+        "80%": 0.39,
+        "70%": 0.4057,
+        "60%": 0.42,
+        "50%": 0.48,
+        "46%": 0.4957
+      }
+    },
+    "Semantic_Entropy_Disc": {
+      "auroc": 0.6856,
+      "auroc_ci95": [
+        0.6201,
+        0.7529
+      ],
+      "auprc": 0.8025,
+      "threshold_cal": 1.2206,
+      "precision": 0.7876,
+      "recall": 0.5394,
+      "f1": 0.6403,
+      "aurc": 0.5414,
+      "aurc_ci95": [
+        0.4516,
+        0.6293
+      ],
+      "acc_at_46pct": 0.487,
+      "acc_at_50pct": 0.48,
+      "unique_score_values": 37,
+      "risk_coverage": {
+        "100%": 0.34,
+        "90%": 0.3733,
+        "80%": 0.39,
+        "70%": 0.4057,
+        "60%": 0.4267,
+        "50%": 0.48,
+        "46%": 0.487
+      }
+    },
+    "Predictive_Entropy": {
+      "auroc": 0.6583,
+      "auroc_ci95": [
+        0.5873,
+        0.7296
+      ],
+      "auprc": 0.7471,
+      "threshold_cal": 0.0768,
+      "precision": 0.798,
+      "recall": 0.4788,
+      "f1": 0.5985,
+      "aurc": 0.5309,
+      "aurc_ci95": [
+        0.4479,
+        0.6174
+      ],
+      "acc_at_46pct": 0.4522,
+      "acc_at_50pct": 0.464,
+      "unique_score_values": 250,
+      "risk_coverage": {
+        "100%": 0.34,
+        "90%": 0.3511,
+        "80%": 0.36,
+        "70%": 0.4,
+        "60%": 0.4333,
+        "50%": 0.464,
+        "46%": 0.4522
+      }
+    },
+    "NLL": {
+      "auroc": 0.4678,
+      "auroc_ci95": [
+        0.3955,
+        0.5425
+      ],
+      "auprc": 0.6453,
+      "threshold_cal": 0.7584,
+      "precision": 0.6471,
+      "recall": 0.4667,
+      "f1": 0.5423,
+      "aurc": 0.6843,
+      "aurc_ci95": [
+        0.6034,
+        0.7601
+      ],
+      "acc_at_46pct": 0.313,
+      "acc_at_50pct": 0.328,
+      "unique_score_values": 250,
+      "risk_coverage": {
+        "100%": 0.34,
+        "90%": 0.3333,
+        "80%": 0.335,
+        "70%": 0.3143,
+        "60%": 0.3267,
+        "50%": 0.328,
+        "46%": 0.313
+      }
+    }
+  },
+  "task3_paired_bootstrap_finite_sample": {
+    "TG_vs_TRUEGUARD_ISP_only": {
+      "delta_auroc": 0.017,
+      "p_auroc_2sided": 0.4466,
+      "delta_aurc": -0.0113,
+      "p_aurc_2sided": 0.4505,
+      "p_auroc_holm": 0.4775,
+      "p_aurc_holm": 0.4505
+    },
+    "TG_vs_SelfCheckGPT_NLI": {
+      "delta_auroc": 0.0399,
+      "p_auroc_2sided": 0.2388,
+      "delta_aurc": -0.0299,
+      "p_aurc_2sided": 0.1808,
+      "p_auroc_holm": 0.4775,
+      "p_aurc_holm": 0.3616
+    },
+    "TG_vs_Semantic_Entropy_LN": {
+      "delta_auroc": 0.1017,
+      "p_auroc_2sided": 0.003,
+      "delta_aurc": -0.1051,
+      "p_aurc_2sided": 0.001,
+      "p_auroc_holm": 0.012,
+      "p_aurc_holm": 0.006
+    },
+    "TG_vs_Semantic_Entropy_Disc": {
+      "delta_auroc": 0.102,
+      "p_auroc_2sided": 0.003,
+      "delta_aurc": -0.1054,
+      "p_aurc_2sided": 0.001,
+      "p_auroc_holm": 0.012,
+      "p_aurc_holm": 0.006
+    },
+    "TG_vs_Predictive_Entropy": {
+      "delta_auroc": 0.1293,
+      "p_auroc_2sided": 0.001,
+      "delta_aurc": -0.0949,
+      "p_aurc_2sided": 0.001,
+      "p_auroc_holm": 0.006,
+      "p_aurc_holm": 0.006
+    },
+    "TG_vs_NLL": {
+      "delta_auroc": 0.3198,
+      "p_auroc_2sided": 0.001,
+      "delta_aurc": -0.2483,
+      "p_aurc_2sided": 0.001,
+      "p_auroc_holm": 0.006,
+      "p_aurc_holm": 0.006
+    }
+  }
+}

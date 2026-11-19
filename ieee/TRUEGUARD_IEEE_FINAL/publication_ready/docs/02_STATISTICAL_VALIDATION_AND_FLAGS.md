@@ -1,0 +1,15 @@
+# Statistical Reporting, Bootstrap Bounds, and Verification Flags (Post-Review Reconciled)
+
+## 1. Verified Statistical Methods
+- **In-Domain 5-Fold Group CV (`Table II`):** `GroupKFold(n_splits=5)` preserving prompt/document/question groups (`0` group overlap); 95% CIs computed via **500 group-level bootstrap resamples** (resampling whole groups, never splitting pairs). Artifact controls (`LEN`, answer-text `TF-IDF`, shuffled-label sanity check, and length-matched `|ΔL| ≤ 2` subset) use the exact same group-disjoint folds (`reviewer_response/reviewer_controls_results.json`).
+- **TriviaQA Selective Prediction & External Baselines (`Tables V & VII`):** 95% CIs and two-sided paired `p`-values on `AUROC` and `AURC` computed via **1,000 paired bootstrap resamples** on the exact same `250` held-out test questions, using the finite-sample bound:
+  $$p_{\text{boot}} = \frac{1 + 2 \min(n_{\le 0}, n_{\ge 0})}{B + 1}, \quad B = 1000 \implies p_{\text{boot}} \ge 0.0010$$
+  Holm-Bonferroni adjustment is applied across the `6` head-to-head external/ablation comparisons (`p_Holm >= 0.0060`). Raw `p = 0.0000` is never reported.
+- **Target-Domain Few-Shot Refitting (`Table III`, 10 Seeds):** Mean ± SD across 10 fixed seeds (`0..9`) on identical, group-disjoint 40% held-out test sets (`group_overlap = 0`). Exact zero-shot reference AUROCs are read directly from Colab `.npz` prediction arrays (`faithdial 0.4929`, `wikibio_gpt3 0.4883`, `xsum_factuality 0.4597`, `fever 0.5205`), eliminating the `0.0005–0.0081` local `sklearn 1.3.2` vs. Colab `1.6.1` unpickling drift caught by `independent_reproducibility_audit.py`.
+
+## 2. Explicit Statistical Flags
+1. **Repeated-Seed / Shared-Test-Set Variance (Nadeau & Bengio, 2003):** In `Table III`, 10-seed standard deviations quantify **refitting-sample draw variance** while holding the 40% test set fixed; they do not fold finite test-set variance into the same variance estimate.
+   - *Large effects (`K=250` target-only TG vs. zero-shot and vs. `SrcRecal` on FaithDial/FEVER/WikiBio):* Unambiguously robust (`+0.1815` to `+0.3302` AUROC).
+   - *Small effects (`Full` vs. `ISP-only` at `K=250`, `-0.0089` to `-0.0144`; `TG` vs. `LEN-1D` on XSum, `+0.0011`):* Within test-set bootstrap uncertainty and reported as **practically comparable / tied**.
+2. **Statistical Power on TriviaQA (`n_test = 250`):** Wide 95% CIs (`[0.720, 0.852]` for TRUEGUARD vs. `[0.681, 0.812]` for SelfCheckGPT-NLI) mean `ΔAUROC = +0.0399` (`p_Holm = 0.478`) and `ΔAURC = -0.0299` (`p_Holm = 0.362`) are **not statistically significant**.
+3. **High-Dimensional Cosine Interpretation (`Table VIII`):** In `d=2048` correlated hidden spaces, L2-regularized logistic coefficients are not uniquely identifiable causal directions; within-domain split-half cosines (`+0.107` to `+0.689`) vs. cross-domain cosines (`-0.031` to `+0.051`) and the theoretical random null (`0.000 ± 0.0221`) are reported strictly as **empirical diagnostic evidence** of domain-dependent linear decision boundaries.

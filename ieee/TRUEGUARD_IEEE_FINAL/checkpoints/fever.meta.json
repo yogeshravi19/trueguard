@@ -1,0 +1,11 @@
+{
+  "dataset": "fever",
+  "model": "TinyLlama/TinyLlama-1.1B-Chat-v1.0",
+  "pipeline_version": "TRUEGUARD_v2_IEEE_FINAL_2026_11",
+  "rows_sha256": "2d572016586c414a",
+  "n_input_rows": 6666,
+  "valid_rows": 6666,
+  "skipped_empty": 0,
+  "extraction_sec": 399.62,
+  "throughput_seq_per_min": 1000.84
+}

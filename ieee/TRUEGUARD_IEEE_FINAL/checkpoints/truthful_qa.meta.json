@@ -1,0 +1,11 @@
+{
+  "dataset": "truthful_qa",
+  "model": "TinyLlama/TinyLlama-1.1B-Chat-v1.0",
+  "pipeline_version": "TRUEGUARD_v2_IEEE_FINAL_2026_11",
+  "rows_sha256": "1e38ace986737541",
+  "n_input_rows": 1634,
+  "valid_rows": 1634,
+  "skipped_empty": 0,
+  "extraction_sec": 69.89,
+  "throughput_seq_per_min": 1402.71
+}

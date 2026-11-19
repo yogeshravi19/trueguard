@@ -1,0 +1,11 @@
+{
+  "dataset": "halueval_qa",
+  "model": "TinyLlama/TinyLlama-1.1B-Chat-v1.0",
+  "pipeline_version": "TRUEGUARD_v2_IEEE_FINAL_2026_11",
+  "rows_sha256": "ce900f088a0af4cb",
+  "n_input_rows": 4000,
+  "valid_rows": 4000,
+  "skipped_empty": 0,
+  "extraction_sec": 201.23,
+  "throughput_seq_per_min": 1192.67
+}

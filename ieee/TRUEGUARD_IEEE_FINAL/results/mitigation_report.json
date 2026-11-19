@@ -1,0 +1,664 @@
+{
+  "model": "TinyLlama/TinyLlama-1.1B-Chat-v1.0",
+  "n_cal": 250,
+  "n_test": 250,
+  "tau_warning": 0.5973097454620127,
+  "tau_fault": 0.8415465786113868,
+  "test_detection_auroc_on_own_generations": 0.7875935828877005,
+  "test_detection_auroc_pooled_transfer": 0.5503743315508022,
+  "before": {
+    "accuracy": 0.34,
+    "hallucination_rate": 0.66
+  },
+  "after": {
+    "coverage": 0.46,
+    "accuracy_among_answered": 0.5478260869565217,
+    "hallucination_rate_among_answered": 0.4521739130434783,
+    "hallucination_rate_system_wide": 0.208,
+    "relative_hallucination_reduction_among_answered": 0.3148880105401844,
+    "relative_hallucination_reduction_system_wide": 0.6848484848484849
+  },
+  "tier_counts": {
+    "SAFE": 81,
+    "TIER1_RESAMPLE": 23,
+    "TIER2_RETRIEVAL": 11,
+    "TIER3_ABSTAIN": 135
+  },
+  "greedy_hallucinations_corrected": {
+    "by_tier1_resample": 2,
+    "by_tier2_retrieval": 2
+  },
+  "selective_prediction_accuracy_at_coverage": {
+    "TRUEGUARD_calibrated": {
+      "100%": 0.34,
+      "90%": 0.36,
+      "80%": 0.385,
+      "70%": 0.4342857142857143,
+      "60%": 0.48,
+      "50%": 0.544,
+      "AURC": 0.4360129500446704
+    },
+    "TRUEGUARD_pooled_transfer": {
+      "100%": 0.34,
+      "90%": 0.3511111111111111,
+      "80%": 0.365,
+      "70%": 0.37142857142857144,
+      "60%": 0.36,
+      "50%": 0.368,
+      "AURC": 0.6341864716364175
+    },
+    "NLL_baseline": {
+      "100%": 0.34,
+      "90%": 0.3333333333333333,
+      "80%": 0.335,
+      "70%": 0.3142857142857143,
+      "60%": 0.32666666666666666,
+      "50%": 0.328,
+      "AURC": 0.6843148683217034
+    },
+    "Entropy_baseline": {
+      "100%": 0.34,
+      "90%": 0.3511111111111111,
+      "80%": 0.36,
+      "70%": 0.4,
+      "60%": 0.43333333333333335,
+      "50%": 0.464,
+      "AURC": 0.5309132068968656
+    }
+  },
+  "examples": [
+    {
+      "question": "Farthings were in use in England as coinage from the 13th century and ceased to be legal tender on 31 December 1960. How many of them were there in a pound (1)?",
+      "gold": [
+        "nine hundred and sixty",
+        "960"
+      ],
+      "greedy_answer": "Farthings were in use in England as coinage from the 13th century until 1960",
+      "greedy_correct": 0,
+      "initial_risk": 0.9215628754943122,
+      "tier": "TIER3_ABSTAIN",
+      "final_answer": "I do not have sufficient verified evidence to answer this reliably.",
+      "final_correct": null,
+      "sensor_contributions": {
+        "ISP": 1.1781797371781604,
+        "AAS": 0.34323651446683984,
+        "EEM": -0.49311310462450375,
+        "DST": 0.42657639497666683
+      }
+    },
+    {
+      "question": "What was said to have been guarded by the Fisher King?",
+      "gold": [
+        "grail myth",
+        "quest for holy grail",
+        "holy graal"
+      ],
+      "greedy_answer": "The Fisher King was said to have guarded a treasure that was said to be worth more than all the kingdom",
+      "greedy_correct": 0,
+      "initial_risk": 0.9697207166322642,
+      "tier": "TIER3_ABSTAIN",
+      "final_answer": "I do not have sufficient verified evidence to answer this reliably.",
+      "final_correct": null,
+      "sensor_contributions": {
+        "ISP": 1.0152649586968672,
+        "AAS": -0.020877204544292538,
+        "EEM": 1.2275413692081436,
+        "DST": 0.23572110191401013
+      }
+    },
+    {
+      "question": "\"For what television series was the theme tune \"\"I'll be there for you\"\" ?\"",
+      "gold": [
+        "insomnia cafe",
+        "friends series",
+        "friends 1994 2004"
+      ],
+      "greedy_answer": "The theme tune for the television series \"Friends\" is \"I'll Be There for You\".",
+      "greedy_correct": 1,
+      "initial_risk": 0.6369366790118169,
+      "tier": "TIER3_ABSTAIN",
+      "final_answer": "I do not have sufficient verified evidence to answer this reliably.",
+      "final_correct": null,
+      "sensor_contributions": {
+        "ISP": 0.3850998623414281,
+        "AAS": -0.5207630389828185,
+        "EEM": -0.31707844417530795,
+        "DST": 0.005940487076400186
+      }
+    },
+    {
+      "question": "Founded in London in 1844 by George Williams, which organisation was established to provide low cost housing in a safe environment?",
+      "gold": [
+        "young men s christian",
+        "young men s christian s association",
+        "cvjm"
+      ],
+      "greedy_answer": "The National Housing Federation was founded in London in 1844 to provide low-cost housing in a",
+      "greedy_correct": 0,
+      "initial_risk": 0.8751807450475935,
+      "tier": "TIER3_ABSTAIN",
+      "final_answer": "I do not have sufficient verified evidence to answer this reliably.",
+      "final_correct": null,
+      "sensor_contributions": {
+        "ISP": 0.7169793994391078,
+        "AAS": -0.001296357771255488,
+        "EEM": 0.2740456293047505,
+        "DST": -0.05105909302026085
+      }
+    },
+    {
+      "question": "How many balls are used in bar billiards?",
+      "gold": [
+        "8",
+        "eight"
+      ],
+      "greedy_answer": "In bar billiards, a minimum of 4 balls are used.",
+      "greedy_correct": 0,
+      "initial_risk": 0.9013926961321143,
+      "tier": "TIER3_ABSTAIN",
+      "final_answer": "I do not have sufficient verified evidence to answer this reliably.",
+      "final_correct": null,
+      "sensor_contributions": {
+        "ISP": 0.4455530309477196,
+        "AAS": 0.2585828021426876,
+        "EEM": 0.5408078683771892,
+        "DST": -0.04104215098276931
+      }
+    },
+    {
+      "question": "\"In Texas, what is known as \"\"Ole Sparky\"\"?\"",
+      "gold": [
+        "execution by electrocution",
+        "execution by electric chair",
+        "electric chair"
+      ],
+      "greedy_answer": "\"Ole Sparky\" is a popular nickname for the Texas Longhorns football team, which is known",
+      "greedy_correct": 0,
+      "initial_risk": 0.8956938270234598,
+      "tier": "TIER3_ABSTAIN",
+      "final_answer": "I do not have sufficient verified evidence to answer this reliably.",
+      "final_correct": null,
+      "sensor_contributions": {
+        "ISP": -0.11708532484457115,
+        "AAS": -0.3242713234730011,
+        "EEM": 1.3656410968572865,
+        "DST": 0.2170895277236586
+      }
+    },
+    {
+      "question": "What name is given to the practice of arranging voting districts to favour one candidate or party above another?",
+      "gold": [
+        "gerrymandering",
+        "jerrymandering",
+        "gerrymanders"
+      ],
+      "greedy_answer": "The practice of gerrymandering is the manipulation of voting districts to favour one candidate or party above another.",
+      "greedy_correct": 1,
+      "initial_risk": 0.5048477537171729,
+      "tier": "SAFE",
+      "final_answer": "The practice of gerrymandering is the manipulation of voting districts to favour one candidate or party above another.",
+      "final_correct": 1,
+      "sensor_contributions": {
+        "ISP": -0.6127565722142378,
+        "AAS": 0.14088367588210673,
+        "EEM": -0.1280614011025071,
+        "DST": -0.3895682023889201
+      }
+    },
+    {
+      "question": "On which river is Shrewsbury?",
+      "gold": [
+        "severn river",
+        "seven boar",
+        "severn"
+      ],
+      "greedy_answer": "Shrewsbury is located on the River Severn.",
+      "greedy_correct": 1,
+      "initial_risk": 0.3060118362832375,
+      "tier": "SAFE",
+      "final_answer": "Shrewsbury is located on the River Severn.",
+      "final_correct": 1,
+      "sensor_contributions": {
+        "ISP": -0.7673465222025412,
+        "AAS": -0.65433932093859,
+        "EEM": -0.7912514853866839,
+        "DST": 0.3852120828679264
+      }
+    },
+    {
+      "question": "Singer Eleonara Fagan was better known by what stage name?",
+      "gold": [
+        "holiday billie",
+        "lady day singer",
+        "billie halliday"
+      ],
+      "greedy_answer": "Eleonara Fagan was better known by the stage name of Eleanor Rigby.",
+      "greedy_correct": 0,
+      "initial_risk": 0.837838290312789,
+      "tier": "TIER3_ABSTAIN",
+      "final_answer": "I do not have sufficient verified evidence to answer this reliably.",
+      "final_correct": null,
+      "sensor_contributions": {
+        "ISP": -0.12516385998062332,
+        "AAS": -0.475347334621026,
+        "EEM": 0.5913030361074545,
+        "DST": 0.6425451017378103
+      }
+    },
+    {
+      "question": "What type of animal is a saluki?",
+      "gold": [
+        "dogs",
+        "dog",
+        "dogs album"
+      ],
+      "greedy_answer": "A saluki is a type of dog that is native to the Middle East and North Africa.",
+      "greedy_correct": 1,
+      "initial_risk": 0.5182537613545247,
+      "tier": "SAFE",
+      "final_answer": "A saluki is a type of dog that is native to the Middle East and North Africa.",
+      "final_correct": 1,
+      "sensor_contributions": {
+        "ISP": -0.7511254849773562,
+        "AAS": -0.4501378224484161,
+        "EEM": 0.38488023995498183,
+        "DST": -0.11946354534472692
+      }
+    },
+    {
+      "question": "What name is given to the bridge design, such as Tower Bridge, with a divided lifting roadway?",
+      "gold": [
+        "bascule disambiguation",
+        "bascule"
+      ],
+      "greedy_answer": "The name given to the bridge design with a divided lifting roadway is a suspension bridge.",
+      "greedy_correct": 0,
+      "initial_risk": 0.8719188867981666,
+      "tier": "TIER3_ABSTAIN",
+      "final_answer": "I do not have sufficient verified evidence to answer this reliably.",
+      "final_correct": null,
+      "sensor_contributions": {
+        "ISP": 0.6788741826568001,
+        "AAS": 0.12045144369129132,
+        "EEM": 0.10178481926685402,
+        "DST": 0.00802807180253512
+      }
+    },
+    {
+      "question": "Which is the main river that flows through Munich?",
+      "gold": [
+        "isar disambiguation",
+        "isar"
+      ],
+      "greedy_answer": "The main river that flows through Munich is the Isar.",
+      "greedy_correct": 1,
+      "initial_risk": 0.2785500306315623,
+      "tier": "SAFE",
+      "final_answer": "The main river that flows through Munich is the Isar.",
+      "final_correct": 1,
+      "sensor_contributions": {
+        "ISP": -1.3242385658708062,
+        "AAS": -0.12811403020810033,
+        "EEM": -0.7666496162975738,
+        "DST": 0.2584427431961087
+      }
+    },
+    {
+      "question": "Josiah Tulkinghorn is Sir Lester Dedlock\u2019s lawyer in which novel by Charles Dickens?",
+      "gold": [
+        "richard carstone",
+        "lady honoria dedlock",
+        "bleak house"
+      ],
+      "greedy_answer": "Josiah Tulkinghorn is Sir Lester Dedlock's lawyer in \"A Tale of Two C",
+      "greedy_correct": 0,
+      "initial_risk": 0.1683048773836029,
+      "tier": "SAFE",
+      "final_answer": "Josiah Tulkinghorn is Sir Lester Dedlock's lawyer in \"A Tale of Two C",
+      "final_correct": 0,
+      "sensor_contributions": {
+        "ISP": -0.2663552442112112,
+        "AAS": -0.7195963834739612,
+        "EEM": -0.849251369971366,
+        "DST": -0.7713799781050512
+      }
+    },
+    {
+      "question": "\"In the story of Jason and the Argonauts, what was the name of the Greek god who rises from the sea and holds the rocks in place in order to let the ship \"\"The Argo\"\" to pass ?\"",
+      "gold": [
+        "triton disambiguation",
+        "tritons",
+        "triton"
+      ],
+      "greedy_answer": "In the story of Jason and the Argonauts, the Greek god who rises from the sea and holds the rocks",
+      "greedy_correct": 0,
+      "initial_risk": 0.881746341023688,
+      "tier": "TIER3_ABSTAIN",
+      "final_answer": "I do not have sufficient verified evidence to answer this reliably.",
+      "final_correct": null,
+      "sensor_contributions": {
+        "ISP": 1.1285698795771049,
+        "AAS": 0.6413975565681553,
+        "EEM": -0.6001211001085265,
+        "DST": -0.1696680085453386
+      }
+    },
+    {
+      "question": "What actor has played James Bond in the most movies?",
+      "gold": [
+        "sir roger moore",
+        "roger george moore",
+        "moore sir roger george"
+      ],
+      "greedy_answer": "The actor who has played James Bond in the most movies is Daniel Craig, who has appeared in 23 films",
+      "greedy_correct": 0,
+      "initial_risk": 0.9006081548714368,
+      "tier": "TIER3_ABSTAIN",
+      "final_answer": "I do not have sufficient verified evidence to answer this reliably.",
+      "final_correct": null,
+      "sensor_contributions": {
+        "ISP": -0.2374933233366123,
+        "AAS": 0.37657384518757375,
+        "EEM": 0.5404831195053034,
+        "DST": 0.5155424297348261
+      }
+    },
+    {
+      "question": "\"What is the common translation for \"\"Carpe Diem\"\"?\"",
+      "gold": [
+        "seize day",
+        "seize day disambiguation"
+      ],
+      "greedy_answer": "The common translation for \"Carpe Diem\" is \"Seize the day\" or \"Live each day.\"",
+      "greedy_correct": 0,
+      "initial_risk": 0.48750163253407497,
+      "tier": "SAFE",
+      "final_answer": "The common translation for \"Carpe Diem\" is \"Seize the day\" or \"Live each day.\"",
+      "final_correct": 0,
+      "sensor_contributions": {
+        "ISP": -0.35550354083042923,
+        "AAS": -0.2639576141321389,
+        "EEM": -0.07136192068287435,
+        "DST": -0.36807493303973504
+      }
+    },
+    {
+      "question": "Which island nation lost a day in Dec. 2011 by moving the International Date Line to their east?",
+      "gold": [
+        "samoa",
+        "west samoa",
+        "western samoa"
+      ],
+      "greedy_answer": "The Marshall Islands lost a day in Dec. 2011 by moving the International Date Line to their east.",
+      "greedy_correct": 0,
+      "initial_risk": 0.8966498375118684,
+      "tier": "TIER3_ABSTAIN",
+      "final_answer": "I do not have sufficient verified evidence to answer this reliably.",
+      "final_correct": null,
+      "sensor_contributions": {
+        "ISP": 0.06300264858037839,
+        "AAS": 0.48194745333563643,
+        "EEM": 0.22359112864110683,
+        "DST": 0.38310720395148035
+      }
+    },
+    {
+      "question": "Which method of painting consists of applying pigment to wet plaster?",
+      "gold": [
+        "frescoes",
+        "frescos",
+        "fresco painting"
+      ],
+      "greedy_answer": "The method of painting that involves applying pigment to wet plaster is called \"wet-on-wet",
+      "greedy_correct": 0,
+      "initial_risk": 0.9175939381945959,
+      "tier": "TIER3_ABSTAIN",
+      "final_answer": "I do not have sufficient verified evidence to answer this reliably.",
+      "final_correct": null,
+      "sensor_contributions": {
+        "ISP": 0.45048395917317935,
+        "AAS": 0.24235842422233475,
+        "EEM": 0.5759866866428938,
+        "DST": 0.13237276746323023
+      }
+    },
+    {
+      "question": "Which city, since the 14th century BC, has been controlled by Israelites, Judaeans, Babylonians, Persians, Greeks, Hasmoneans, Romans, Byzantines, Arabs, Mamluks, Turks, and the British and for a short time after World War II was occupied by Israel and Jordan?",
+      "gold": [
+        "al kuds",
+        "kud\u00fcs",
+        "jeruslam"
+      ],
+      "greedy_answer": "Since the 14th century BC, Jerusalem has been under various conquerors, including the Israelites, Judae",
+      "greedy_correct": 1,
+      "initial_risk": 0.9032057977568629,
+      "tier": "TIER3_ABSTAIN",
+      "final_answer": "I do not have sufficient verified evidence to answer this reliably.",
+      "final_correct": null,
+      "sensor_contributions": {
+        "ISP": -0.14522637925029322,
+        "AAS": 0.9532707324837624,
+        "EEM": 0.21877896510425113,
+        "DST": 0.1976458929691266
+      }
+    },
+    {
+      "question": "\u2018The Weeping Woman\u2019 is the work of which artist?",
+      "gold": [
+        "pablo diego jose francisco de paula juan nepomuceno maria de los remedios crispin crispiniano de la santisima trinidad ruiz y picasso",
+        "pablo diego jose francisco de paula juan nepomuceno maria de los remedios cipriano de la santisima trinidad martyr patricio clito ruiz y picasso",
+        "pablo diego jose santiago francisco de paula juan nepomuceno crispin crispiniano de los remedios cipriano de la santisima trinidad ruiz blasco y picasso"
+      ],
+      "greedy_answer": "The Weeping Woman is the work of Spanish artist Salvador Dal\u00ed.",
+      "greedy_correct": 0,
+      "initial_risk": 0.4503675134414383,
+      "tier": "SAFE",
+      "final_answer": "The Weeping Woman is the work of Spanish artist Salvador Dal\u00ed.",
+      "final_correct": 0,
+      "sensor_contributions": {
+        "ISP": -0.664551021751387,
+        "AAS": -0.3849494811280102,
+        "EEM": 0.27546522785263977,
+        "DST": -0.4340447499377216
+      }
+    },
+    {
+      "question": "Which type of hat takes its name from an 1894 novel by George Du Maurier where the title character has the surname O'Ferrall ?",
+      "gold": [
+        "trilby",
+        "trilby hat"
+      ],
+      "greedy_answer": "The hat named after the character with the surname O'Ferrall is a fedora.",
+      "greedy_correct": 0,
+      "initial_risk": 0.9686958534224668,
+      "tier": "TIER3_ABSTAIN",
+      "final_answer": "I do not have sufficient verified evidence to answer this reliably.",
+      "final_correct": null,
+      "sensor_contributions": {
+        "ISP": 0.49983011616108547,
+        "AAS": 0.41535964917017737,
+        "EEM": 1.2610564659680783,
+        "DST": 0.24705976494759352
+      }
+    },
+    {
+      "question": "What is the name of the large buttock and thigh muscle?",
+      "gold": [
+        "gluteaus maximus",
+        "glutes",
+        "glutis maximus"
+      ],
+      "greedy_answer": "The name of the large buttock and thigh muscle is gluteus maximus.",
+      "greedy_correct": 1,
+      "initial_risk": 0.30239403034182327,
+      "tier": "SAFE",
+      "final_answer": "The name of the large buttock and thigh muscle is gluteus maximus.",
+      "final_correct": 1,
+      "sensor_contributions": {
+        "ISP": -0.9191680641857815,
+        "AAS": -0.38348356446560933,
+        "EEM": -0.5887098620962501,
+        "DST": 0.046543841613870096
+      }
+    },
+    {
+      "question": "By what name was Australia known before British colonisation?",
+      "gold": [
+        "new holland",
+        "new holland disambiguation",
+        "nova hollandia"
+      ],
+      "greedy_answer": "Before British colonisation, Australia was known as the \"New World\" or \"New South Wales\" in various European languages",
+      "greedy_correct": 0,
+      "initial_risk": 0.8107967650428279,
+      "tier": "TIER3_ABSTAIN",
+      "final_answer": "I do not have sufficient verified evidence to answer this reliably.",
+      "final_correct": null,
+      "sensor_contributions": {
+        "ISP": -0.35871970708751033,
+        "AAS": 0.1172572230859001,
+        "EEM": 0.5430261130634125,
+        "DST": 0.14473791879029202
+      }
+    },
+    {
+      "question": "Which 1980s TV sitcom starred Keith Barron and Gwen Taylor as a couple on holiday with friends in Spain?",
+      "gold": [
+        "duty free shopping",
+        "dutyfree stores",
+        "dutyfree shops"
+      ],
+      "greedy_answer": "Keith Barron and Gwen Taylor starred in the 1980s TV sitcom \"The L",
+      "greedy_correct": 0,
+      "initial_risk": 0.9629692957523417,
+      "tier": "TIER3_ABSTAIN",
+      "final_answer": "I do not have sufficient verified evidence to answer this reliably.",
+      "final_correct": null,
+      "sensor_contributions": {
+        "ISP": 1.1321317536914415,
+        "AAS": 0.3392155058140589,
+        "EEM": 0.7115512210892793,
+        "DST": 0.06648151136599045
+      }
+    },
+    {
+      "question": "Lent (Latin Quadragesima) is traditionally a Christian religious fast of how many days?",
+      "gold": [
+        "40",
+        "forty"
+      ],
+      "greedy_answer": "Lent (Latin Quadragesima) is a Christian religious fast that typically lasts for 40 days",
+      "greedy_correct": 1,
+      "initial_risk": 0.6223881514421463,
+      "tier": "TIER1_RESAMPLE",
+      "final_answer": "Lent is traditionally a Christian religious fast of 40 days, starting on Ash Wednesday and ending on",
+      "final_correct": 1,
+      "sensor_contributions": {
+        "ISP": -0.4837608449792362,
+        "AAS": 0.16610718891302326,
+        "EEM": -0.5172810774935015,
+        "DST": 0.3257377346514527
+      }
+    },
+    {
+      "question": "What is the second most common word in written English?",
+      "gold": [
+        "o f",
+        "of disambiguation",
+        "of"
+      ],
+      "greedy_answer": "The second most common word in written English is \"the.\"",
+      "greedy_correct": 0,
+      "initial_risk": 0.5936931188529544,
+      "tier": "SAFE",
+      "final_answer": "The second most common word in written English is \"the.\"",
+      "final_correct": 0,
+      "sensor_contributions": {
+        "ISP": -0.85699686757136,
+        "AAS": 0.3970201147000214,
+        "EEM": -0.05282943805936616,
+        "DST": -0.11683411944024752
+      }
+    },
+    {
+      "question": "Thomas Edison, who invented the lightbulb, was afraid of the dark?",
+      "gold": [
+        "true song",
+        "true disambiguation",
+        "truer"
+      ],
+      "greedy_answer": "Thomas Edison was afraid of the dark, as he believed that the absence of light would make him feel more product",
+      "greedy_correct": 0,
+      "initial_risk": 0.9163994591246393,
+      "tier": "TIER3_ABSTAIN",
+      "final_answer": "I do not have sufficient verified evidence to answer this reliably.",
+      "final_correct": null,
+      "sensor_contributions": {
+        "ISP": 0.01589452098964846,
+        "AAS": -0.1479311041727075,
+        "EEM": 1.1410179127666427,
+        "DST": 0.3765269185771718
+      }
+    },
+    {
+      "question": "Name the palace and monastery , situated some 25 miles north of Madrid, founded by King Phillip II of Spain?",
+      "gold": [
+        "biblioteca del real monasterio de el escorial",
+        "escorial monastery",
+        "monasterio de san lorenzo de el escorial"
+      ],
+      "greedy_answer": "The palace and monastery founded by King Phillip II of Spain is the Alhambra in Granada, Spain",
+      "greedy_correct": 0,
+      "initial_risk": 0.5587703772196846,
+      "tier": "SAFE",
+      "final_answer": "The palace and monastery founded by King Phillip II of Spain is the Alhambra in Granada, Spain",
+      "final_correct": 0,
+      "sensor_contributions": {
+        "ISP": -0.8790063852695564,
+        "AAS": 0.1711748791917293,
+        "EEM": 0.22078205409864515,
+        "DST": -0.2856714823045291
+      }
+    },
+    {
+      "question": "What is the name given to the triangular savoury Indian pasties filled with meat or vegetables and seasoned with herbs and spices",
+      "gold": [
+        "somucha",
+        "sambousa",
+        "samsy"
+      ],
+      "greedy_answer": "The name for the triangular savoury Indian pasties filled with meat or vegetables and seasoned with herbs",
+      "greedy_correct": 0,
+      "initial_risk": 0.7260909388427506,
+      "tier": "TIER3_ABSTAIN",
+      "final_answer": "I do not have sufficient verified evidence to answer this reliably.",
+      "final_correct": null,
+      "sensor_contributions": {
+        "ISP": 0.40155732665124916,
+        "AAS": 0.2981192757485151,
+        "EEM": -0.5313160328233786,
+        "DST": -0.20237558252469415
+      }
+    },
+    {
+      "question": "What country won 3 of the 5 Olympic gold medals awarded in baseball?",
+      "gold": [
+        "cuba",
+        "people s republic of cuba",
+        "administrative divisions of cuba"
+      ],
+      "greedy_answer": "The United States won 3 of the 5 Olympic gold medals awarded in baseball.",
+      "greedy_correct": 0,
+      "initial_risk": 0.8790186558649942,
+      "tier": "TIER3_ABSTAIN",
+      "final_answer": "I do not have sufficient verified evidence to answer this reliably.",
+      "final_correct": null,
+      "sensor_contributions": {
+        "ISP": 0.1892028312806244,
+        "AAS": 0.70162281414945,
+        "EEM": -0.008632906904260385,
+        "DST": 0.09208290756145103
+      }
+    }
+  ]
+}

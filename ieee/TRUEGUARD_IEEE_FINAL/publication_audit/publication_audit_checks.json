@@ -1,0 +1,66 @@
+{
+  "task1_source_fidelity": {
+    "tg_pipeline.py": {
+      "original_sha256": "a9c08ea0df69c145",
+      "colab_run_sha256": "a9c08ea0df69c145",
+      "exact_match": true
+    },
+    "tg_controller.py": {
+      "original_sha256": "c094c8cbbe632b3b",
+      "colab_run_sha256": "c094c8cbbe632b3b",
+      "exact_match": true
+    },
+    "tg_eval.py": {
+      "original_sha256": "b65ac0291b8b111b",
+      "colab_run_sha256": "b65ac0291b8b111b",
+      "exact_match": true
+    }
+  },
+  "task1_metrics_and_splits": {
+    "all_8_colab_stages_completed": true,
+    "in_domain_predictions_exact_match": true,
+    "unseen_predictions_exact_match": true,
+    "all_11_checkpoints_zero_nans": true,
+    "triviaqa_disjoint_verified": true,
+    "total_extracted_sequences": 32590
+  },
+  "task2_fewshot_integrity": {
+    "faithdial": {
+      "n_pool": 2111,
+      "n_test": 1396,
+      "group_overlap": 0,
+      "test_count_matches_json": true,
+      "fever_separated_as_claim_verification": true
+    },
+    "wikibio_gpt3": {
+      "n_pool": 1174,
+      "n_test": 734,
+      "group_overlap": 0,
+      "test_count_matches_json": true,
+      "fever_separated_as_claim_verification": true
+    },
+    "fever": {
+      "n_pool": 3999,
+      "n_test": 2667,
+      "group_overlap": 0,
+      "test_count_matches_json": true,
+      "fever_separated_as_claim_verification": true
+    },
+    "xsum_factuality": {
+      "n_pool": 1116,
+      "n_test": 752,
+      "group_overlap": 0,
+      "test_count_matches_json": true,
+      "fever_separated_as_claim_verification": true
+    }
+  },
+  "unresolved_blockers": [],
+  "non_blocking_caveats": [
+    "DISCLOSURE 1 (Prior Inspection of Unseen Datasets): The 4 held-out datasets (FaithDial, WikiBio-GPT3, FEVER, XSum) were examined during zero-shot failure diagnosis before running few-shot adaptation. Therefore, the 40% held-out splits validate few-shot target adaptation on unseen test groups within those datasets, NOT as a completely unexamined external confirmation benchmark.",
+    "DISCLOSURE 2 (Statistical Scope of Few-Shot Tests): Paired/one-sample t-tests across 10 seeds quantify variance over adaptation-set draws (holding the 40% test set fixed), while 95% group-bootstrap CIs quantify test-set sampling uncertainty. Both should be reported clearly.",
+    "DISCLOSURE 3 (Single-Model Scope): All expanded 10-dataset experiments use frozen TinyLlama-1.1B-Chat-v1.0. Cross-model generalization to larger 7B-70B LLMs remains future work.",
+    "DISCLOSURE 4 (Mitigation Mechanism): On TriviaQA, abstention accounts for the vast majority of system-wide hallucination reduction (112/165 blocked vs. 4/165 actively repaired by Tier 1/2), and 23/85 (27.1%) originally correct answers were abstained. Full regenerative controller comparisons against Entropy/NLL thresholds would require additional GPU generations.",
+    "DISCLOSURE 5 (ISP Dominance): In-domain and at K=250 on balanced/moderate targets, ISP alone matches or slightly edges 4-sensor fusion in AUROC; AAS/EEM/DST are justified by zero-shot fallback (EEM on FaithDial/XSum), low-K/severe-imbalance stabilization (XSum K=50/100), low-FPR unique catches, and per-sensor explainability."
+  ],
+  "verdict": "READY FOR MANUSCRIPT PREPARATION"
+}

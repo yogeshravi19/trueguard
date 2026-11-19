@@ -1,0 +1,8 @@
+{
+  "model": "TinyLlama/TinyLlama-1.1B-Chat-v1.0",
+  "pipeline_version": "TRUEGUARD_v2_IEEE_FINAL_2026_11",
+  "tag": "test",
+  "n": 250,
+  "seed": 42,
+  "valid": 250
+}

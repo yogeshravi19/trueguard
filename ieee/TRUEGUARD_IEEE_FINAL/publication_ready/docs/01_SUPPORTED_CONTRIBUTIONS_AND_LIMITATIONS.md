@@ -1,0 +1,40 @@
+# Supported Research Contributions, Taxonomy of Novelty, and Mandatory Limitations (Post-Review Reconciled)
+
+**Recommended Framing:** *TRUEGUARD: An Empirical Study of White-Box Hallucination Risk Detection, Domain-Dependent Internal Signals, and Few-Shot Refitting for Selective Prediction*  
+**Model Scope:** Frozen `TinyLlama/TinyLlama-1.1B-Chat-v1.0` (`0` trainable LLM parameters, single-pass white-box instrumentation).
+
+---
+
+## 1. Strict Separation of Novelty
+
+### A. Established Components Reused (Not Claimed as Methodological Inventions)
+- **Linear hidden-state probing (ISP):** Multi-layer L2-regularized logistic probing over frozen hidden states, directly analogous to SAPLMA (Azaria & Mitchell, 2023) and linear truthfulness probing (Burns et al., 2023; Li et al., 2023).
+- **Token-level uncertainty & divergence signals (EEM, AAS, DST):** Shannon/Rényi-2 entropy, attention-allocation summaries, and layer-to-layer hidden-state drift build on standard white-box uncertainty and representation diagnostics.
+- **Selective prediction & abstention:** Risk-coverage evaluation (`AURC`, selective accuracy at matched coverage) and threshold-calibrated abstention follow standard selective classification methodology.
+
+### B. Engineering Contributions
+- **Unified Single-Pass Frozen-Model Instrumentation (`tg_pipeline.py`):** Extracts four internal signal families (`ISP`, `AAS`, `EEM`, `DST`) in a single forward pass with `0` external NLI models and `+15.9%` post-pass / `+27.1%` online latency overhead under controlled sequential serving (`real_latency.json`).
+- **End-to-End Auditable Benchmark & Control Harness:** Group-disjoint 10-dataset evaluation (`32,590` sequences, `0` NaNs/Infs) with artifact controls (`LEN`, answer-text `TF-IDF`, shuffled labels, length-matched pairs), target-only few-shot refitting curves, and faithful Colab reproductions of `SelfCheckGPT-NLI` and `Semantic Entropy`.
+
+### C. Three Strongest Scientifically Defensible Original Empirical Findings
+1. **In-Domain White-Box Detection Under Dataset-Artifact Controls (Control A + Table II):**
+   - High raw AUROCs on HaluEval-QA (`0.9880`) and HaluEval-Summarization (`0.9936`) are **heavily confounded by answer-length and surface-style artifacts** (`LEN` CV = `0.9572` on HaluEval-QA; answer-text `TF-IDF` with zero LLM = `0.9661` on HaluEval-QA and `0.9539` on HaluEval-Summ). High raw AUROC on HaluEval therefore does **not** alone establish generalizable factual hallucination understanding.
+   - **What remains supported:** TRUEGUARD outperforms answer-text `TF-IDF` on all five in-domain benchmarks (`+0.0219` to `+0.0709`), passes shuffled-label checks (`0.4894–0.5123`), and retains **`0.7901` (HaluEval-QA)**, **`0.7996` (HaluEval-Dialogue)**, **`0.8106` (TruthfulQA)**, and **`0.9939` (HaluEval-Summ)** on strictly length-matched pairs (`|ΔL| ≤ 2` tokens, where `LEN ≈ 0.50`). Across all in-domain tasks, **ISP dominates fusion (>96% standardized weight)**; four-sensor fusion does **not** consistently outperform ISP-only in AUROC.
+2. **Empirical Domain-Shift Diagnostics & Sample-Efficiency Boundaries of Target-Domain Few-Shot Refitting (Tables III & VIII, Controls B, 4B, 4C):**
+   - Zero-shot pooled probes collapse to chance across four unseen benchmarks (`0.4597–0.5205`, exact Colab `.npz`), and recalibrating source risk scores on `K` target examples yields no recovery (`0.4957–0.5242`).
+   - **Empirical diagnostic evidence (within-domain vs. cross-domain cosine):** Within-domain split-half probe weight cosines are substantially higher (`+0.230` to `+0.689` on homogeneous benchmarks; `+0.368` on FEVER; `10–31x` the `0.0221` random 2048-d std) than cross-domain cosines (`-0.031` to `+0.051`), indicating strongly domain-dependent linear decision boundaries (while noting that individual L2 coefficients in correlated 2,048-d spaces are not uniquely identifiable causal axes).
+   - **Length-controlled EEM diagnostics:** Positive `EEM_mean` signal on natural **FaithDial (`0.7662` quartile-mean, $\rho = +0.006$)** and **XSum (`0.6648`, $\rho = -0.032$)** persists after length control; on **HaluEval-QA**, the apparent raw inversion (`0.3627`) largely disappears under length matching (`0.5184`), whereas on **HaluEval-Dialogue** an inverse association persists more strongly (`0.3795` quartile-mean, `0.4525` length-matched).
+   - **Target-domain few-shot refitting (target-only probe training, zero source weight transfer):** Simple baselines outperform TRUEGUARD at `K=50` (`1D EEM` on FaithDial `0.7473` & XSum `0.6082`; `TF-IDF` on WikiBio `0.5321` & FEVER `0.5699`). At `K=250` (`<2s` CPU), gains are task-dependent: target-only TRUEGUARD clearly outperforms all simple baselines on **FaithDial (`0.8231`)**, **FEVER (`0.7325`, claim-verification transfer)**, and **WikiBio (`0.6698`)** and cuts ECE by `82–93%`, whereas on **XSum-Factuality it approximately matches the 1D length baseline (`0.6456` vs. `0.6445`)**.
+3. **Single-Pass Selective Prediction vs. Multi-Sample External Baselines & Abstention-Driven Mitigation on Closed-Book TriviaQA (Tables V & VII, Control C):**
+   - On `250` held-out closed-book TriviaQA generations (`n_cal=250`), **target-refitted** (`250` labeled calibration examples) single-pass TRUEGUARD achieves **`0.7876` AUROC** and **`0.4360` AURC**, significantly outperforming **label-free** `M=10` Semantic Entropy (`0.6859` AUROC / `0.5411` AURC, `p_Holm = 0.012 / 0.006`), Predictive Entropy (`0.6583`, `p_Holm = 0.006`), and NLL (`0.4678`, `p_Holm = 0.006`), while performing competitively with **label-free** `M=10` SelfCheckGPT-NLI (`0.7477` AUROC / `0.4659` AURC, `p_Holm = 0.478 / 0.362`, n.s.; SelfCheckGPT AUPRC `0.8537` vs. TRUEGUARD `0.8460`) using `1` generation and `0` external NLI models. Without target labels, zero-shot `TRUEGUARD_Pooled_ZeroShot` achieves only `0.5504` AUROC / `0.6342` AURC, confirming that the TriviaQA comparison evaluates a `K=250` target-refitted single-pass white-box detector against label-free multi-sample external baselines.
+   - **Mitigation reframing (four separated outcomes):** Risk-based **selective abstention** is the primary demonstrated mitigation outcome, raising selective accuracy from `34.00%` (`85/250`) to **`55.65%` (`64/115`)** and cutting system-wide incorrect outputs from `66.00%` to `20.40%` at `46.0%` coverage. The full three-tier controller (Tier 1 resampling + Tier 2 local TF-IDF retrieval + Tier 3 abstention) is reported as an **intervention ablation** that achieved **`54.78%` (`63/115`, `-0.87%`)** — repairing `4` hallucinations while making `3` originally correct answers incorrect — showing no demonstrated net benefit from active self-repair on TinyLlama-1.1B.
+
+---
+
+## 2. Mandatory Limitations & Disclosures
+- **Single Small Frozen Model (`TinyLlama-1.1B-Chat-v1.0`):** `34.0%` TriviaQA baseline accuracy; generalization to 7B–70B models is future work.
+- **Prior Inspection Disclosure:** FaithDial, WikiBio-GPT3, FEVER, and XSum were inspected during zero-shot failure diagnosis before evaluating `K ∈ {50, 100, 250}` target-domain refitting on 40% group-disjoint splits; they validate target-only sample efficiency, not unexamined external confirmation.
+- **FEVER Scope:** Reported separately as claim-verification transfer, not open-ended generative hallucination detection.
+- **Statistical Power on TriviaQA (`n_test = 250`):** Underpowered to separate TRUEGUARD (`0.7876`) from SelfCheckGPT-NLI (`0.7477`, `p_Holm = 0.478`) or ISP-only (`0.7706`, `p_Holm = 0.478`).
+- **Latency Non-Equivalence:** Controlled sequential `4.20x–4.60x` speedup (`real_latency.json`, `eager`, `bs=1`) does **not** establish universal wall-clock speedup over GPU-batched (`sdpa`, `bs=10`, early EOS) SelfCheckGPT-NLI (`0.7068 s/q`).
+- **Unsupervised White-Box Baselines Not Reproduced:** CCS, EigenScore/INSIDE, and Lookback Lens were not executed on TinyLlama-1.1B and are discussed only as literature context (`TRUEGUARD_ISP_only` serves as our internal SAPLMA-style linear-probe proxy).
